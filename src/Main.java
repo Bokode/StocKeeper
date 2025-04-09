@@ -3,7 +3,7 @@ public class Main {
         System.out.println("Bonjour à tous les amis!, je suis accompagné de Miss Jirachi.");
         while (true)
         {
-            System.out.println("BONJOUR");
+            System.out.println("BONJOR");
         }
     }
 }
