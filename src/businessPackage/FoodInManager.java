@@ -45,7 +45,7 @@ public class FoodInManager {
         Integer quantityLeft = 0;
 
         foodInToSearch.forEach((f) -> {
-            // How do I get the type ??
+            // Besoin d'une requete SQL contenant une jointure entre les trois tables
             if (f.getFood() == typeOfFood) {
                 quantityLeft += f.getQuantity();
             }
