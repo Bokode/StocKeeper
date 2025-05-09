@@ -59,10 +59,24 @@ public class ApplicationController {
         foodInManager.updateFoodIn(foodIn);
     }
 
+    // Task 1
     public ArrayList<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
         return recipeManager.showRecipesBasedOnTime(cookingTime);
     }
+    // Task 2
     public Integer showQuantityLeft(String typeOfFood) {
         return foodInManager.showQuantityLeft(typeOfFood);
     }
+
+    // Search 1
+    //public RecipeWithExpiredFood recipeWithExpiredFood() {
+    //    return recipeManager.recipeWithExpiredFood();
+    //}
+
+    // Search 2
+    public FoodExpired() {
+
+    }
+
+    // Search 3
 }

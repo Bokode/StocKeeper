@@ -37,7 +37,11 @@ public class Recipe {
     }
 
     public void setCaloricIntake(Integer caloricIntake) {
-        this.caloricIntake = caloricIntake;
+        if (caloricIntake <= 0) {
+            // Exception
+        } else {
+            this.caloricIntake = caloricIntake;
+        }
     }
 
     public void setLastDayDone(Date lastDayDone) {
