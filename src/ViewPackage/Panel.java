@@ -1,4 +1,4 @@
-package Front_end;
+package ViewPackage;
 
 import javax.swing.*;
 import java.awt.*;

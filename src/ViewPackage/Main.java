@@ -1,4 +1,4 @@
-import Front_end.MainWindow;
+package ViewPackage;
 
 public class Main {
     public static void main(String[] args) {
