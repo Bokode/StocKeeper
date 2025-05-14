@@ -1,10 +1,13 @@
 package businessPackage;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import dataAccessPackageTemporaire.FoodInDBAccess;
 
+import modelPackage.ExpiredFood;
 import modelPackage.FoodIn;
+import modelPackage.FoodInToSearch;
 
 public class FoodInManager {
     private FoodInDBAccess dao;
@@ -41,16 +44,20 @@ public class FoodInManager {
     }
 
     public Integer showQuantityLeft(String typeOfFood) {
-        ArrayList<FoodIn> foodInToSearch = getAllFoodIn();
+        ArrayList<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;
 
-        foodInToSearch.forEach((f) -> {
-            // Besoin d'une requete SQL contenant une jointure entre les trois tables
-            if (f.getFood() == typeOfFood) {
-                quantityLeft += f.getQuantity();
+        // Besoin d'une requete SQL contenant une jointure entre les trois tables (FoodIn, Food, FoodType)
+        for (FoodInToSearch f : foodInToSearch) {
+            if (Objects.equals(f.getFoodType().getLabel(), typeOfFood)) {
+                quantityLeft += f.getFoodIn().getQuantity();
             }
-        });
+        }
 
         return (quantityLeft);
+    }
+
+    public ArrayList<ExpiredFood> expiredFood(String storageType, String foodType) {
+        return dao.expiredFood(storageType, foodType);
     }
 }

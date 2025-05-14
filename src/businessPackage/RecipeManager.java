@@ -1,10 +1,13 @@
 package businessPackage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import dataAccessPackageTemporaire.RecipeDBAccess;
 
 import modelPackage.Recipe;
+import modelPackage.RecipeWithExpiredFood;
+import modelPackage.SeasonalRecipe;
 
 public class RecipeManager {
     private RecipeDBAccess dao;
@@ -51,5 +54,13 @@ public class RecipeManager {
         });
 
         return (recipes);
+    }
+
+    public ArrayList<RecipeWithExpiredFood> recipeWithExpiredFood() {
+        return dao.recipeWithExpireFood();
+    }
+
+    public ArrayList<SeasonalRecipe> recipesOfSeason(Date date) {
+        return dao.recipesOfSeason(date);
     }
 }

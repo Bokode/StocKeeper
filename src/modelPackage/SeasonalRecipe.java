@@ -6,7 +6,9 @@ public class SeasonalRecipe {
     private Material material;
 
     public SeasonalRecipe(Recipe recipe, Diet diet, Material material) {
-
+        setRecipe(recipe);
+        setDiet(diet);
+        setMaterial(material);
     }
 
     public void setRecipe(Recipe recipe) {

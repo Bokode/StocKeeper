@@ -1,12 +1,12 @@
 package controllerPackage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import businessPackage.FoodInManager;
 import businessPackage.RecipeManager;
 
-import modelPackage.FoodIn;
-import modelPackage.Recipe;
+import modelPackage.*;
 
 public class ApplicationController {
     private RecipeManager recipeManager;
@@ -69,14 +69,17 @@ public class ApplicationController {
     }
 
     // Search 1
-    //public RecipeWithExpiredFood recipeWithExpiredFood() {
-    //    return recipeManager.recipeWithExpiredFood();
-    //}
+    public ArrayList<RecipeWithExpiredFood> recipeWithExpiredFood() {
+        return recipeManager.recipeWithExpiredFood();
+    }
 
     // Search 2
-    //public FoodExpired() {
-
-    //}
+    public ArrayList<ExpiredFood> foodExpired(String storageType, String foodType) {
+      return foodInManager.expiredFood(storageType, foodType);
+    }
 
     // Search 3
+    public ArrayList<SeasonalRecipe> RecipesOfSeason(Date date) {
+        return recipeManager.recipesOfSeason(date);
+    }
 }
