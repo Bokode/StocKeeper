@@ -3,9 +3,9 @@ package ViewPackage;
 import javax.swing.*;
 import java.awt.*;
 
-public class Panel extends JPanel {
+public class HomePanel extends JPanel {
     private JLabel   line1Label, line2Label;
-    public Panel() {
+    public HomePanel() {
         line1Label = new JLabel("StocKeeper");
         line2Label = new JLabel("Bienvenue sur StocKeeper, vous pouvez choisir une de options ci-dessous.");
         line1Label.setFont(new Font("Poppins", Font.BOLD, 40));

@@ -7,7 +7,8 @@ import java.awt.event.WindowEvent;
 
 public class MainWindow extends JFrame {
     private Container mainContainer;
-    private Panel panel;
+    private JPanel homePanel;
+    private AddRecipePanel addRecipePanel;
     private MainMenu mainMenu;
     public MainWindow() {
         super("StocKeeper");
@@ -19,9 +20,25 @@ public class MainWindow extends JFrame {
         } );
         mainMenu = new MainMenu(this);
         setJMenuBar(mainMenu);
-        panel = new Panel();
+        homePanel = new HomePanel();
+        addRecipePanel = new AddRecipePanel();
         mainContainer = this.getContentPane();
-        mainContainer.add(panel,BorderLayout.CENTER);
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.add(homePanel,BorderLayout.CENTER);
         setVisible(true);
+    }
+
+    public void showHomePanel() {
+        mainContainer.removeAll();
+        mainContainer.add(homePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showAddRecipePanel() {
+        mainContainer.removeAll();
+        mainContainer.add(addRecipePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
     }
 }

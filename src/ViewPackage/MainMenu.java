@@ -23,7 +23,7 @@ public class MainMenu extends JMenuBar {
         this.add(foodInMenu);
         this.add(searchMenu);
 
-        homeScreen = new JMenuItem("Retour à l'écran principal");
+        homeScreen = new JMenuItem("Retour à l'écran d'acceuil");
         exitApplication = new JMenuItem("Quitter l'application");
         homeMenu.add(homeScreen);
         homeMenu.add(exitApplication);
@@ -52,5 +52,10 @@ public class MainMenu extends JMenuBar {
         searchMenu.add(searchRecipeFoodInOwnedAndNotExpired);
         searchMenu.add(searchFoodTypeExpiredInStorage);
         searchMenu.add(searchRecipeWithFoodExpired5DAndWithActualSeason);
+
+        ExitListener exitListener = new ExitListener();
+        exitApplication.addActionListener(exitListener);
+        homeScreen.addActionListener(e -> mainWindow.showHomePanel());
+        addRecipe.addActionListener(e -> mainWindow.showAddRecipePanel());
     }
 }
