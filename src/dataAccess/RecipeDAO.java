@@ -24,22 +24,22 @@ public class RecipeDAO implements RecipeDAOInterface
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // À remplacer par un logger ou gestion d'erreur centralisée
+            e.printStackTrace();
         }
 
         return recipes;
     }
 
     @Override
-    public Recipe getRecipeById(int id) {
-        String query = "SELECT * FROM recipe WHERE id = ?";
+    public Recipe getRecipeByLabel(String label) {
+        String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, id);
+            stmt.setString(1, label);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     recipe = mapResultSetToRecipe(rs);
@@ -83,9 +83,8 @@ public class RecipeDAO implements RecipeDAOInterface
         return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, null);
     }
 
-    /**
-     * Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
-     */
+    // Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
+
     private int executeRecipeUpdate(String query, String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type, Integer id) {
         int rows = 0;
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -114,9 +113,8 @@ public class RecipeDAO implements RecipeDAOInterface
         return rows;
     }
 
-    /**
-     * Méthode utilitaire pour transformer un ResultSet en objet Recipe
-     */
+    // Méthode utilitaire pour transformer un ResultSet en objet dataAccess.Recipe
+
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
         return new Recipe(
                 rs.getInt("id"),

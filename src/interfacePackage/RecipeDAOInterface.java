@@ -1,5 +1,7 @@
 package interfacePackage;
 
+import dataAccess.Recipe;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -9,7 +11,7 @@ public interface RecipeDAOInterface
 
     int addRecipe(String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
 
-    Recipe getRecipeById(int id);
+    Recipe getRecipeByLabel(String label);
 
     int updateRecipe(int id, String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
 
