@@ -1,6 +1,6 @@
 package interfacePackage;
 
-import dataAccess.FoodIn;
+import modelPackage.FoodIn;
 import java.util.List;
 
 public interface FoodInDAOInterface

@@ -1,4 +1,4 @@
-package dataAccess;
+package dataAccessPackage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

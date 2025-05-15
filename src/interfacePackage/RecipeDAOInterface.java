@@ -1,6 +1,6 @@
 package interfacePackage;
 
-import dataAccess.Recipe;
+import modelPackage.Recipe;
 
 import java.sql.Date;
 import java.util.List;

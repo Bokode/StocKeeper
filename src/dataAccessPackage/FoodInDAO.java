@@ -1,6 +1,8 @@
-package dataAccess;
+package dataAccessPackage;
 
 import interfacePackage.FoodInDAOInterface;
+import modelPackage.FoodIn;
+
 import java.sql.*;
 import java.util.Date;
 import java.util.List;

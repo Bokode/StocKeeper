@@ -9,7 +9,7 @@ StocKeeper is a Java-based application designed to help users manage their daily
   - Track expiration dates to minimize food waste.
   - Categorize food items by type and dietary preferences.
 
-- **dataAccess.Recipe Finder:**
+- **modelPackage.Recipe Finder:**
   - Search for recipes based on available ingredients.
   - Filter recipes by dietary restrictions and preferences.
   - Suggest new recipes based on stored food items.

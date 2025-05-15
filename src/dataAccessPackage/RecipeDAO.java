@@ -1,6 +1,7 @@
-package dataAccess;
+package dataAccessPackage;
 
 import interfacePackage.RecipeDAOInterface;
+import modelPackage.Recipe;
 
 import java.sql.*;
 import java.util.ArrayList;
