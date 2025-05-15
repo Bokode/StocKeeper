@@ -3,21 +3,54 @@ package ViewPackage;
 import javax.swing.*;
 
 public class MainMenu extends JMenuBar {
-    private JMenu recipeMenu;
-    private JMenuItem addRecipe, deleteRecipe, updateRecipe;
+    private JMenu recipeMenu, foodInMenu, searchMenu, homeMenu;
+    private JMenuItem addRecipe, deleteRecipe, updateRecipe, listingRecipe, addFoodIn, deleteFoodIn, updateFoodIn, listingFoodIn, searchRecipeFoodInOwnedAndNotExpired, searchFoodTypeExpiredInStorage, searchRecipeWithFoodExpired5DAndWithActualSeason, homeScreen, exitApplication;
     private MainWindow mainWindow;
     public MainMenu(MainWindow mainWindow){
         this.mainWindow = mainWindow;
 
-        recipeMenu = new JMenu("Recipe");
-        recipeMenu.setMnemonic('A');
-        this.add(recipeMenu);
+        homeMenu = new JMenu("Acceuil");
+        homeMenu.setMnemonic('A');
+        recipeMenu = new JMenu("Recette");
+        recipeMenu.setMnemonic('Z');
+        foodInMenu = new JMenu("Nourriture possédée");
+        foodInMenu.setMnemonic('E');
+        searchMenu = new JMenu("Recherches");
+        searchMenu.setMnemonic('R');
 
-        addRecipe = new JMenuItem("Add");
-        deleteRecipe = new JMenuItem("Delete");
-        updateRecipe = new JMenuItem("Update");
+        this.add(homeMenu);
+        this.add(recipeMenu);
+        this.add(foodInMenu);
+        this.add(searchMenu);
+
+        homeScreen = new JMenuItem("Retour à l'écran principal");
+        exitApplication = new JMenuItem("Quitter l'application");
+        homeMenu.add(homeScreen);
+        homeMenu.add(exitApplication);
+
+        addRecipe = new JMenuItem("Ajouter");
+        deleteRecipe = new JMenuItem("Supprimer");
+        updateRecipe = new JMenuItem("Mettre à jour");
+        listingRecipe = new JMenuItem("Recettes");
         recipeMenu.add(addRecipe);
         recipeMenu.add(deleteRecipe);
         recipeMenu.add(updateRecipe);
+        recipeMenu.add(listingRecipe);
+
+        addFoodIn = new JMenuItem("Ajouter");
+        deleteFoodIn = new JMenuItem("Supprimer");
+        updateFoodIn = new JMenuItem("Mettre à jour");
+        listingFoodIn = new JMenuItem("Aliments");
+        foodInMenu.add(addFoodIn);
+        foodInMenu.add(deleteFoodIn);
+        foodInMenu.add(updateFoodIn);
+        foodInMenu.add(listingFoodIn);
+
+        searchRecipeFoodInOwnedAndNotExpired = new JMenuItem("Recette avec nourriture possédée et non périmée");
+        searchFoodTypeExpiredInStorage = new JMenuItem("Un type de nourriture dans un certain type de stockage qui est périmé");
+        searchRecipeWithFoodExpired5DAndWithActualSeason = new JMenuItem("Recette avec nourriture possédée périmé dans 5j avec un aliment de la saison actuelle");
+        searchMenu.add(searchRecipeFoodInOwnedAndNotExpired);
+        searchMenu.add(searchFoodTypeExpiredInStorage);
+        searchMenu.add(searchRecipeWithFoodExpired5DAndWithActualSeason);
     }
 }
