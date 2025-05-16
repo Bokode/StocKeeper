@@ -23,7 +23,6 @@ public class FoodInManager {
     public ArrayList<FoodIn> getAllFoodIn() {
         ArrayList<FoodIn> foodIns = dao.getAllFoodIn();
         // Traitements éventuels sur la liste de foodIn
-
         return foodIns;
     }
 
@@ -31,12 +30,12 @@ public class FoodInManager {
         dao.addFoodIn(foodIn);
     }
 
-    public FoodIn getFoodIn(int id) {
-        return dao.getFoodIn(id);
+    public FoodIn getFoodIn(String label) {
+        return dao.getFoodIn(label);
     }
 
-    public void deleteFoodIn(FoodIn foodIn) {
-        dao.deleteFoodIn(foodIn);
+    public void deleteFoodIn(String label) {
+        dao.deleteFoodIn(label);
     }
 
     public void updateFoodIn(FoodIn foodIn) {
@@ -47,14 +46,13 @@ public class FoodInManager {
         ArrayList<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;
 
-        // Besoin d'une requete SQL contenant une jointure entre les trois tables (FoodIn, Food, FoodType)
         for (FoodInToSearch f : foodInToSearch) {
             if (Objects.equals(f.getFoodType().getLabel(), typeOfFood)) {
                 quantityLeft += f.getFoodIn().getQuantity();
             }
         }
 
-        return (quantityLeft);
+        return quantityLeft;
     }
 
     public ArrayList<ExpiredFood> expiredFood(String storageType, String foodType) {

@@ -1,7 +1,7 @@
 package dataAccessPackageTemporaire;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import modelPackage.Recipe;
 import modelPackage.RecipeWithExpiredFood;
@@ -14,7 +14,7 @@ public class RecipeDBAccess {
     public void addRecipe(Recipe r) {
     }
 
-    public Recipe getRecipe(int id) {
+    public Recipe getRecipe(String label) {
         return null;
     }
 
@@ -22,7 +22,7 @@ public class RecipeDBAccess {
         return null;
     }
 
-    public void deleteRecipe(Recipe r) {
+    public void deleteRecipe(String r) {
     }
 
     public void updateRecipe(Recipe r) {
@@ -32,7 +32,7 @@ public class RecipeDBAccess {
         return null;
     }
 
-    public ArrayList<SeasonalRecipe> recipesOfSeason(Date date) {
+    public ArrayList<SeasonalRecipe> recipesOfSeason(LocalDate date) {
         return null;
     }
 }

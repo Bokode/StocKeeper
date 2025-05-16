@@ -13,7 +13,7 @@ public class FoodInDBAccess {
     public void addFoodIn(FoodIn f) {
     }
 
-    public FoodIn getFoodIn(int id) {
+    public FoodIn getFoodIn(String label) {
         return null;
     }
 
@@ -21,7 +21,7 @@ public class FoodInDBAccess {
         return null;
     }
 
-    public void deleteFoodIn(FoodIn f) {
+    public void deleteFoodIn(String f) {
     }
 
     public void updateFoodIn(FoodIn f) {
