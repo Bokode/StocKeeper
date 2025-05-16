@@ -4,18 +4,40 @@ import interfacePackage.FoodInDAOInterface;
 import modelPackage.FoodIn;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class FoodInDAO implements FoodInDAOInterface
 {
+
+    @Override
+    public List<FoodIn> getAllFoodIns() {
+        List<FoodIn> FoodsIn = new ArrayList<>();
+
+        String query = "SELECT * FROM recipe";
+
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        try (Connection conn = dbAccess.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                FoodsIn.add(mapResultSetToFoodIn(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return FoodsIn;
+    }
+
+
     @Override
     public int addFoodIn(int food, int storageType, int quantity, boolean isOpen, char nutriScore, int dayExp, int monthExp, int yearExp) {
         String query = "INSERT INTO foodIn (food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, dayExp, monthExp, yearExp, 0);
-
-
-        return 0;
+        return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, dayExp, monthExp, yearExp, 0);
     }
 
     @Override
@@ -33,10 +55,6 @@ public class FoodInDAO implements FoodInDAOInterface
         return null;
     }
 
-    @Override
-    public List<FoodIn> getAllFoodIns() {
-        return null;
-    }
 
     private int executeFoodInUpdate(String query, int food, int storageType, int quantity, boolean isOpen, char nutriScore, int day, int month, int  year, int id) {
         int rowsAffected = 0;
@@ -59,5 +77,19 @@ public class FoodInDAO implements FoodInDAOInterface
             e.printStackTrace();
         }
         return rowsAffected;
+    }
+
+    private FoodIn mapResultSetToFoodIn(ResultSet rs) throws SQLException
+    {
+        return new FoodIn(
+                rs.getInt("id"),
+                rs.getDate("expirationDate"),
+                rs.getInt("quantity"),
+                rs.getBoolean("isOpen"),
+                rs.getString("nutriScore").charAt(0),
+                rs.getDate("purchaseDate"),
+                rs.getInt("food"),
+                rs.getInt("storageType")
+        );
     }
 }
