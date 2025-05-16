@@ -1,9 +1,6 @@
 package dataAccessPackage;
 
-import exeptionPackage.AppException;
-import exeptionPackage.DataBaseUnavailableException;
-import exeptionPackage.AuthenticationFailureException;
-import exeptionPackage.RecipeOperationException;
+import exeptionPackage.*;
 import interfacePackage.RecipeDAOInterface;
 import modelPackage.Recipe;
 
@@ -149,20 +146,20 @@ public class RecipeDAO implements RecipeDAOInterface
         );
     }
 
+    // Méthode pour gérer les exceptions SQL
+
     private void exceptionHandler(SQLException e) throws AppException
     {
         String state = e.getSQLState();
-        if (state.equals("08S01"))
-        {
-            throw new DataBaseUnavailableException("La base de données est indisponible.", e);
-        }
-        else if (state.equals("28000"))
-        {
-            throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
-        }
-        else
-        {
-            throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
+        switch (state) {
+            case "08S01":
+                throw new DataBaseUnavailableException("La base de données est indisponible.", e);
+            case "28000":
+                throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
+            case "22001":
+                throw new DataSizeException("Chaine trop longue pour le champ correspondant.", e);
+            default:
+                throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
         }
     }
 
