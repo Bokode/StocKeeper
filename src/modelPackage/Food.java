@@ -17,6 +17,8 @@ public class Food {
         FoodAllergenLabel = foodAllergenLabel;
     }
 
+
+
     public String getSeasonFoodLabel() {
         return SeasonFoodLabel;
     }

@@ -2,48 +2,48 @@ package businessPackage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-import dataAccessPackageTemporaire.RecipeDBAccess;
-
+import dataAccessPackage.RecipeDAO;
 import modelPackage.Recipe;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
 public class RecipeManager {
-    private RecipeDBAccess dao;
+    private RecipeDAO dao;
 
     public RecipeManager() {
-        setDao(new RecipeDBAccess());
+        setDao(new RecipeDAO());
     }
 
-    private void setDao(RecipeDBAccess newDao) {
+    private void setDao(RecipeDAO newDao) {
         dao = newDao;
     }
 
-    public ArrayList<Recipe> getAllRecipes() {
-        ArrayList<Recipe> recipes = dao.getAllRecipes();
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipes = dao.getAllRecipes();
         // Traitements éventuels sur la liste de recipe
         return recipes;
     }
 
     public void addRecipe(Recipe recipe) {
-        dao.addRecipe(recipe);
+        dao.addRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
     public Recipe getRecipe(String label) {
-        return dao.getRecipe(label);
+        return dao.getRecipeByLabel(label);
     }
 
-    public void deleteRecipe(String label) {
-        dao.deleteRecipe(label);
+    public void deleteRecipe(Integer id) {
+        dao.deleteRecipe(id);
     }
 
     public void updateRecipe(Recipe recipe) {
-        dao.updateRecipe(recipe);
+        dao.updateRecipe(recipe.getId(), recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
-    public ArrayList<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
-        ArrayList<Recipe> recipesToSearch = getAllRecipes();
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
+        List<Recipe> recipesToSearch = getAllRecipes();
         ArrayList<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
@@ -55,11 +55,11 @@ public class RecipeManager {
         return (recipes);
     }
 
-    public ArrayList<RecipeWithExpiredFood> recipeWithExpiredFood() {
+    public List<RecipeWithExpiredFood> recipeWithExpiredFood() {
         return dao.recipeWithExpireFood();
     }
 
-    public ArrayList<SeasonalRecipe> recipesOfSeason(LocalDate date) {
+    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) {
         return dao.recipesOfSeason(date);
     }
 }
