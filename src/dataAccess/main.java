@@ -6,7 +6,7 @@ public class main
 {
     public static void main(String[] args)
     {
-        RecipeDAO recipeDAO = new RecipeDAO();
+        /*RecipeDAO recipeDAO = new RecipeDAO();
         List<Recipe> recipes = recipeDAO.getAllRecipes();
 
         if (recipes != null && !recipes.isEmpty()) {
@@ -33,7 +33,7 @@ public class main
             System.out.println("Recette supprimée avec succès.");
         } else {
             System.out.println("Échec de la suppression de la recette.");
-        }
+        }*/
 
     }
 }

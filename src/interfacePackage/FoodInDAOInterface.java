@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface FoodInDAOInterface
 {
-    int addFoodIn(int food, int storageType, int quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
+    Integer addFoodIn(Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
-    int updateFoodIn(int id, int food, int storageType, int quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
+    Integer updateFoodIn(Integer id, Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
-    int deleteFoodIn(int id);
+    Integer deleteFoodIn(Integer id);
 
-    FoodIn getFoodInById(int id);
+    FoodIn getFoodInById(Integer id);
 
     List<FoodIn> getAllFoodIns();
 

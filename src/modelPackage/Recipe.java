@@ -1,5 +1,6 @@
 package modelPackage;
 
+import javax.lang.model.type.NullType;
 import java.sql.Date;
 
 public class Recipe {
@@ -12,19 +13,16 @@ public class Recipe {
     private Boolean isCold; // Facultatif
     private Integer type; // Clé étrangère
 
-    public Recipe(int id, String label, String description, Integer caloricIntake,
-                  Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
+    public Recipe(int id, String label, String description, Integer caloricIntake, Integer timeToMake, Boolean isCold, Integer type) {
         setId(id);
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
-        setLastDayDone(lastDayDone);
+        setLastDayDone(null);
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
     }
-
-    public Recipe(int id, String label, String description, Integer caloricIntake,)
 
     public void setId(int id) {
         this.id = id;
@@ -69,5 +67,29 @@ public class Recipe {
     public String getLabel()
     {
         return label;
+    }
+
+    public Boolean getCold() {
+        return isCold;
+    }
+
+    public Date getLastDayDone() {
+        return lastDayDone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Integer getCaloricIntake() {
+        return caloricIntake;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

@@ -9,13 +9,13 @@ public interface RecipeDAOInterface
 {
     List<Recipe> getAllRecipes();
 
-    int addRecipe(String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
+    Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
 
     Recipe getRecipeByLabel(String label);
 
-    int updateRecipe(int id, String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
+    Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
 
-    int deleteRecipe(int id);
+    Integer deleteRecipe(Integer id);
 
 
 }

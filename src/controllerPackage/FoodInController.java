@@ -26,8 +26,8 @@ public class FoodInController {
         foodInManager.addFoodIn(foodIn);
     }
 
-    public FoodIn getFoodInById(Integer id) {
-        return foodInManager.getFoodInById(id);
+    public FoodIn getFoodIn(Integer id) {
+        return foodInManager.getFoodIn(id);
     }
 
     public void deleteFoodIn(Integer id) {
@@ -44,7 +44,7 @@ public class FoodInController {
     }
 
     // Search 2
-    public ArrayList<ExpiredFood> foodExpired(String storageType, String foodType) {
+    public List<ExpiredFood> foodExpired(String storageType, String foodType) {
         return foodInManager.expiredFood(storageType, foodType);
     }
 }

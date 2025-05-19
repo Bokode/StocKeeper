@@ -10,7 +10,7 @@ import modelPackage.ExpiredFood;
 import modelPackage.FoodIn;
 import modelPackage.FoodInToSearch;
 
-public class FoodInManager implements FoodInDAOInterface {
+public class FoodInManager {
     private FoodInDAOInterface dao;
 
     public FoodInManager() {
@@ -31,7 +31,7 @@ public class FoodInManager implements FoodInDAOInterface {
         dao.addFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
-    public FoodIn getFoodInById(Integer id) {
+    public FoodIn getFoodIn(Integer id) {
         return dao.getFoodInById(id);
     }
 
