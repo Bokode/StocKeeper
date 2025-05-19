@@ -6,7 +6,7 @@ import modelPackage.Recipe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -20,7 +20,7 @@ class RecipeManagerTest {
 
     @Test
     public void testShowRecipesBasedOnTime() {
-        ArrayList<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(30);
+        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(30);
         assertNotEquals(0, recipesTest.size());
     }
 }

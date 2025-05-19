@@ -1,21 +1,26 @@
 package interfacePackage;
 
 import modelPackage.Recipe;
+import modelPackage.RecipeWithExpiredFood;
+import modelPackage.SeasonalRecipe;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RecipeDAOInterface
 {
     List<Recipe> getAllRecipes();
 
-    int addRecipe(String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
+    Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
 
     Recipe getRecipeByLabel(String label);
 
-    int updateRecipe(int id, String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type);
+    Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
 
-    int deleteRecipe(int id);
+    Integer deleteRecipe(Integer id);
 
+    List<RecipeWithExpiredFood> recipeWithExpireFood();
 
+    List<SeasonalRecipe> recipesOfSeason(LocalDate date);
 }

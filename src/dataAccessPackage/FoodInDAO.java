@@ -1,8 +1,10 @@
 package dataAccessPackage;
 
-import exeptionPackage.*;
+import exceptionPackage.*;
 import interfacePackage.FoodInDAOInterface;
+import modelPackage.ExpiredFood;
 import modelPackage.FoodIn;
+import modelPackage.FoodInToSearch;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,24 +36,24 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public int addFoodIn(int food, int storageType, int quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
+    public Integer addFoodIn(Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
     {
         String query = "INSERT INTO foodIn (food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, null);
     }
 
     @Override
-    public int updateFoodIn(int id, int food, int storageType, int quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
+    public Integer updateFoodIn(Integer id, Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
     {
         String query = "UPDATE foodIn SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
         return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);
     }
 
     @Override
-    public int deleteFoodIn(int id) throws AppException
+    public Integer deleteFoodIn(Integer id) throws AppException
     {
         String query = "DELETE FROM foodIn WHERE id = ?";
-        int rowsDeleted = 0;
+        Integer rowsDeleted = 0;
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
@@ -69,7 +71,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public FoodIn getFoodInById(int id) throws AppException
+    public FoodIn getFoodInById(Integer id) throws AppException
     {
         String query = "SELECT * FROM foodIn WHERE id = ?";
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -93,10 +95,10 @@ public class FoodInDAO implements FoodInDAOInterface {
         return foodIn;
     }
 
-    private int executeFoodInUpdate(String query, int food, int storageType, int quantity, boolean isOpen,
+    private Integer executeFoodInUpdate(String query, Integer food, Integer storageType, Integer quantity, boolean isOpen,
                                     char nutriScore, Date purchaseDate, Date expirationDate, Integer id) throws AppException
     {
-        int rowsAffected = 0;
+        Integer rowsAffected = 0;
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = dbAccess.getConnection();
@@ -153,5 +155,17 @@ public class FoodInDAO implements FoodInDAOInterface {
             default:
                 throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
         }
+    }
+
+    // A faire !!! Task 2
+    @Override
+    public List<FoodInToSearch> getFoodInToSearch() {
+        return List.of();
+    }
+
+    // A faire !!! Search 2
+    @Override
+    public List<ExpiredFood> expiredFood(String storageType, String foodType) {
+        return List.of();
     }
 }

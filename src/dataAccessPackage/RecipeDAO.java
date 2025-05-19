@@ -1,10 +1,13 @@
 package dataAccessPackage;
 
-import exeptionPackage.*;
+import exceptionPackage.*;
 import interfacePackage.RecipeDAOInterface;
 import modelPackage.Recipe;
+import modelPackage.RecipeWithExpiredFood;
+import modelPackage.SeasonalRecipe;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,17 +68,17 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     @Override
-    public int updateRecipe(int id, String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type) throws AppException
+    public Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
     {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
         return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
     }
 
     @Override
-    public int deleteRecipe(int id) throws AppException
+    public Integer deleteRecipe(Integer id) throws AppException
     {
         String query = "DELETE FROM recipe WHERE id = ?";
-        int rowsDeleted = 0;
+        Integer rowsDeleted = 0;
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = dbAccess.getConnection();
@@ -93,7 +96,7 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     @Override
-    public int addRecipe(String label, String description, int caloricIntake, boolean isCold, Date lastDateDone, int timeToMake, int type) throws AppException
+    public Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
     {
         String query = "INSERT INTO recipe (label, description, caloricIntake, isCold, lastDateDone, timeToMake, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, null);
@@ -101,10 +104,10 @@ public class RecipeDAO implements RecipeDAOInterface
 
     // Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
 
-    private int executeRecipeUpdate(String query, String label, String description, int caloricIntake,
-                                    boolean isCold, Date lastDateDone, int timeToMake, int type, Integer id) throws AppException
+    private Integer executeRecipeUpdate(String query, String label, String description, Integer caloricIntake,
+                                    boolean isCold, Date lastDateDone, Integer timeToMake, Integer type, Integer id) throws AppException
             {
-        int rows = 0;
+        Integer rows = 0;
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = dbAccess.getConnection();
@@ -163,4 +166,12 @@ public class RecipeDAO implements RecipeDAOInterface
         }
     }
 
+    // A faire !!! Search 1
+    public List<RecipeWithExpiredFood> recipeWithExpireFood() {
+        return null;
+    }
+    // A faire !!! Search 3
+    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) {
+        return null;
+    }
 }

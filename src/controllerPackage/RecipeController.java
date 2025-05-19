@@ -2,6 +2,7 @@ package controllerPackage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import businessPackage.RecipeManager;
 
@@ -18,7 +19,7 @@ public class RecipeController {
         this.recipeManager = recipeManager;
     }
 
-    public ArrayList<Recipe> getAllRecipes() {
+    public List<Recipe> getAllRecipes() {
         return recipeManager.getAllRecipes();
     }
 
@@ -30,8 +31,8 @@ public class RecipeController {
         return recipeManager.getRecipe(label);
     }
 
-    public void deleteRecipe(String label) {
-        recipeManager.deleteRecipe(label);
+    public void deleteRecipe(Integer id) {
+        recipeManager.deleteRecipe(id);
     }
 
     public void updateRecipe(Recipe recipe) {
@@ -39,17 +40,17 @@ public class RecipeController {
     }
 
     // Task 1
-    public ArrayList<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
         return recipeManager.showRecipesBasedOnTime(cookingTime);
     }
 
     // Search 1
-    public ArrayList<RecipeWithExpiredFood> recipeWithExpiredFood() {
+    public List<RecipeWithExpiredFood> recipeWithExpiredFood() {
         return recipeManager.recipeWithExpiredFood();
     }
 
     // Search 3
-    public ArrayList<SeasonalRecipe> RecipesOfSeason(LocalDate date) {
+    public List<SeasonalRecipe> RecipesOfSeason(LocalDate date) {
         return recipeManager.recipesOfSeason(date);
     }
 }
