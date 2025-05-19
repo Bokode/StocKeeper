@@ -1,7 +1,7 @@
 package businessPackage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import dataAccessPackageTemporaire.RecipeDBAccess;
 
@@ -23,7 +23,6 @@ public class RecipeManager {
     public ArrayList<Recipe> getAllRecipes() {
         ArrayList<Recipe> recipes = dao.getAllRecipes();
         // Traitements éventuels sur la liste de recipe
-
         return recipes;
     }
 
@@ -31,12 +30,12 @@ public class RecipeManager {
         dao.addRecipe(recipe);
     }
 
-    public Recipe getRecipe(int id) {
-        return dao.getRecipe(id);
+    public Recipe getRecipe(String label) {
+        return dao.getRecipe(label);
     }
 
-    public void deleteRecipe(Recipe recipe) {
-        dao.deleteRecipe(recipe);
+    public void deleteRecipe(String label) {
+        dao.deleteRecipe(label);
     }
 
     public void updateRecipe(Recipe recipe) {
@@ -60,7 +59,7 @@ public class RecipeManager {
         return dao.recipeWithExpireFood();
     }
 
-    public ArrayList<SeasonalRecipe> recipesOfSeason(Date date) {
+    public ArrayList<SeasonalRecipe> recipesOfSeason(LocalDate date) {
         return dao.recipesOfSeason(date);
     }
 }

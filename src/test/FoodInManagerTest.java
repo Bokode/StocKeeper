@@ -1,19 +1,22 @@
 package test;
 
 import businessPackage.FoodInManager;
-import modelPackage.FoodIn;
 
-public class FoodInManagerTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+class FoodInManagerTest {
     private FoodInManager foodInManager;
-    private FoodIn foodIn;
 
-    void setUp() {
+    @BeforeEach
+    public void setUp() {
         foodInManager = new FoodInManager();
     }
 
-    void testShowQuantityLeft() {
-        //foodIn = FoodIn();
-        foodInManager.addFoodIn(foodIn);
-        Integer quantityTest = foodInManager.showQuantityLeft("");
+    @Test
+    public void testShowQuantityLeft() {
+        Integer quantityTest = foodInManager.showQuantityLeft("Meat");
+        assertNotEquals(0, quantityTest);
     }
 }

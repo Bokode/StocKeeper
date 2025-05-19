@@ -1,19 +1,20 @@
 package modelPackage;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class FoodIn {
     private Integer id;
-    private Date expirationDate;
+    private LocalDate expirationDate;
     private Integer quantity;
     private Boolean isOpen;
     private Character nutriScore; // Facultatif;
-    private Date purchaseDate; // Facultatif
+    private LocalDate purchaseDate; // Facultatif
     private Integer food; // Clé étrangère
     private Integer storageType; // Clé étrangère
 
-    public FoodIn(Integer id, Date expirationDate, Integer quantity, Boolean isOpen,
-                  Character nutriScore, Date purchaseDate, Integer food, Integer storageType) {
+    public FoodIn(Integer id, LocalDate expirationDate, Integer quantity, Boolean isOpen,
+                  Character nutriScore, LocalDate purchaseDate, Integer food, Integer storageType) {
         setId(id);
         setExpirationDate(expirationDate);
         setQuantity(quantity);
@@ -28,7 +29,7 @@ public class FoodIn {
         this.id = id;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -44,7 +45,7 @@ public class FoodIn {
         this.nutriScore = nutriScore;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
+    public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
