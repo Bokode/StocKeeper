@@ -5,16 +5,16 @@ import java.util.Date;
 
 public class FoodIn {
     private Integer id;
-    private LocalDate expirationDate;
+    private Date expirationDate;
     private Integer quantity;
     private Boolean isOpen;
     private Character nutriScore; // Facultatif;
-    private LocalDate purchaseDate; // Facultatif
+    private Date purchaseDate; // Facultatif
     private Integer food; // Clé étrangère
     private Integer storageType; // Clé étrangère
 
-    public FoodIn(Integer id, LocalDate expirationDate, Integer quantity, Boolean isOpen,
-                  Character nutriScore, LocalDate purchaseDate, Integer food, Integer storageType) {
+    public FoodIn(Integer id, Date expirationDate, Integer quantity, Boolean isOpen,
+                  Character nutriScore, Date purchaseDate, Integer food, Integer storageType) {
         setId(id);
         setExpirationDate(expirationDate);
         setQuantity(quantity);
@@ -29,7 +29,7 @@ public class FoodIn {
         this.id = id;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -45,7 +45,7 @@ public class FoodIn {
         this.nutriScore = nutriScore;
     }
 
-    public void setPurchaseDate(LocalDate purchaseDate) {
+    public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
@@ -57,11 +57,34 @@ public class FoodIn {
         this.storageType = storageType;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
     public Integer getQuantity() {
         return quantity;
     }
     public Integer getFood() {
         return food;
+    }
+
+    public Integer getStorageType() {
+        return storageType;
+    }
+
+    public Boolean getOpen() {
+        return isOpen;
+    }
+
+    public Character getNutriScore() {
+        return nutriScore;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public Date getPurchaseDate() {
+        return purchaseDate;
     }
 }

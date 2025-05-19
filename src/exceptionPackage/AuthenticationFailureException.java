@@ -1,4 +1,4 @@
-package exeptionPackage;
+package exceptionPackage;
 
 public class AuthenticationFailureException extends AppException
 {

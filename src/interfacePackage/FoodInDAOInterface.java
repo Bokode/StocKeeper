@@ -1,6 +1,9 @@
 package interfacePackage;
 
+import modelPackage.ExpiredFood;
 import modelPackage.FoodIn;
+import modelPackage.FoodInToSearch;
+
 import java.util.List;
 
 public interface FoodInDAOInterface
@@ -14,4 +17,8 @@ public interface FoodInDAOInterface
     FoodIn getFoodInById(int id);
 
     List<FoodIn> getAllFoodIns();
+
+    List<FoodInToSearch> getFoodInToSearch();
+
+    List<ExpiredFood>  expiredFood(String storageType, String foodType);
 }

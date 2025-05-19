@@ -24,6 +24,8 @@ public class Recipe {
         setType(type);
     }
 
+    public Recipe(int id, String label, String description, Integer caloricIntake,)
+
     public void setId(int id) {
         this.id = id;
     }

@@ -1,6 +1,7 @@
 package controllerPackage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import businessPackage.FoodInManager;
 
@@ -17,7 +18,7 @@ public class FoodInController {
         this.foodInManager = foodInManager;
     }
 
-    public ArrayList<FoodIn> getAllFoodIns() {
+    public List<FoodIn> getAllFoodIns() {
         return foodInManager.getAllFoodIn();
     }
 
@@ -25,12 +26,12 @@ public class FoodInController {
         foodInManager.addFoodIn(foodIn);
     }
 
-    public FoodIn getFoodIn(String label) {
-        return foodInManager.getFoodIn(label);
+    public FoodIn getFoodInById(Integer id) {
+        return foodInManager.getFoodInById(id);
     }
 
-    public void deleteFoodIn(String label) {
-        foodInManager.deleteFoodIn(label);
+    public void deleteFoodIn(Integer id) {
+        foodInManager.deleteFoodIn(id);
     }
 
     public void updateFoodIn(FoodIn foodIn) {

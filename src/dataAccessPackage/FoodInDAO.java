@@ -1,6 +1,6 @@
 package dataAccessPackage;
 
-import exeptionPackage.*;
+import exceptionPackage.*;
 import interfacePackage.FoodInDAOInterface;
 import modelPackage.FoodIn;
 
