@@ -1,5 +1,7 @@
 package ViewPackage;
 
+import modelPackage.FoodType;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -83,20 +85,22 @@ public class AddRecipePanel extends JPanel {
                     System.out.println("Integer : " + caloricInTake);
                 }
                 catch (NumberFormatException numberFormatException){
-
+                    JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre");
                 }
             }
             String timeToMakeString = timeToMakeField.getText().trim();
-            if(!caloricInTakeString.isEmpty()){
+            if(!timeToMakeString.isEmpty()){
                 try {
                     Integer timeToMake = Integer.valueOf(timeToMakeString);
                     System.out.println("Integer : " + timeToMake);
                 }
                 catch (NumberFormatException numberFormatException){
-
+                    JOptionPane.showMessageDialog(this, "Erreur : La durée de la recette doit être un nombre");
                 }
             }
             boolean isCold = isColdCheckBox.isSelected();
+            String foodTypeString = typeRecetteComboBox.getSelectedItem().toString();
+            FoodType foodType = new FoodType(foodTypeString);
         });
     }
 }
