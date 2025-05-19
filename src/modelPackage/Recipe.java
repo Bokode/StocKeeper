@@ -1,19 +1,19 @@
 package modelPackage;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Recipe {
     private int id;
     private String label;
     private String description;
     private Integer caloricIntake;
-    private LocalDate lastDayDone; // Facultatif
+    private Date lastDayDone; // Facultatif
     private Integer timeToMake; // Facultatif
     private Boolean isCold; // Facultatif
     private Integer type; // Clé étrangère
 
     public Recipe(int id, String label, String description, Integer caloricIntake,
-                  LocalDate lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
+                  Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
         setId(id);
         setLabel(label);
         setDescription(description);
@@ -44,7 +44,7 @@ public class Recipe {
         }
     }
 
-    public void setLastDayDone(LocalDate lastDayDone) {
+    public void setLastDayDone(Date lastDayDone) {
         this.lastDayDone = lastDayDone;
     }
 
@@ -60,8 +60,12 @@ public class Recipe {
         this.type = type;
     }
 
-
     public Integer getTimeToMake() {
         return timeToMake;
+    }
+  
+    public String getLabel()
+    {
+        return label;
     }
 }
