@@ -1,6 +1,5 @@
 package modelPackage;
 
-import javax.lang.model.type.NullType;
 import java.sql.Date;
 
 public class Recipe {
@@ -38,18 +37,27 @@ public class Recipe {
 
     public void setCaloricIntake(Integer caloricIntake) {
         if (caloricIntake <= 0) {
-            // Exception
+            // throw error
         } else {
             this.caloricIntake = caloricIntake;
         }
     }
 
     public void setLastDayDone(Date lastDayDone) {
-        this.lastDayDone = lastDayDone;
+        Date today = new Date(System.currentTimeMillis());
+        if (lastDayDone.after(today)) {
+            // throw error
+        } else {
+            this.lastDayDone = lastDayDone;
+        }
     }
 
     public void setTimeToMake(Integer timeToMake) {
-        this.timeToMake = timeToMake;
+        if (timeToMake <= 0) {
+            // throw error
+        } else {
+            this.timeToMake = timeToMake;
+        }
     }
 
     public void setIsCold(Boolean isCold) {
