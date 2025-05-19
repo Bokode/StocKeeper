@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface FoodInDAOInterface
 {
-    int addFoodIn(int food, int storageType, int quantity, boolean isOpen, char nutriScore, int dayExp, int monthExp, int yearExp);
+    int addFoodIn(int food, int storageType, int quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
     int updateFoodIn(int id, int food, int storageType, int quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
