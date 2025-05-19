@@ -13,7 +13,7 @@ class TestShowQuantityLeft {
     public void setUp() {
         foodInManager = new FoodInManager();
     }
-
+    // test
     @Test
     public void testShowQuantityLeft() {
         Integer quantityTest = foodInManager.showQuantityLeft("Viande");
