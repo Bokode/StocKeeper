@@ -1,6 +1,5 @@
 package modelPackage;
 
-
 import java.sql.Date;
 
 public class Recipe {
@@ -61,11 +60,10 @@ public class Recipe {
         this.type = type;
     }
 
-
     public Integer getTimeToMake() {
         return timeToMake;
     }
-
+  
     public String getLabel()
     {
         return label;
