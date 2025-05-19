@@ -33,7 +33,11 @@ public class FoodIn {
     }
 
     public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+        if (quantity < 0) {
+            // throw error
+        } else {
+            this.quantity = quantity;
+        }
     }
 
     public void setIsOpen(Boolean isOpen) {

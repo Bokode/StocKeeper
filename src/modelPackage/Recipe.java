@@ -4,7 +4,7 @@ import javax.lang.model.type.NullType;
 import java.sql.Date;
 
 public class Recipe {
-    private int id;
+    private Integer id;
     private String label;
     private String description;
     private Integer caloricIntake;
@@ -13,18 +13,18 @@ public class Recipe {
     private Boolean isCold; // Facultatif
     private Integer type; // Clé étrangère
 
-    public Recipe(int id, String label, String description, Integer caloricIntake, Integer timeToMake, Boolean isCold, Integer type) {
+    public Recipe(Integer id, String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
         setId(id);
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
-        setLastDayDone(null);
+        setLastDayDone(lastDayDone);
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,6 +59,8 @@ public class Recipe {
     public void setType(Integer type) {
         this.type = type;
     }
+
+
 
     public Integer getTimeToMake() {
         return timeToMake;
