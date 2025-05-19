@@ -166,11 +166,11 @@ public class RecipeDAO implements RecipeDAOInterface
         }
     }
 
-    // A faire !!!
+    // A faire !!! Search 1
     public List<RecipeWithExpiredFood> recipeWithExpireFood() {
         return null;
     }
-
+    // A faire !!! Search 3
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) {
         return null;
     }

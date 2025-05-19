@@ -157,13 +157,13 @@ public class FoodInDAO implements FoodInDAOInterface {
         }
     }
 
-    // A faire !!!
+    // A faire !!! Task 2
     @Override
     public List<FoodInToSearch> getFoodInToSearch() {
         return List.of();
     }
 
-    // A faire !!!
+    // A faire !!! Search 2
     @Override
     public List<ExpiredFood> expiredFood(String storageType, String foodType) {
         return List.of();
