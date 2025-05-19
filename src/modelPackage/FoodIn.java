@@ -24,6 +24,8 @@ public class FoodIn {
         setStorageType(storageType);
     }
 
+    // Setter
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -45,11 +47,20 @@ public class FoodIn {
     }
 
     public void setNutriScore(Character nutriScore) {
-        this.nutriScore = nutriScore;
+        if (nutriScore < 'A' || nutriScore > 'E') {
+            // throw error
+        } else {
+            this.nutriScore = nutriScore;
+        }
     }
 
     public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
+        java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+        if (purchaseDate.after(today)) {
+            // throw error
+        } else {
+            this.purchaseDate = purchaseDate;
+        }
     }
 
     public void setFood(Integer food) {
@@ -59,6 +70,8 @@ public class FoodIn {
     public void setStorageType(Integer storageType) {
         this.storageType = storageType;
     }
+
+    // Getter
 
     public Integer getId() {
         return id;

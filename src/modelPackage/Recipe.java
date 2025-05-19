@@ -23,6 +23,8 @@ public class Recipe {
         setType(type);
     }
 
+    // Setter
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -68,7 +70,7 @@ public class Recipe {
         this.type = type;
     }
 
-
+    // Getter
 
     public Integer getTimeToMake() {
         return timeToMake;
