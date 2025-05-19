@@ -21,7 +21,7 @@ public class MainWindow extends JFrame {
         mainMenu = new MainMenu(this);
         setJMenuBar(mainMenu);
         homePanel = new HomePanel();
-        addRecipePanel = new AddRecipePanel();
+        addRecipePanel = new AddRecipePanel(this);
         mainContainer = this.getContentPane();
         mainContainer.setLayout(new BorderLayout());
         mainContainer.add(homePanel,BorderLayout.CENTER);
