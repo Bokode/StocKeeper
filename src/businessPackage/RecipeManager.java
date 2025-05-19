@@ -23,7 +23,6 @@ public class RecipeManager {
     public ArrayList<Recipe> getAllRecipes() {
         ArrayList<Recipe> recipes = dao.getAllRecipes();
         // Traitements éventuels sur la liste de recipe
-
         return recipes;
     }
 
