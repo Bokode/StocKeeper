@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class FoodInManagerTest {
     private FoodInManager foodInManager;
 
+    // test
     @BeforeEach
     public void setUp() {
         foodInManager = new FoodInManager();
