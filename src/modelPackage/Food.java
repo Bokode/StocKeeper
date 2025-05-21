@@ -1,29 +1,37 @@
 package modelPackage;
 
 public class Food {
-    private String SeasonFoodLabel;
-    private String FoodAllergenLabel;
+    private Integer id;
+    private String label;
+    private Integer foodType;
 
-    public Food(String SeasonFoodLabel, String FoodAllergenLabel) {
-        setSeasonFoodLabel(SeasonFoodLabel);
-        setFoodAllergenLabel(FoodAllergenLabel);
+    public Food(Integer id, String label, Integer foodType) {
+        setId(id);
+        setLabel(label);
+        setFoodType(foodType);
     }
 
-    public void setSeasonFoodLabel(String seasonFoodLabel) {
-        SeasonFoodLabel = seasonFoodLabel;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setFoodAllergenLabel(String foodAllergenLabel) {
-        FoodAllergenLabel = foodAllergenLabel;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-
-
-    public String getSeasonFoodLabel() {
-        return SeasonFoodLabel;
+    public void setFoodType(Integer foodType) {
+        this.foodType = foodType;
     }
 
-    public String getFoodAllergenLabel() {
-        return FoodAllergenLabel;
+    public Integer getId() {
+        return id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public Integer getFoodType() {
+        return foodType;
     }
 }

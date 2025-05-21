@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class RecipeManagerTest {
+class TestRecipesBasedOnTime {
     private RecipeManager recipeManager;
 
     @BeforeEach
@@ -20,7 +20,7 @@ class RecipeManagerTest {
 
     @Test
     public void testShowRecipesBasedOnTime() {
-        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(30);
+        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(15);
         assertNotEquals(0, recipesTest.size());
     }
 }

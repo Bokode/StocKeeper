@@ -2,9 +2,7 @@ package dataAccessPackage;
 
 import exceptionPackage.*;
 import interfacePackage.FoodInDAOInterface;
-import modelPackage.ExpiredFood;
-import modelPackage.FoodIn;
-import modelPackage.FoodInToSearch;
+import modelPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -157,13 +155,62 @@ public class FoodInDAO implements FoodInDAOInterface {
         }
     }
 
-    // A faire !!! Task 2
+    // Task 2
     @Override
     public List<FoodInToSearch> getFoodInToSearch() throws AppException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        List<FoodInToSearch> result = new ArrayList<>();
+
+        String query = "SELECT fi.Id AS foodIn_id, fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
+                "f.Id AS food_id, f.label AS food_label, " +
+                "ft.Id AS foodType_id, ft.label AS foodType_label " +
+                "FROM food_in fi " +
+                "JOIN food f ON fi.food = f.Id " +
+                "JOIN food_type ft ON f.food_type = ft.Id";
+
+
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        try (Connection conn = dbAccess.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                FoodIn foodIn = new FoodIn(
+                        rs.getInt("foodIn_id"),
+                        rs.getDate("expirationDate"),
+                        rs.getInt("quantity"),
+                        rs.getBoolean("isOpen"),
+                        rs.getString("nutriScore").charAt(0),
+                        rs.getDate("purchaseDate"),
+                        rs.getInt("food_id"),
+                        0 // storageType can be added too
+                );
+
+                Food food = new Food(
+                        rs.getInt("food_id"),
+                        rs.getString("food_label"),
+                        rs.getInt("foodType_id")
+                );
+
+                FoodType foodType = new FoodType(
+                        rs.getInt("foodType_id"),
+                        rs.getString("foodType_label")
+                );
+
+                result.add(new FoodInToSearch(foodIn, food, foodType));
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        return result;
     }
 
-    // A faire !!! Search 2
+
+
+
+    // Search 2
     @Override
     public List<ExpiredFood> expiredFood(String storageType, String foodType) throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");

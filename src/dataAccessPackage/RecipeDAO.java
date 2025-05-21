@@ -141,7 +141,7 @@ public class RecipeDAO implements RecipeDAOInterface
                 rs.getInt("id"),
                 rs.getString("label"),
                 rs.getString("description"),
-                rs.getInt("caloricIntake"),
+                rs.getInt("calorieIntake"),
                 rs.getDate("lastDateDone"),
                 rs.getInt("timeToMake"),
                 rs.getBoolean("isCold"),
@@ -166,11 +166,11 @@ public class RecipeDAO implements RecipeDAOInterface
         }
     }
 
-    // A faire !!! Search 1
+    // Search 1
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
-    // A faire !!! Search 3
+    // Search 3
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
