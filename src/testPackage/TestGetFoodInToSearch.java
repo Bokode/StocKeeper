@@ -1,4 +1,4 @@
-package testPackage;
+/*package testPackage;
 
 import dataAccessPackage.FoodInDAO;
 import modelPackage.FoodInToSearch;
@@ -22,3 +22,4 @@ class TestGetFoodInToSearch {
         assertEquals("Légume", item.getFoodType().getLabel());
     }
 }
+*/

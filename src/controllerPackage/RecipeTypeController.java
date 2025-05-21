@@ -1,4 +1,4 @@
-package controllerPackage;
+/*package controllerPackage;
 
 import businessPackage.RecipeTypeManager;
 import modelPackage.RecipeType;
@@ -20,3 +20,4 @@ public class RecipeTypeController {
         return recipeTypeManager.getAllRecipeTypes();
     }
 }
+ */

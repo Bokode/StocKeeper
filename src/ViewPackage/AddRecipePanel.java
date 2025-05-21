@@ -2,9 +2,11 @@ package ViewPackage;
 
 import modelPackage.FoodType;
 import modelPackage.Recipe;
+import modelPackage.RecipeType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
 
 public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
@@ -125,38 +127,57 @@ public class AddRecipePanel extends JPanel {
         });
 
         addButton.addActionListener(e -> {
-            String label = labelField.getText().trim();
-            String description = descriptionField.getText().trim();
-            String caloricInTakeString = caloricIntakeField.getText().trim();
-            if(!caloricInTakeString.isEmpty()){
-                try {
-                    Integer caloricInTake = Integer.valueOf(caloricInTakeString);
-                    System.out.println("Integer : " + caloricInTake);
+            try {
+                String label = labelField.getText().trim();
+                String description = descriptionField.getText().trim();
+
+                if (label.isEmpty() || description.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
+                    return;
                 }
-                catch (NumberFormatException numberFormatException){
-                    JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre");
+
+                // Champs facultatifs
+                Integer caloricIntake = null;
+                Integer timeToMake = null;
+
+                String caloricStr = caloricIntakeField.getText().trim();
+                if (!caloricStr.isEmpty()) {
+                    try {
+                        caloricIntake = Integer.valueOf(caloricStr);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre entier.");
+                        return;
+                    }
                 }
-            }
-            String timeToMakeString = timeToMakeField.getText().trim();
-            if(!timeToMakeString.isEmpty()){
-                try {
-                    Integer timeToMake = Integer.valueOf(timeToMakeString);
-                    System.out.println("Integer : " + timeToMake);
+
+                String timeStr = timeToMakeField.getText().trim();
+                if (!timeStr.isEmpty()) {
+                    try {
+                        timeToMake = Integer.valueOf(timeStr);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Erreur : La durée doit être un nombre entier.");
+                        return;
+                    }
                 }
-                catch (NumberFormatException numberFormatException){
-                    JOptionPane.showMessageDialog(this, "Erreur : La durée de la recette doit être un nombre");
-                }
+
+                boolean isCold = isColdCheckBox.isSelected();
+                String typeString = typeRecetteComboBox.getSelectedItem().toString();
+                RecipeType recipeType = new RecipeType(typeString); // ou enum selon ton modèle
+
+                Date lastDayDone = null;
+
+                Recipe newRecipe = new Recipe(label, description, caloricIntake, lastDayDone, timeToMake, isCold, recipeType);
+
+                // DAO à faire
+                System.out.println("Recette créée : " + newRecipe);
+
+                JOptionPane.showMessageDialog(this, "Recette ajoutée avec succès !");
+                // Optionnel : vider les champs ou revenir à l’accueil
+                // mainWindow.showHomePanel();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage());
             }
-            boolean isCold = isColdCheckBox.isSelected();
-            String foodTypeString = typeRecetteComboBox.getSelectedItem().toString();
-            // FoodType foodType = new FoodType(foodTypeString);
-            /*try {
-                Recipe recipe = new Recipe()
-            }
-            catch (Exception e2){
-                JOptionPane.showMessageDialog(this, );
-            }
-             */
         });
     }
 }

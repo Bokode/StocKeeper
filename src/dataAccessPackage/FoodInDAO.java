@@ -1,4 +1,4 @@
-package dataAccessPackage;
+/*package dataAccessPackage;
 
 import exceptionPackage.*;
 import interfacePackage.FoodInDAOInterface;
@@ -215,3 +215,4 @@ public class FoodInDAO implements FoodInDAOInterface {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 }
+*/

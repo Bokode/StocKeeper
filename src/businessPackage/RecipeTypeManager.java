@@ -1,4 +1,4 @@
-package businessPackage;
+/*package businessPackage;
 
 import dataAccessPackage.RecipeDAO;
 import modelPackage.RecipeType;
@@ -21,3 +21,4 @@ public class RecipeTypeManager {
         return null;
     }
 }
+ */
