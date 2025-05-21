@@ -9,7 +9,7 @@ public class MainMenu extends JMenuBar {
     public MainMenu(MainWindow mainWindow){
         this.mainWindow = mainWindow;
 
-        homeMenu = new JMenu("Acceuil");
+        homeMenu = new JMenu("Accueil");
         homeMenu.setMnemonic('A');
         recipeMenu = new JMenu("Recette");
         recipeMenu.setMnemonic('Z');
