@@ -3,6 +3,8 @@ package modelPackage;
 import exceptionPackage.WrongInputException;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe {
     private String label;
@@ -12,8 +14,8 @@ public class Recipe {
     private Integer timeToMake; // Facultatif
     private Boolean isCold; // Facultatif
     private Integer type; // Clé étrangère
-    // liste matériel + faire model
-    // liste ingredient amount + faire model
+    private List<RecipeMaterial> materials;
+    private List<IngredientAmount> ingredients;
 
     public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
         setLabel(label);
@@ -23,6 +25,8 @@ public class Recipe {
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
+        materials = new ArrayList<>();
+        ingredients = new ArrayList<>();
     }
 
     // Setter
