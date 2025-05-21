@@ -175,13 +175,18 @@ public class FoodInDAO implements FoodInDAOInterface {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                String nutriScoreStr = rs.getString("nutriScore");
+                Character nutriScore = (nutriScoreStr != null && !nutriScoreStr.isEmpty()) ? nutriScoreStr.charAt(0) : null;
+
+                Date purchaseDate = rs.getDate("purchaseDate");
+
                 FoodIn foodIn = new FoodIn(
                         rs.getInt("foodIn_id"),
                         rs.getDate("expirationDate"),
                         rs.getInt("quantity"),
                         rs.getBoolean("isOpen"),
-                        rs.getString("nutriScore").charAt(0),
-                        rs.getDate("purchaseDate"),
+                        nutriScore,
+                        purchaseDate,
                         rs.getInt("food_id"),
                         0 // storageType can be added too
                 );
@@ -206,9 +211,6 @@ public class FoodInDAO implements FoodInDAOInterface {
 
         return result;
     }
-
-
-
 
     // Search 2
     @Override
