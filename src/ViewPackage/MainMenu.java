@@ -30,7 +30,7 @@ public class MainMenu extends JMenuBar {
 
         addRecipe = new JMenuItem("Ajouter");
         deleteRecipe = new JMenuItem("Supprimer");
-        updateRecipe = new JMenuItem("Mettre à jour");
+        updateRecipe = new JMenuItem("Modifier");
         listingRecipe = new JMenuItem("Recettes");
         recipeMenu.add(addRecipe);
         recipeMenu.add(deleteRecipe);
@@ -39,7 +39,7 @@ public class MainMenu extends JMenuBar {
 
         addFoodIn = new JMenuItem("Ajouter");
         deleteFoodIn = new JMenuItem("Supprimer");
-        updateFoodIn = new JMenuItem("Mettre à jour");
+        updateFoodIn = new JMenuItem("Modifier");
         listingFoodIn = new JMenuItem("Aliments");
         foodInMenu.add(addFoodIn);
         foodInMenu.add(deleteFoodIn);
@@ -58,5 +58,6 @@ public class MainMenu extends JMenuBar {
         homeScreen.addActionListener(e -> mainWindow.showHomePanel());
         addRecipe.addActionListener(e -> mainWindow.showAddRecipePanel());
         deleteRecipe.addActionListener(e -> mainWindow.showDeleteRecipePanel());
+        updateRecipe.addActionListener(e -> mainWindow.showSearchRecipePanel());
     }
 }
