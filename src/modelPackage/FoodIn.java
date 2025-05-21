@@ -1,5 +1,7 @@
 package modelPackage;
 
+import exceptionPackage.WrongInputException;
+
 import java.util.Date;
 
 public class FoodIn {
@@ -36,7 +38,7 @@ public class FoodIn {
 
     public void setQuantity(Integer quantity) {
         if (quantity < 0) {
-            // throw error
+            throw new WrongInputException("Quantity must be a positive number");
         } else {
             this.quantity = quantity;
         }
@@ -47,8 +49,8 @@ public class FoodIn {
     }
 
     public void setNutriScore(Character nutriScore) {
-        if (nutriScore < 'A' || nutriScore > 'E') {
-            // throw error
+        if (nutriScore != null && (nutriScore < 'A' || nutriScore > 'E')) {
+            throw new WrongInputException("NutriScore must be between A and E");
         } else {
             this.nutriScore = nutriScore;
         }
@@ -56,8 +58,8 @@ public class FoodIn {
 
     public void setPurchaseDate(Date purchaseDate) {
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-        if (purchaseDate.after(today)) {
-            // throw error
+        if (purchaseDate != null && purchaseDate.after(today)) {
+            throw new WrongInputException("Purchase date cannot be in the future.");
         } else {
             this.purchaseDate = purchaseDate;
         }
