@@ -17,9 +17,7 @@ public class RecipeTypeManager {
     }
 
     public ArrayList<RecipeType> getAllRecipeTypes() {
-        //ArrayList<RecipeType> recipesType = dao.getAllRecipes();
-        // Traitements éventuels sur la liste de recipeType
-
+        //ArrayList<RecipeType> recipesType = dao.getAllRecipeTypes();
         return null;
     }
 }

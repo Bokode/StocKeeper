@@ -1,10 +1,10 @@
 package businessPackage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import dataAccessPackage.FoodInDAO;
+import exceptionPackage.AppException;
 import interfacePackage.FoodInDAOInterface;
 import modelPackage.ExpiredFood;
 import modelPackage.FoodIn;
@@ -21,29 +21,28 @@ public class FoodInManager {
         dao = newDao;
     }
 
-    public List<FoodIn> getAllFoodIn() {
+    public List<FoodIn> getAllFoodIn() throws AppException {
         List<FoodIn> foodIns = dao.getAllFoodIns();
-        // Traitements éventuels sur la liste de foodIn
         return foodIns;
     }
 
-    public void addFoodIn(FoodIn foodIn) {
+    public void addFoodIn(FoodIn foodIn) throws AppException {
         dao.addFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
-    public FoodIn getFoodIn(Integer id) {
+    public FoodIn getFoodIn(Integer id) throws AppException {
         return dao.getFoodInById(id);
     }
 
-    public void deleteFoodIn(Integer id) {
+    public void deleteFoodIn(Integer id) throws AppException {
         dao.deleteFoodIn(id);
     }
 
-    public void updateFoodIn(FoodIn foodIn) {
+    public void updateFoodIn(FoodIn foodIn) throws AppException {
         dao.updateFoodIn(foodIn.getId(), foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
-    public Integer showQuantityLeft(String typeOfFood) {
+    public Integer showQuantityLeft(String typeOfFood) throws AppException {
         List<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;
 
@@ -56,7 +55,7 @@ public class FoodInManager {
         return quantityLeft;
     }
 
-    public List<ExpiredFood> expiredFood(String storageType, String foodType) {
+    public List<ExpiredFood> expiredFood(String storageType, String foodType) throws AppException {
         return dao.expiredFood(storageType, foodType);
     }
 }

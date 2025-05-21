@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class FoodInManagerTest {
+class TestShowQuantityLeft {
     private FoodInManager foodInManager;
 
     @BeforeEach
@@ -16,7 +16,7 @@ class FoodInManagerTest {
 
     @Test
     public void testShowQuantityLeft() {
-        Integer quantityTest = foodInManager.showQuantityLeft("Meat");
+        Integer quantityTest = foodInManager.showQuantityLeft("Viande");
         assertNotEquals(0, quantityTest);
     }
 }
