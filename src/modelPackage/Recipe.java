@@ -13,11 +13,11 @@ public class Recipe {
     private Date lastDayDone; // Facultatif
     private Integer timeToMake; // Facultatif
     private Boolean isCold; // Facultatif
-    private Integer type; // Clé étrangère
+    private RecipeType type; // Clé étrangère
     private List<RecipeMaterial> materials;
     private List<IngredientAmount> ingredients;
 
-    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
+    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, RecipeType type) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -68,7 +68,7 @@ public class Recipe {
         this.isCold = isCold;
     }
 
-    public void setType(Integer type) {
+    public void setType(RecipeType type) {
         this.type = type;
     }
 
@@ -95,7 +95,7 @@ public class Recipe {
         return caloricIntake;
     }
 
-    public Integer getType() {
+    public RecipeType getType() {
         return type;
     }
 

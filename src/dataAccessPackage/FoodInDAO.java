@@ -14,7 +14,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     @Override
     public List<FoodIn> getAllFoodIns() throws AppException {
         List<FoodIn> foodsIn = new ArrayList<>();
-        String query = "SELECT * FROM foodIn";
+        String query = "SELECT * FROM food_in";
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
@@ -34,24 +34,23 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public Integer addFoodIn(Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
+    public Integer addFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
     {
-        String query = "INSERT INTO foodIn (food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO food_in (food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, null);
     }
 
     @Override
-    public Integer updateFoodIn(Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
+    public Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
     {
-        //String query = "UPDATE foodIn SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
-        //return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);
-        return null;
+        String query = "UPDATE food_in SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
+        return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);
     }
 
     @Override
     public Integer deleteFoodIn(String label) throws AppException
     {
-        String query = "DELETE FROM foodIn WHERE id = ?";
+        String query = "DELETE FROM food_in WHERE id = ?";
         Integer rowsDeleted = 0;
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -72,14 +71,14 @@ public class FoodInDAO implements FoodInDAOInterface {
     @Override
     public FoodIn getFoodInByLabel(String label) throws AppException
     {
-        String query = "SELECT * FROM foodIn WHERE id = ?";
+        String query = "SELECT * FROM food_in WHERE id = ?";
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
         FoodIn foodIn = null;
 
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            //stmt.setInt(1, id);
+            stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -160,9 +159,9 @@ public class FoodInDAO implements FoodInDAOInterface {
     public List<FoodInToSearch> getFoodInToSearch() throws AppException {
         List<FoodInToSearch> result = new ArrayList<>();
 
-        String query = "SELECT fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
-                "f.label AS food_label, " +
-                "fft.label AS foodType_label " +
+        String query = "SELECT fi.Id AS foodIn_id, fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
+                "f.Id AS food_id, f.label AS food_label, " +
+                "ft.Id AS foodType_id, ft.label AS foodType_label " +
                 "FROM food_in fi " +
                 "JOIN food f ON fi.food = f.Id " +
                 "JOIN food_type ft ON f.food_type = ft.Id";
@@ -175,29 +174,29 @@ public class FoodInDAO implements FoodInDAOInterface {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                String nutriScoreStr = rs.getString("nutriScore");
-                Character nutriScore = (nutriScoreStr != null && !nutriScoreStr.isEmpty()) ? nutriScoreStr.charAt(0) : null;
+                FoodType foodType = new FoodType(
+                        rs.getString("foodType_label")
+                );
 
-                Date purchaseDate = rs.getDate("purchaseDate");
+                Food food = new Food(
+                        rs.getString("food_label"),
+                        foodType
+                );
+
+                Character nutriScore = null;
+                String nutriScoreStr = rs.getString("nutriScore");
+                if (nutriScoreStr != null && !nutriScoreStr.isEmpty()) {
+                    nutriScore = nutriScoreStr.charAt(0);
+                }
 
                 FoodIn foodIn = new FoodIn(
                         rs.getDate("expirationDate"),
                         rs.getInt("quantity"),
                         rs.getBoolean("isOpen"),
                         nutriScore,
-                        purchaseDate,
-                        rs.getInt("food_id"),
-                        0 // storageType can be added too
-                );
-
-                Food food = new Food(
-                        rs.getInt("food_id"),
-                        rs.getString("food_label"),
-                        rs.getInt("foodType_id")
-                );
-
-                FoodType foodType = new FoodType(
-                        rs.getString("foodType_label")
+                        rs.getDate("purchaseDate"),
+                        food,
+                        null // Handle StorageType if needed
                 );
 
                 result.add(new FoodInToSearch(foodIn, food, foodType));

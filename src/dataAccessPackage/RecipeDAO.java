@@ -70,9 +70,8 @@ public class RecipeDAO implements RecipeDAOInterface
     @Override
     public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
     {
-        //String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
-        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
-        return null;
+        String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
+        return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class RecipeDAO implements RecipeDAOInterface
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
-            //stmt.setInt(1, id);
+            stmt.setInt(1, id);
             rowsDeleted = stmt.executeUpdate();
 
         } catch (SQLException e)
