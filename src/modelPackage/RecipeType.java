@@ -1,9 +1,9 @@
 package modelPackage;
 
-public class FoodType {
+public class RecipeType {
     private String label;
 
-    public FoodType(String label) {
+    public RecipeType(String label) {
         setLabel(label);
     }
 
@@ -14,5 +14,4 @@ public class FoodType {
     public String getLabel() {
         return label;
     }
-
 }

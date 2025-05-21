@@ -1,51 +1,52 @@
 package businessPackage;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+import java.sql.Date;
 
-import dataAccessPackageTemporaire.RecipeDBAccess;
-
+import dataAccessPackage.RecipeDAO;
+import exceptionPackage.AppException;
 import modelPackage.Recipe;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
 public class RecipeManager {
-    private RecipeDBAccess dao;
+    private RecipeDAO dao;
 
     public RecipeManager() {
-        setDao(new RecipeDBAccess());
+        setDao(new RecipeDAO());
     }
 
-    private void setDao(RecipeDBAccess newDao) {
+    private void setDao(RecipeDAO newDao) {
         dao = newDao;
     }
 
-    public ArrayList<Recipe> getAllRecipes() {
-        ArrayList<Recipe> recipes = dao.getAllRecipes();
-        // Traitements éventuels sur la liste de recipe
-
+    public List<Recipe> getAllRecipes() throws AppException {
+        List<Recipe> recipes = dao.getAllRecipes();
         return recipes;
     }
 
-    public void addRecipe(Recipe recipe) {
+    public void addRecipe(Recipe recipe) throws AppException, SQLException {
         dao.addRecipe(recipe);
     }
 
-    public Recipe getRecipe(int id) {
-        return dao.getRecipe(id);
+    public Recipe getRecipe(String label) throws AppException {
+        return dao.getRecipeByLabel(label);
     }
 
-    public void deleteRecipe(Recipe recipe) {
-        dao.deleteRecipe(recipe);
+    public void deleteRecipe(String label) throws AppException {
+        dao.deleteRecipe(label);
     }
 
-    public void updateRecipe(Recipe recipe) {
-        dao.updateRecipe(recipe);
+    public void updateRecipe(Recipe recipe) throws AppException {
+        dao.updateRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
-    public ArrayList<Recipe> showRecipesBasedOnTime(Integer cookingTime) {
-        ArrayList<Recipe> recipesToSearch = getAllRecipes();
-        ArrayList<Recipe> recipes = new ArrayList<>();
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
+        List<Recipe> recipesToSearch = getAllRecipes();
+        List<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
             if (r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
@@ -56,11 +57,11 @@ public class RecipeManager {
         return (recipes);
     }
 
-    public ArrayList<RecipeWithExpiredFood> recipeWithExpiredFood() {
+    public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return dao.recipeWithExpireFood();
     }
 
-    public ArrayList<SeasonalRecipe> recipesOfSeason(Date date) {
+    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         return dao.recipesOfSeason(date);
     }
 }
