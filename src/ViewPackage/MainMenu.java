@@ -57,5 +57,6 @@ public class MainMenu extends JMenuBar {
         exitApplication.addActionListener(exitListener);
         homeScreen.addActionListener(e -> mainWindow.showHomePanel());
         addRecipe.addActionListener(e -> mainWindow.showAddRecipePanel());
+        deleteRecipe.addActionListener(e -> mainWindow.showDeleteRecipePanel());
     }
 }

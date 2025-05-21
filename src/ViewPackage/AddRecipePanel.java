@@ -1,50 +1,101 @@
 package ViewPackage;
 
+import modelPackage.FoodType;
+import modelPackage.Recipe;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AddRecipePanel extends JPanel {
-    private JPanel FormPanel, ButtonsPanel;
+    private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
+    private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
     public AddRecipePanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
-        FormPanel = new JPanel(new GridLayout(1, 2, 5 , 5));
+        FormPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 10, 8, 10);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        FormPanel.add(new JLabel("Nom : ", SwingConstants.RIGHT));
+        TitlePanel = new JPanel(new FlowLayout());
+        titleLabel = new JLabel("Ajouter une recette : ");
+        titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
+        TitlePanel.add(titleLabel);
+        add(TitlePanel, BorderLayout.NORTH);
+
+
+        int row = 0;
+
+        gbc.gridx = 0; gbc.gridy = row;
+        labelLabel = new JLabel("Nom :");
+        labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(labelLabel, gbc);
+        gbc.gridx = 1;
         labelField = new JTextField(20);
-        FormPanel.add(labelField);
+        FormPanel.add(labelField, gbc);
 
-        FormPanel.add(new JLabel("Description de la recette : ", SwingConstants.RIGHT));
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        descriptionLabel = new JLabel("Description de la recette : ");
+        descriptionLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(descriptionLabel, gbc);
+        gbc.gridx = 1;
         descriptionField = new JTextField(20);
-        FormPanel.add(descriptionField);
+        FormPanel.add(descriptionField, gbc);
 
-        FormPanel.add(new JLabel("Apport calorique (facultatif : ", SwingConstants.RIGHT));
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        caloricInTakeLabel = new JLabel("Apport calorique (facultatif) : ");
+        caloricInTakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(caloricInTakeLabel, gbc);
+        gbc.gridx = 1;
         caloricIntakeField = new JTextField(20);
-        FormPanel.add(caloricIntakeField);
+        FormPanel.add(caloricIntakeField, gbc);
 
-
-        FormPanel.add(new JLabel("Durée de la recette (facultatif) : ", SwingConstants.RIGHT));
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        timeToMakeLabel = new JLabel("Durée de la recette (facultatif) : ");
+        timeToMakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(timeToMakeLabel, gbc);
+        gbc.gridx = 1;
         timeToMakeField = new JTextField(20);
-        FormPanel.add(timeToMakeField);
+        FormPanel.add(timeToMakeField, gbc);
 
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JCheckBox isColdCheckBox = new JCheckBox("Recette froide");
-        FormPanel.add(isColdCheckBox);
+        isColdCheckBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(isColdCheckBox, gbc);
+        gbc.gridwidth = 1;
 
-        FormPanel.add(new JLabel("Type de recette : ", SwingConstants.RIGHT));
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        recipeTypeLabel = new JLabel("Type de recette : ");
+        recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(recipeTypeLabel, gbc);
+        gbc.gridx = 1;
         String[] typeRecettes = {"soupe", "entrée", "plat principal", "dessert"};
         JComboBox<String> typeRecetteComboBox = new JComboBox<>(typeRecettes);
-        typeRecetteComboBox.setEnabled(true);
-        FormPanel.add(typeRecetteComboBox);
+        typeRecetteComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(typeRecetteComboBox, gbc);
 
         add(FormPanel, BorderLayout.CENTER);
 
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Ajouter");
-        ButtonsPanel.add(addButton);
+        addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton cancelButton = new JButton("Annuler");
-        ButtonsPanel.add(cancelButton);
+        cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
+        resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+
+        ButtonsPanel.add(addButton);
+        ButtonsPanel.add(cancelButton);
         ButtonsPanel.add(resetButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
@@ -83,20 +134,29 @@ public class AddRecipePanel extends JPanel {
                     System.out.println("Integer : " + caloricInTake);
                 }
                 catch (NumberFormatException numberFormatException){
-
+                    JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre");
                 }
             }
             String timeToMakeString = timeToMakeField.getText().trim();
-            if(!caloricInTakeString.isEmpty()){
+            if(!timeToMakeString.isEmpty()){
                 try {
                     Integer timeToMake = Integer.valueOf(timeToMakeString);
                     System.out.println("Integer : " + timeToMake);
                 }
                 catch (NumberFormatException numberFormatException){
-
+                    JOptionPane.showMessageDialog(this, "Erreur : La durée de la recette doit être un nombre");
                 }
             }
             boolean isCold = isColdCheckBox.isSelected();
+            String foodTypeString = typeRecetteComboBox.getSelectedItem().toString();
+            // FoodType foodType = new FoodType(foodTypeString);
+            /*try {
+                Recipe recipe = new Recipe()
+            }
+            catch (Exception e2){
+                JOptionPane.showMessageDialog(this, );
+            }
+             */
         });
     }
 }
