@@ -9,6 +9,7 @@ public class MainWindow extends JFrame {
     private Container mainContainer;
     private JPanel homePanel;
     private AddRecipePanel addRecipePanel;
+    private DeleteRecipePanel deleteRecipePanel;
     private MainMenu mainMenu;
     public MainWindow() {
         super("StocKeeper");
@@ -22,6 +23,7 @@ public class MainWindow extends JFrame {
         setJMenuBar(mainMenu);
         homePanel = new HomePanel();
         addRecipePanel = new AddRecipePanel(this);
+        deleteRecipePanel = new DeleteRecipePanel(this);
         mainContainer = this.getContentPane();
         mainContainer.setLayout(new BorderLayout());
         mainContainer.add(homePanel,BorderLayout.CENTER);
@@ -38,6 +40,13 @@ public class MainWindow extends JFrame {
     public void showAddRecipePanel() {
         mainContainer.removeAll();
         mainContainer.add(addRecipePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showDeleteRecipePanel() {
+        mainContainer.removeAll();
+        mainContainer.add(deleteRecipePanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
     }
