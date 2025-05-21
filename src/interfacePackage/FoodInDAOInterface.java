@@ -19,5 +19,5 @@ public interface FoodInDAOInterface
 
     List<FoodInToSearch> getFoodInToSearch();
 
-    List<ExpiredFood>  expiredFood(String storageType, String foodType);
+    List<ExpiredFood>  expiredFood(StorageType storageType, FoodType foodType);
 }
