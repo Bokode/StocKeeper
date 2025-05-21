@@ -5,18 +5,16 @@ import exceptionPackage.WrongInputException;
 import java.util.Date;
 
 public class FoodIn {
-    private Integer id;
     private Date expirationDate;
     private Integer quantity;
     private Boolean isOpen;
     private Character nutriScore; // Facultatif;
     private Date purchaseDate; // Facultatif
-    private Integer food; // Clé étrangère
-    private Integer storageType; // Clé étrangère
+    private Food food; // Clé étrangère
+    private StorageType storageType; // Clé étrangère
 
-    public FoodIn(Integer id, Date expirationDate, Integer quantity, Boolean isOpen,
-                  Character nutriScore, Date purchaseDate, Integer food, Integer storageType) {
-        setId(id);
+    public FoodIn(Date expirationDate, Integer quantity, Boolean isOpen,
+                  Character nutriScore, Date purchaseDate, Food food, StorageType storageType) {
         setExpirationDate(expirationDate);
         setQuantity(quantity);
         setIsOpen(isOpen);
@@ -27,10 +25,6 @@ public class FoodIn {
     }
 
     // Setter
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
@@ -65,28 +59,25 @@ public class FoodIn {
         }
     }
 
-    public void setFood(Integer food) {
+    public void setFood(Food food) {
         this.food = food;
     }
 
-    public void setStorageType(Integer storageType) {
+    public void setStorageType(StorageType storageType) {
         this.storageType = storageType;
     }
 
     // Getter
 
-    public Integer getId() {
-        return id;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
-    public Integer getFood() {
+
+    public Food getFood() {
         return food;
     }
 
-    public Integer getStorageType() {
+    public StorageType getStorageType() {
         return storageType;
     }
 

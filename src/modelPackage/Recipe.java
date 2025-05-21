@@ -3,19 +3,21 @@ package modelPackage;
 import exceptionPackage.WrongInputException;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe {
-    private Integer id;
     private String label;
     private String description;
     private Integer caloricIntake;
     private Date lastDayDone; // Facultatif
     private Integer timeToMake; // Facultatif
     private Boolean isCold; // Facultatif
-    private Integer type; // Clé étrangère
+    private RecipeType type; // Clé étrangère
+    private List<RecipeMaterial> materials;
+    private List<IngredientAmount> ingredients;
 
-    public Recipe(Integer id, String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
-        setId(id);
+    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, RecipeType type) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -23,13 +25,11 @@ public class Recipe {
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
+        materials = new ArrayList<>();
+        ingredients = new ArrayList<>();
     }
 
     // Setter
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setLabel(String label) {
         this.label = label;
@@ -68,7 +68,7 @@ public class Recipe {
         this.isCold = isCold;
     }
 
-    public void setType(Integer type) {
+    public void setType(RecipeType type) {
         this.type = type;
     }
 
@@ -91,15 +91,11 @@ public class Recipe {
         return lastDayDone;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public Integer getCaloricIntake() {
         return caloricIntake;
     }
 
-    public Integer getType() {
+    public RecipeType getType() {
         return type;
     }
 
