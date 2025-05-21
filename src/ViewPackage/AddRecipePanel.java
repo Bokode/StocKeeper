@@ -1,6 +1,7 @@
 package ViewPackage;
 
 import modelPackage.FoodType;
+import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,6 +102,13 @@ public class AddRecipePanel extends JPanel {
             boolean isCold = isColdCheckBox.isSelected();
             String foodTypeString = typeRecetteComboBox.getSelectedItem().toString();
             FoodType foodType = new FoodType(foodTypeString);
+            /*try {
+                Recipe recipe = new Recipe()
+            }
+            catch (Exception e2){
+                JOptionPane.showMessageDialog(this, );
+            }
+             */
         });
     }
 }
