@@ -1,5 +1,7 @@
 package modelPackage;
 
+import exceptionPackage.WrongInputException;
+
 import java.sql.Date;
 
 public class Recipe {
@@ -39,7 +41,7 @@ public class Recipe {
 
     public void setCaloricIntake(Integer caloricIntake) {
         if (caloricIntake <= 0) {
-            // throw error
+            throw new WrongInputException("Caloric intake must be a positive number");
         } else {
             this.caloricIntake = caloricIntake;
         }
@@ -47,16 +49,16 @@ public class Recipe {
 
     public void setLastDayDone(Date lastDayDone) {
         Date today = new Date(System.currentTimeMillis());
-        if (lastDayDone.after(today)) {
-            // throw error
+        if (lastDayDone != null && lastDayDone.after(today)) {
+            throw new WrongInputException("Last day done must be before Now");
         } else {
             this.lastDayDone = lastDayDone;
         }
     }
 
     public void setTimeToMake(Integer timeToMake) {
-        if (timeToMake <= 0) {
-            // throw error
+        if (timeToMake != null && timeToMake <= 0) {
+            throw new WrongInputException("Time to make must be a positive number");
         } else {
             this.timeToMake = timeToMake;
         }

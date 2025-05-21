@@ -14,7 +14,7 @@ import java.util.List;
 public class FoodInDAO implements FoodInDAOInterface {
 
     @Override
-    public List<FoodIn> getAllFoodIns() {
+    public List<FoodIn> getAllFoodIns() throws AppException {
         List<FoodIn> foodsIn = new ArrayList<>();
         String query = "SELECT * FROM foodIn";
 
@@ -159,13 +159,13 @@ public class FoodInDAO implements FoodInDAOInterface {
 
     // A faire !!! Task 2
     @Override
-    public List<FoodInToSearch> getFoodInToSearch() {
-        return List.of();
+    public List<FoodInToSearch> getFoodInToSearch() throws AppException {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     // A faire !!! Search 2
     @Override
-    public List<ExpiredFood> expiredFood(String storageType, String foodType) {
-        return List.of();
+    public List<ExpiredFood> expiredFood(String storageType, String foodType) throws AppException {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }

@@ -167,11 +167,11 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     // A faire !!! Search 1
-    public List<RecipeWithExpiredFood> recipeWithExpireFood() {
-        return null;
+    public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
     // A faire !!! Search 3
-    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) {
-        return null;
+    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }
