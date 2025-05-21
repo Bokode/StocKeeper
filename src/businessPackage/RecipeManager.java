@@ -28,7 +28,7 @@ public class RecipeManager {
         return recipes;
     }
 
-    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+    public void addRecipe(Recipe recipe) throws AppException {
         dao.addRecipe(recipe);
     }
 

@@ -1,27 +1,34 @@
 package modelPackage;
 
 public class IngredientAmount {
-    private Food food;
-    private Recipe recipe;
+    private String food;
+    private String recipe;
+    private double quantity;
 
-    IngredientAmount(Recipe recipe, Food food) {
+    public IngredientAmount(String recipe, String food, double quantity) {
         setRecipe(recipe);
         setFood(food);
+        setQuantity(quantity);
     }
 
-    public Recipe getRecipe() {
+    public String getRecipe() {
         return recipe;
     }
 
-    public Food getFood() {
+    public String getFood() {
         return food;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(String recipe) {
         this.recipe = recipe;
     }
 
-    public void setFood(Food food) {
+    public void setFood(String food) {
         this.food = food;
+    }
+
+    public void setQuantity(double quantity)
+    {
+        this.quantity = quantity;
     }
 }
