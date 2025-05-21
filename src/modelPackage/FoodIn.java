@@ -5,7 +5,6 @@ import exceptionPackage.WrongInputException;
 import java.util.Date;
 
 public class FoodIn {
-    private Integer id;
     private Date expirationDate;
     private Integer quantity;
     private Boolean isOpen;
@@ -14,9 +13,8 @@ public class FoodIn {
     private Integer food; // Clé étrangère
     private Integer storageType; // Clé étrangère
 
-    public FoodIn(Integer id, Date expirationDate, Integer quantity, Boolean isOpen,
+    public FoodIn(Date expirationDate, Integer quantity, Boolean isOpen,
                   Character nutriScore, Date purchaseDate, Integer food, Integer storageType) {
-        setId(id);
         setExpirationDate(expirationDate);
         setQuantity(quantity);
         setIsOpen(isOpen);
@@ -27,10 +25,6 @@ public class FoodIn {
     }
 
     // Setter
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
@@ -75,13 +69,10 @@ public class FoodIn {
 
     // Getter
 
-    public Integer getId() {
-        return id;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
+
     public Integer getFood() {
         return food;
     }

@@ -1,9 +1,9 @@
 package modelPackage;
 
-public class FoodType {
+public class StorageType {
     private String label;
 
-    public FoodType(String label) {
+    StorageType(String label) {
         setLabel(label);
     }
 
@@ -14,5 +14,4 @@ public class FoodType {
     public String getLabel() {
         return label;
     }
-
 }

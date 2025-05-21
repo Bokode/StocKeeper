@@ -30,8 +30,8 @@ public class RecipeController {
         return recipeManager.getRecipe(label);
     }
 
-    public void deleteRecipe(Integer id) throws AppException {
-        recipeManager.deleteRecipe(id);
+    public void deleteRecipe(String label) throws AppException {
+        recipeManager.deleteRecipe(label);
     }
 
     public void updateRecipe(Recipe recipe) throws AppException {

@@ -5,7 +5,6 @@ import exceptionPackage.WrongInputException;
 import java.sql.Date;
 
 public class Recipe {
-    private Integer id;
     private String label;
     private String description;
     private Integer caloricIntake;
@@ -13,9 +12,10 @@ public class Recipe {
     private Integer timeToMake; // Facultatif
     private Boolean isCold; // Facultatif
     private Integer type; // Clé étrangère
+    // liste matériel + faire model
+    // liste ingredient amount + faire model
 
-    public Recipe(Integer id, String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
-        setId(id);
+    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -26,10 +26,6 @@ public class Recipe {
     }
 
     // Setter
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setLabel(String label) {
         this.label = label;
@@ -89,10 +85,6 @@ public class Recipe {
 
     public Date getLastDayDone() {
         return lastDayDone;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public Integer getCaloricIntake() {

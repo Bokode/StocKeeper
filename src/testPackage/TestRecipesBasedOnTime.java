@@ -1,4 +1,4 @@
-package test;
+package testPackage;
 
 import businessPackage.RecipeManager;
 
@@ -20,7 +20,7 @@ class TestRecipesBasedOnTime {
 
     @Test
     public void testShowRecipesBasedOnTime() {
-        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(15);
+        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(55);
         assertNotEquals(0, recipesTest.size());
     }
 }

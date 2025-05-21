@@ -34,12 +34,12 @@ public class RecipeManager {
         return dao.getRecipeByLabel(label);
     }
 
-    public void deleteRecipe(Integer id) throws AppException {
-        dao.deleteRecipe(id);
+    public void deleteRecipe(String label) throws AppException {
+        dao.deleteRecipe(label);
     }
 
     public void updateRecipe(Recipe recipe) throws AppException {
-        dao.updateRecipe(recipe.getId(), recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
+        dao.updateRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
     public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {

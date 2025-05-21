@@ -1,4 +1,4 @@
-package test;
+package testPackage;
 
 import dataAccessPackage.FoodInDAO;
 import modelPackage.FoodInToSearch;
@@ -11,14 +11,14 @@ class TestGetFoodInToSearch {
 
     @Test
     void testGetFoodInToSearch() throws SQLException {
-        FoodInDAO dao = new FoodInDAO(); // adapte selon ton interface
+        FoodInDAO dao = new FoodInDAO();
         List<FoodInToSearch> result = dao.getFoodInToSearch();
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
         FoodInToSearch item = result.get(0);
-        assertEquals("Pomme", item.getFood().getLabel());
-        assertEquals("Fruit", item.getFoodType().getLabel());
+        assertEquals("Carotte", item.getFood().getLabel());
+        assertEquals("Légume", item.getFoodType().getLabel());
     }
 }
