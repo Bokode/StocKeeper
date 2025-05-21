@@ -1,16 +1,10 @@
 package modelPackage;
 
 public class FoodType {
-    private Integer id;
     private String label;
 
-    public FoodType(Integer id, String label) {
-        setId(id);
+    public FoodType(String label) {
         setLabel(label);
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void setLabel(String label) {
@@ -21,7 +15,4 @@ public class FoodType {
         return label;
     }
 
-    public Integer getId() {
-        return id;
-    }
 }

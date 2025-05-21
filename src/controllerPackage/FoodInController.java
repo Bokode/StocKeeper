@@ -25,12 +25,12 @@ public class FoodInController {
         foodInManager.addFoodIn(foodIn);
     }
 
-    public FoodIn getFoodIn(Integer id) throws AppException {
-        return foodInManager.getFoodIn(id);
+    public FoodIn getFoodIn(String label) throws AppException {
+        return foodInManager.getFoodIn(label);
     }
 
-    public void deleteFoodIn(Integer id) throws AppException {
-        foodInManager.deleteFoodIn(id);
+    public void deleteFoodIn(String label) throws AppException {
+        foodInManager.deleteFoodIn(label);
     }
 
     public void updateFoodIn(FoodIn foodIn) throws AppException {

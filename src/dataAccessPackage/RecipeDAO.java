@@ -68,14 +68,15 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     @Override
-    public Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
+    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
     {
-        String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
-        return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
+        //String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
+        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
+        return null;
     }
 
     @Override
-    public Integer deleteRecipe(Integer id) throws AppException
+    public Integer deleteRecipe(String label) throws AppException
     {
         String query = "DELETE FROM recipe WHERE id = ?";
         Integer rowsDeleted = 0;
@@ -84,7 +85,7 @@ public class RecipeDAO implements RecipeDAOInterface
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
-            stmt.setInt(1, id);
+            //stmt.setInt(1, id);
             rowsDeleted = stmt.executeUpdate();
 
         } catch (SQLException e)
@@ -138,7 +139,6 @@ public class RecipeDAO implements RecipeDAOInterface
 
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
         return new Recipe(
-                rs.getInt("id"),
                 rs.getString("label"),
                 rs.getString("description"),
                 rs.getInt("calorieIntake"),

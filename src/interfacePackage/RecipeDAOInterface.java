@@ -16,9 +16,9 @@ public interface RecipeDAOInterface
 
     Recipe getRecipeByLabel(String label);
 
-    Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
+    Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
 
-    Integer deleteRecipe(Integer id);
+    Integer deleteRecipe(String label);
 
     List<RecipeWithExpiredFood> recipeWithExpireFood();
 

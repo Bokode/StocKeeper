@@ -30,16 +30,16 @@ public class FoodInManager {
         dao.addFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
-    public FoodIn getFoodIn(Integer id) throws AppException {
-        return dao.getFoodInById(id);
+    public FoodIn getFoodIn(String label) throws AppException {
+        return dao.getFoodInById(label);
     }
 
-    public void deleteFoodIn(Integer id) throws AppException {
-        dao.deleteFoodIn(id);
+    public void deleteFoodIn(String label) throws AppException {
+        dao.deleteFoodIn(label);
     }
 
     public void updateFoodIn(FoodIn foodIn) throws AppException {
-        dao.updateFoodIn(foodIn.getId(), foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
+        dao.updateFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
     public Integer showQuantityLeft(String typeOfFood) throws AppException {

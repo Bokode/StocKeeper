@@ -41,14 +41,15 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public Integer updateFoodIn(Integer id, Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
+    public Integer updateFoodIn(Integer food, Integer storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
     {
-        String query = "UPDATE foodIn SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
-        return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);
+        //String query = "UPDATE foodIn SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
+        //return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);
+        return null;
     }
 
     @Override
-    public Integer deleteFoodIn(Integer id) throws AppException
+    public Integer deleteFoodIn(String label) throws AppException
     {
         String query = "DELETE FROM foodIn WHERE id = ?";
         Integer rowsDeleted = 0;
@@ -58,7 +59,7 @@ public class FoodInDAO implements FoodInDAOInterface {
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, id);
+            //stmt.setInt(1, id);
             rowsDeleted = stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -69,7 +70,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public FoodIn getFoodInById(Integer id) throws AppException
+    public FoodIn getFoodInByLabel(String label) throws AppException
     {
         String query = "SELECT * FROM foodIn WHERE id = ?";
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -78,7 +79,7 @@ public class FoodInDAO implements FoodInDAOInterface {
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, id);
+            //stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -129,7 +130,6 @@ public class FoodInDAO implements FoodInDAOInterface {
     private FoodIn mapResultSetToFoodIn(ResultSet rs) throws SQLException
     {
         return new FoodIn(
-                rs.getInt("id"),
                 rs.getDate("expirationDate"),
                 rs.getInt("quantity"),
                 rs.getBoolean("isOpen"),
@@ -160,9 +160,9 @@ public class FoodInDAO implements FoodInDAOInterface {
     public List<FoodInToSearch> getFoodInToSearch() throws AppException {
         List<FoodInToSearch> result = new ArrayList<>();
 
-        String query = "SELECT fi.Id AS foodIn_id, fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
-                "f.Id AS food_id, f.label AS food_label, " +
-                "ft.Id AS foodType_id, ft.label AS foodType_label " +
+        String query = "SELECT fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
+                "f.label AS food_label, " +
+                "fft.label AS foodType_label " +
                 "FROM food_in fi " +
                 "JOIN food f ON fi.food = f.Id " +
                 "JOIN food_type ft ON f.food_type = ft.Id";
@@ -181,7 +181,6 @@ public class FoodInDAO implements FoodInDAOInterface {
                 Date purchaseDate = rs.getDate("purchaseDate");
 
                 FoodIn foodIn = new FoodIn(
-                        rs.getInt("foodIn_id"),
                         rs.getDate("expirationDate"),
                         rs.getInt("quantity"),
                         rs.getBoolean("isOpen"),
@@ -198,7 +197,6 @@ public class FoodInDAO implements FoodInDAOInterface {
                 );
 
                 FoodType foodType = new FoodType(
-                        rs.getInt("foodType_id"),
                         rs.getString("foodType_label")
                 );
 
