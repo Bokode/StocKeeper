@@ -1,6 +1,7 @@
 package interfacePackage;
 
 import modelPackage.Recipe;
+import modelPackage.RecipeType;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
@@ -12,11 +13,11 @@ public interface RecipeDAOInterface
 {
     List<Recipe> getAllRecipes();
 
-    Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
+    Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type);
 
     Recipe getRecipeByLabel(String label);
 
-    Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
+    Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type);
 
     Integer deleteRecipe(String label);
 

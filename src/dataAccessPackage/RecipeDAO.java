@@ -3,6 +3,7 @@ package dataAccessPackage;
 import exceptionPackage.*;
 import interfacePackage.RecipeDAOInterface;
 import modelPackage.Recipe;
+import modelPackage.RecipeType;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
@@ -68,10 +69,11 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     @Override
-    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
+    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException
     {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
-        return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
+        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
+        return null;
     }
 
     @Override
@@ -84,7 +86,7 @@ public class RecipeDAO implements RecipeDAOInterface
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
-            stmt.setInt(1, id);
+            //stmt.setInt(1, id);
             rowsDeleted = stmt.executeUpdate();
 
         } catch (SQLException e)
@@ -96,10 +98,11 @@ public class RecipeDAO implements RecipeDAOInterface
     }
 
     @Override
-    public Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type) throws AppException
+    public Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException
     {
         String query = "INSERT INTO recipe (label, description, caloricIntake, isCold, lastDateDone, timeToMake, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, null);
+        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, null);
+        return null;
     }
 
     // Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
@@ -137,7 +140,7 @@ public class RecipeDAO implements RecipeDAOInterface
     // transforme un ResultSet en objet Recipe
 
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
-        return new Recipe(
+        /*return new Recipe(
                 rs.getString("label"),
                 rs.getString("description"),
                 rs.getInt("calorieIntake"),
@@ -145,7 +148,8 @@ public class RecipeDAO implements RecipeDAOInterface
                 rs.getInt("timeToMake"),
                 rs.getBoolean("isCold"),
                 rs.getInt("type")
-        );
+        );*/
+        return null;
     }
 
     // Méthode pour gérer les exceptions SQL
