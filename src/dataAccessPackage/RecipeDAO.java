@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 public class RecipeDAO implements RecipeDAOInterface
 {
@@ -97,13 +98,99 @@ public class RecipeDAO implements RecipeDAOInterface
         return rowsDeleted;
     }
 
-    @Override
-    public Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException
-    {
-        String query = "INSERT INTO recipe (label, description, caloricIntake, isCold, lastDateDone, timeToMake, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, null);
-        return null;
+
+
+
+
+
+
+
+
+
+
+
+    public void addRecipe(Recipe recipe) throws SQLException {
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        Connection conn = dbAccess.getConnection();
+        try {
+            conn.setAutoCommit(false);
+
+            // 1. Get or insert RecipeType
+            int recipeTypeId = getOrInsertRecipeType(conn, recipe.getType());
+
+            // 2. Insert into Recipe
+            String sql = """
+        INSERT INTO recipe (label, description, calorieIntake, lastDateDone, timeToMake, isCold, type)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, recipe.getLabel());
+                stmt.setString(2, recipe.getDescription());
+
+                if (recipe.getCaloricIntake() != null) {
+                    stmt.setInt(3, recipe.getCaloricIntake());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
+
+                if (recipe.getLastDayDone() != null) {
+                    stmt.setDate(4, recipe.getLastDayDone());
+                } else {
+                    stmt.setNull(4, Types.DATE);
+                }
+
+                if (recipe.getTimeToMake() != null) {
+                    stmt.setInt(5, recipe.getTimeToMake());
+                } else {
+                    stmt.setNull(5, Types.INTEGER);
+                }
+
+                stmt.setBoolean(6, recipe.getCold() != null && recipe.getCold());
+                stmt.setInt(7, recipeTypeId);
+
+                stmt.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+            conn.close();
+        }
     }
+
+    private int getOrInsertRecipeType(Connection conn, RecipeType type) throws SQLException {
+        String select = "SELECT Id FROM recipe_type WHERE label = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(select)) {
+            stmt.setString(1, type.getLabel());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getInt("Id");
+        }
+
+        String insert = "INSERT INTO recipe_type (label) VALUES (?)";
+        try (PreparedStatement stmt = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, type.getLabel());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) return rs.getInt(1);
+        }
+
+        throw new SQLException("Unable to insert or get recipe_type");
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     // Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
 
