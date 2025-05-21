@@ -1,19 +1,23 @@
 package modelPackage;
 
+import exceptionPackage.WrongInputException;
+
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe {
-    private Integer id;
     private String label;
     private String description;
-    private Integer caloricIntake;
+    private Integer caloricIntake; // Facultatif
     private Date lastDayDone; // Facultatif
     private Integer timeToMake; // Facultatif
-    private Boolean isCold; // Facultatif
-    private Integer type; // Clé étrangère
+    private Boolean isCold;
+    private RecipeType type; // Clé étrangère
+    private List<RecipeMaterial> materials;
+    private List<IngredientAmount> ingredients;
 
-    public Recipe(Integer id, String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, Integer type) {
-        setId(id);
+    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, RecipeType type) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -21,13 +25,11 @@ public class Recipe {
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
+        materials = new ArrayList<>();
+        ingredients = new ArrayList<>();
     }
 
     // Setter
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setLabel(String label) {
         this.label = label;
@@ -38,8 +40,8 @@ public class Recipe {
     }
 
     public void setCaloricIntake(Integer caloricIntake) {
-        if (caloricIntake <= 0) {
-            // throw error
+        if (caloricIntake != null && caloricIntake <= 0) {
+            throw new WrongInputException("Caloric intake must be a positive number");
         } else {
             this.caloricIntake = caloricIntake;
         }
@@ -47,16 +49,16 @@ public class Recipe {
 
     public void setLastDayDone(Date lastDayDone) {
         Date today = new Date(System.currentTimeMillis());
-        if (lastDayDone.after(today)) {
-            // throw error
+        if (lastDayDone != null && lastDayDone.after(today)) {
+            throw new WrongInputException("Last day done must be before Now");
         } else {
             this.lastDayDone = lastDayDone;
         }
     }
 
     public void setTimeToMake(Integer timeToMake) {
-        if (timeToMake <= 0) {
-            // throw error
+        if (timeToMake != null && timeToMake <= 0) {
+            throw new WrongInputException("Time to make must be a positive number");
         } else {
             this.timeToMake = timeToMake;
         }
@@ -66,7 +68,7 @@ public class Recipe {
         this.isCold = isCold;
     }
 
-    public void setType(Integer type) {
+    public void setType(RecipeType type) {
         this.type = type;
     }
 
@@ -89,15 +91,11 @@ public class Recipe {
         return lastDayDone;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public Integer getCaloricIntake() {
         return caloricIntake;
     }
 
-    public Integer getType() {
+    public RecipeType getType() {
         return type;
     }
 

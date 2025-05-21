@@ -1,10 +1,12 @@
 package interfacePackage;
 
 import modelPackage.Recipe;
+import modelPackage.RecipeType;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,13 +14,13 @@ public interface RecipeDAOInterface
 {
     List<Recipe> getAllRecipes();
 
-    Integer addRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
+    void addRecipe(Recipe recipe) throws SQLException;
 
     Recipe getRecipeByLabel(String label);
 
-    Integer updateRecipe(Integer id, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, Integer type);
+    Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type);
 
-    Integer deleteRecipe(Integer id);
+    Integer deleteRecipe(String label);
 
     List<RecipeWithExpiredFood> recipeWithExpireFood();
 
