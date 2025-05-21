@@ -1,5 +1,6 @@
 /*package controllerPackage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import businessPackage.FoodInManager;
@@ -21,7 +22,7 @@ public class FoodInController {
         return foodInManager.getAllFoodIn();
     }
 
-    public void addFoodIn(FoodIn foodIn) throws AppException {
+    public void addFoodIn(FoodIn foodIn) throws AppException, SQLException {
         foodInManager.addFoodIn(foodIn);
     }
 

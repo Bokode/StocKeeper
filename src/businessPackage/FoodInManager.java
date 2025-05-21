@@ -1,5 +1,6 @@
 /*package businessPackage;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,8 +27,8 @@ public class FoodInManager {
         return foodIns;
     }
 
-    public void addFoodIn(FoodIn foodIn) throws AppException {
-        dao.addFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
+    public void addFoodIn(FoodIn foodIn) throws AppException, SQLException {
+        dao.addFoodIn(foodIn);
     }
 
     public FoodIn getFoodIn(String label) throws AppException {

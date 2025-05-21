@@ -1,5 +1,6 @@
 /*package controllerPackage;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class RecipeController {
         return recipeManager.getAllRecipes();
     }
 
-    public void addRecipe(Recipe recipe) throws AppException {
+    public void addRecipe(Recipe recipe) throws AppException, SQLException {
         recipeManager.addRecipe(recipe);
     }
 

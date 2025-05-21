@@ -3,7 +3,7 @@ package modelPackage;
 public class StorageType {
     private String label;
 
-    StorageType(String label) {
+    public StorageType(String label) {
         setLabel(label);
     }
 
