@@ -1,8 +1,10 @@
 package businessPackage;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 import dataAccessPackage.RecipeDAO;
 import exceptionPackage.AppException;
@@ -26,8 +28,8 @@ public class RecipeManager {
         return recipes;
     }
 
-    public void addRecipe(Recipe recipe) throws AppException {
-        dao.addRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
+    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+        dao.addRecipe(recipe);
     }
 
     public Recipe getRecipe(String label) throws AppException {

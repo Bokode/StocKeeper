@@ -2,19 +2,20 @@ package interfacePackage;
 
 import modelPackage.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface FoodInDAOInterface
 {
-    Integer addFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
+    void addFoodIn(FoodIn foodIn) throws SQLException;
+
+    List<FoodIn> getAllFoodIns();
 
     Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
     Integer deleteFoodIn(String label);
 
     FoodIn getFoodInByLabel(String label);
-
-    List<FoodIn> getAllFoodIns();
 
     List<FoodInToSearch> getFoodInToSearch();
 

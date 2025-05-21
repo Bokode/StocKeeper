@@ -9,10 +9,10 @@ import java.util.List;
 public class Recipe {
     private String label;
     private String description;
-    private Integer caloricIntake;
+    private Integer caloricIntake; // Facultatif
     private Date lastDayDone; // Facultatif
     private Integer timeToMake; // Facultatif
-    private Boolean isCold; // Facultatif
+    private Boolean isCold;
     private RecipeType type; // Clé étrangère
     private List<RecipeMaterial> materials;
     private List<IngredientAmount> ingredients;
@@ -40,7 +40,7 @@ public class Recipe {
     }
 
     public void setCaloricIntake(Integer caloricIntake) {
-        if (caloricIntake <= 0) {
+        if (caloricIntake != null && caloricIntake <= 0) {
             throw new WrongInputException("Caloric intake must be a positive number");
         } else {
             this.caloricIntake = caloricIntake;
