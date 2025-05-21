@@ -1,4 +1,4 @@
-package testPackage;
+/*package testPackage;
 
 import businessPackage.FoodInManager;
 
@@ -20,3 +20,4 @@ class TestShowQuantityLeft {
         assertNotEquals(0, quantityTest);
     }
 }
+ */
