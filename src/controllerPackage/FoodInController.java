@@ -1,4 +1,4 @@
-/*package controllerPackage;
+package controllerPackage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,4 +48,3 @@ public class FoodInController {
         return foodInManager.expiredFood(storageType, foodType);
     }
 }
- */

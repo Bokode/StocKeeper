@@ -1,4 +1,4 @@
-/*package controllerPackage;
+package controllerPackage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -54,4 +54,3 @@ public class RecipeController {
         return recipeManager.recipesOfSeason(date);
     }
 }
- */

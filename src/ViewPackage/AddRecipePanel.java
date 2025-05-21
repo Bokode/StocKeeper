@@ -1,5 +1,6 @@
 package ViewPackage;
 
+import controllerPackage.RecipeController;
 import modelPackage.FoodType;
 import modelPackage.Recipe;
 import modelPackage.RecipeType;
@@ -12,6 +13,7 @@ public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
     private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
+    RecipeController recipeController;
     public AddRecipePanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
@@ -168,7 +170,8 @@ public class AddRecipePanel extends JPanel {
 
                 Recipe newRecipe = new Recipe(label, description, caloricIntake, lastDayDone, timeToMake, isCold, recipeType);
 
-                // DAO à faire
+                recipeController = new RecipeController();
+                recipeController.addRecipe(newRecipe);
                 System.out.println("Recette créée : " + newRecipe);
 
                 JOptionPane.showMessageDialog(this, "Recette ajoutée avec succès !");

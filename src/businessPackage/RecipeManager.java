@@ -1,4 +1,4 @@
-/*package businessPackage;
+package businessPackage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -65,4 +65,3 @@ public class RecipeManager {
         return dao.recipesOfSeason(date);
     }
 }
-*/

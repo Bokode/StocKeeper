@@ -1,4 +1,4 @@
-/*package businessPackage;
+package businessPackage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -60,4 +60,3 @@ public class FoodInManager {
         return dao.expiredFood(storageType, foodType);
     }
 }
-*/

@@ -1,4 +1,4 @@
-/*package dataAccessPackage;
+package dataAccessPackage;
 
 import exceptionPackage.*;
 import interfacePackage.RecipeDAOInterface;
@@ -265,4 +265,3 @@ public class RecipeDAO implements RecipeDAOInterface
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 }
- */
