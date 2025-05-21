@@ -31,7 +31,7 @@ public class FoodInManager {
     }
 
     public FoodIn getFoodIn(String label) throws AppException {
-        return dao.getFoodInById(label);
+        return dao.getFoodInByLabel(label);
     }
 
     public void deleteFoodIn(String label) throws AppException {
