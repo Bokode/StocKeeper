@@ -11,163 +11,112 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
-public class RecipeDAO implements RecipeDAOInterface
-{
+public class RecipeDAO implements RecipeDAOInterface {
 
     @Override
-    public List<Recipe> getAllRecipes() throws AppException
-    {
+    public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
-        try (Connection conn = dbAccess.getConnection();
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery())
-        {
-
-            while (rs.next())
-            {
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
                 recipes.add(mapResultSetToRecipe(rs));
             }
-
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             exceptionHandler(e);
         }
-
         return recipes;
     }
 
     @Override
-    public Recipe getRecipeByLabel(String label) throws AppException
-    {
+    public Recipe getRecipeByLabel(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query))
-        {
-
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                if (rs.next())
-                {
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
                     recipe = mapResultSetToRecipe(rs);
                 }
             }
-
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             exceptionHandler(e);
         }
-
         return recipe;
     }
 
     @Override
-    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException
-    {
-        String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE id = ?";
-        //return executeRecipeUpdate(query, label, description, caloricIntake, isCold, lastDateDone, timeToMake, type, id);
-        return null;
+    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+        String query = "UPDATE recipe SET description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, description);
+            stmt.setInt(2, caloricIntake);
+            stmt.setBoolean(3, isCold);
+            stmt.setDate(4, lastDateDone);
+            stmt.setInt(5, timeToMake);
+            stmt.setInt(6, getOrInsertRecipeType(conn, type));
+            stmt.setString(7, label);
+
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            exceptionHandler(e);
+            return 0;
+        }
     }
 
     @Override
-    public Integer deleteRecipe(String label) throws AppException
-    {
-        String query = "DELETE FROM recipe WHERE id = ?";
-        Integer rowsDeleted = 0;
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query))
-        {
-            //stmt.setInt(1, id);
-            rowsDeleted = stmt.executeUpdate();
-
-        } catch (SQLException e)
-        {
+    public Integer deleteRecipe(String label) throws AppException {
+        String query = "DELETE FROM recipe WHERE label = ?";
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, label);
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
             exceptionHandler(e);
+            return 0;
         }
-
-        return rowsDeleted;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    public void addRecipe(Recipe recipe) throws SQLException {
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-        Connection conn = dbAccess.getConnection();
-        try {
+    public void addRecipe(Recipe recipe) throws AppException {
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection()) {
             conn.setAutoCommit(false);
-
-            // 1. Get or insert RecipeType
             int recipeTypeId = getOrInsertRecipeType(conn, recipe.getType());
 
-            // 2. Insert into Recipe
             String sql = """
-        INSERT INTO recipe (label, description, calorieIntake, lastDateDone, timeToMake, isCold, type)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        """;
+                INSERT INTO recipe (label, description, caloricIntake, lastDateDone, timeToMake, isCold, type)
+                VALUES (?, ?, ?, ?, ?, ?, ?)""";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, recipe.getLabel());
                 stmt.setString(2, recipe.getDescription());
-
-                if (recipe.getCaloricIntake() != null) {
-                    stmt.setInt(3, recipe.getCaloricIntake());
-                } else {
-                    stmt.setNull(3, Types.INTEGER);
-                }
-
-                if (recipe.getLastDayDone() != null) {
-                    stmt.setDate(4, recipe.getLastDayDone());
-                } else {
-                    stmt.setNull(4, Types.DATE);
-                }
-
-                if (recipe.getTimeToMake() != null) {
-                    stmt.setInt(5, recipe.getTimeToMake());
-                } else {
-                    stmt.setNull(5, Types.INTEGER);
-                }
-
-                stmt.setBoolean(6, recipe.getCold() != null && recipe.getCold());
+                stmt.setObject(3, recipe.getCaloricIntake(), Types.INTEGER);
+                stmt.setObject(4, recipe.getLastDayDone(), Types.DATE);
+                stmt.setObject(5, recipe.getTimeToMake(), Types.INTEGER);
+                stmt.setBoolean(6, Boolean.TRUE.equals(recipe.getCold()));
                 stmt.setInt(7, recipeTypeId);
-
                 stmt.executeUpdate();
             }
-
             conn.commit();
         } catch (SQLException e) {
-            conn.rollback();
-            throw e;
-        } finally {
-            conn.setAutoCommit(true);
-            conn.close();
+            exceptionHandler(e);
         }
     }
 
-    private int getOrInsertRecipeType(Connection conn, RecipeType type) throws SQLException {
-        String select = "SELECT Id FROM recipe_type WHERE label = ?";
+    private int getOrInsertRecipeType(Connection conn, RecipeType type) throws AppException {
+        String select = "SELECT id FROM recipe_type WHERE label = ?";
         try (PreparedStatement stmt = conn.prepareStatement(select)) {
             stmt.setString(1, type.getLabel());
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return rs.getInt("Id");
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            exceptionHandler(e);
         }
 
         String insert = "INSERT INTO recipe_type (label) VALUES (?)";
@@ -176,91 +125,40 @@ public class RecipeDAO implements RecipeDAOInterface
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) return rs.getInt(1);
-        }
-
-        throw new SQLException("Unable to insert or get recipe_type");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    // Méthode utilitaire pour factoriser l'insertion ou la mise à jour d'une recette
-
-    private Integer executeRecipeUpdate(String query, String label, String description, Integer caloricIntake,
-                                    boolean isCold, Date lastDateDone, Integer timeToMake, Integer type, Integer id) throws AppException
-            {
-        Integer rows = 0;
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, label);
-            stmt.setString(2, description);
-            stmt.setInt(3, caloricIntake);
-            stmt.setBoolean(4, isCold);
-            stmt.setDate(5, lastDateDone);
-            stmt.setInt(6, timeToMake);
-            stmt.setInt(7, type);
-
-            if (id != null) {
-                stmt.setInt(8, id); // pour update
-            }
-
-            rows = stmt.executeUpdate();
-
         } catch (SQLException e) {
             exceptionHandler(e);
         }
-
-        return rows;
+        return -1;
     }
 
-    // transforme un ResultSet en objet Recipe
-
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
-        /*return new Recipe(
+        return new Recipe(
                 rs.getString("label"),
                 rs.getString("description"),
-                rs.getInt("calorieIntake"),
+                rs.getInt("caloricIntake"),
                 rs.getDate("lastDateDone"),
                 rs.getInt("timeToMake"),
                 rs.getBoolean("isCold"),
-                rs.getInt("type")
-        );*/
-        return null;
+                new RecipeType(rs.getString("label"))
+        );
     }
 
-    // Méthode pour gérer les exceptions SQL
-
-    private void exceptionHandler(SQLException e) throws AppException
-    {
-        String state = e.getSQLState();
-        switch (state) {
-            case "08S01":
-                throw new DataBaseUnavailableException("La base de données est indisponible.", e);
-            case "28000":
-                throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
-            case "22001":
-                throw new DataSizeException("Chaine trop longue pour le champ correspondant.", e);
-            default:
-                throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
+    private void exceptionHandler(SQLException e) throws AppException {
+        switch (e.getSQLState()) {
+            case "08S01" -> throw new DataBaseUnavailableException("La base de données est indisponible.", e);
+            case "28000" -> throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
+            case "22001" -> throw new DataSizeException("Chaîne trop longue pour le champ correspondant.", e);
+            case "23000" -> throw new AlreadyExistException("Recette déjà existante.", e);
+            default -> throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
         }
     }
 
-    // Search 1
+    @Override
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
-    // Search 3
+
+    @Override
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
