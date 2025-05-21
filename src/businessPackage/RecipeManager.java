@@ -33,7 +33,7 @@ public class RecipeManager {
     }
 
     public Recipe getRecipe(String label) throws AppException {
-        return dao.getRecipeByLabel(label);
+        return dao.getRecipe(label);
     }
 
     public void deleteRecipe(String label) throws AppException {
@@ -49,7 +49,7 @@ public class RecipeManager {
         List<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
-            if (r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
+            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
                 recipes.add(r);
             }
         });
