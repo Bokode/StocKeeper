@@ -15,6 +15,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -32,6 +33,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -48,7 +50,8 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     @Override
-    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
+                                boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -118,6 +121,20 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
     }
 
+    public int getRecipeIdByLabel(String label) throws AppException {
+        String query = "SELECT id FROM recipe WHERE label = ?";
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, label);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+        return -1;
+    }
+
+
     private int getOrInsertRecipeType(Connection conn, RecipeType type) throws AppException {
         String select = "SELECT id FROM recipe_type WHERE label = ?";
         try (PreparedStatement stmt = conn.prepareStatement(select)) {
@@ -140,32 +157,28 @@ public class RecipeDAO implements RecipeDAOInterface {
         return -1;
     }
 
-    private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
-        int typeId = rs.getInt("type");
-        RecipeType recipeType = null;
+    // transforme un ResultSet en objet Recipe
 
-        try (PreparedStatement stmt = rs.getStatement().getConnection().prepareStatement(
-                "SELECT label FROM Recipe_Type WHERE id = ?")) {
-            stmt.setInt(1, typeId);
-            try (ResultSet typeRs = stmt.executeQuery()) {
-                if (typeRs.next()) {
-                    String typeLabel = typeRs.getString("label");
-                    recipeType = new RecipeType(typeLabel);
-                }
-            }
+    private Recipe mapResultSetToRecipe(ResultSet rs) throws AppException {
+        try
+        {
+            return new Recipe(
+                    rs.getString("label"),
+                    rs.getString("description"),
+                    rs.getObject("caloricIntake") != null ? rs.getInt("caloricIntake") : null,
+                    rs.getDate("lastDateDone"),
+                    rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
+                    rs.getBoolean("isCold"),
+                    new RecipeType(rs.getString("label"))
+            );
+        }
+        catch (SQLException e)
+        {
+            exceptionHandler(e);
+            return null;
         }
 
-        return new Recipe(
-                rs.getString("label"),
-                rs.getString("description"),
-                rs.getObject("caloricIntake") != null ? rs.getInt("caloricIntake") : null,
-                rs.getDate("lastDateDone"),
-                rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
-                rs.getBoolean("isCold"),
-                recipeType
-        );
     }
-
 
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {
@@ -358,6 +371,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         return results;
     }
 
+
     private String getSeasonFromDate(LocalDate date) {
         int month = date.getMonthValue();
 
@@ -366,4 +380,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         else if (month <= 8) return "Summer";
         else return "Autumn";
     }
+
+
 }

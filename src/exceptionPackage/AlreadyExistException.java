@@ -1,6 +1,6 @@
 package exceptionPackage;
 
-public class AlreadyExistException extends RuntimeException
+public class AlreadyExistException extends AppException
 {
     public AlreadyExistException(String message)
     {

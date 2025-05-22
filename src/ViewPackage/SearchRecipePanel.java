@@ -88,3 +88,5 @@ public class SearchRecipePanel extends JPanel {
         });
     }
 }
+
+
