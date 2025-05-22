@@ -2,15 +2,14 @@ package dataAccessPackage;
 
 import exceptionPackage.*;
 import interfacePackage.RecipeDAOInterface;
-import modelPackage.Recipe;
-import modelPackage.RecipeType;
-import modelPackage.RecipeWithExpiredFood;
-import modelPackage.SeasonalRecipe;
+import modelPackage.*;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeDAO implements RecipeDAOInterface {
 
@@ -18,6 +17,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -28,13 +28,15 @@ public class RecipeDAO implements RecipeDAOInterface {
         } catch (SQLException e) {
             exceptionHandler(e);
         }
+
         return recipes;
     }
 
     @Override
-    public Recipe getRecipeByLabel(String label) throws AppException {
+    public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -47,26 +49,32 @@ public class RecipeDAO implements RecipeDAOInterface {
         } catch (SQLException e) {
             exceptionHandler(e);
         }
+
         return recipe;
     }
 
     @Override
-    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
-        String query = "UPDATE recipe SET description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
+    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+        String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, description);
+            stmt.setString(1, label);
+            stmt.setString(2, description);
             if (caloricIntake == null) {
-                stmt.setNull(2, Types.INTEGER);
+                stmt.setNull(3, Types.INTEGER);
             } else {
-                stmt.setInt(2, caloricIntake);
+                stmt.setInt(3, caloricIntake);
             }
-            stmt.setBoolean(3, isCold);
-            stmt.setDate(4, lastDateDone);
-            stmt.setInt(5, timeToMake);
-            stmt.setInt(6, getOrInsertRecipeType(conn, type));
-            stmt.setString(7, label);
+            stmt.setBoolean(4, isCold);
+            stmt.setDate(5, lastDateDone);
+            if (timeToMake == null) {
+                stmt.setNull(6, Types.INTEGER);
+            } else {
+                stmt.setInt(6, timeToMake);
+            }
+            stmt.setInt(7, getOrInsertRecipeType(conn, type));
+            stmt.setString(8, labelToFind);
 
             return stmt.executeUpdate();
         } catch (SQLException e) {
@@ -81,11 +89,14 @@ public class RecipeDAO implements RecipeDAOInterface {
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
-            return stmt.executeUpdate();
+            if (stmt.executeUpdate() == 0) {
+                throw new NotFoundException("Recette non trouvée.");
+            }
         } catch (SQLException e) {
             exceptionHandler(e);
-            return 0;
+
         }
+        return 0;
     }
 
     public void addRecipe(Recipe recipe) throws AppException {
@@ -105,8 +116,10 @@ public class RecipeDAO implements RecipeDAOInterface {
                 stmt.setObject(5, recipe.getTimeToMake(), Types.INTEGER);
                 stmt.setBoolean(6, Boolean.TRUE.equals(recipe.getCold()));
                 stmt.setInt(7, recipeTypeId);
+
                 stmt.executeUpdate();
             }
+
             conn.commit();
         } catch (SQLException e) {
             exceptionHandler(e);
@@ -125,6 +138,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
         return -1;
     }
+
 
     private int getOrInsertRecipeType(Connection conn, RecipeType type) throws AppException {
         String select = "SELECT id FROM recipe_type WHERE label = ?";
@@ -147,6 +161,8 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
         return -1;
     }
+
+    // transforme un ResultSet en objet Recipe
 
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
         return new Recipe(
@@ -178,6 +194,81 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     @Override
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        List<SeasonalRecipe> results = new ArrayList<>();
+        Map<Integer, SeasonalRecipe> recipeMap = new HashMap<>();
+        String season = getSeasonFromDate(date);
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        String sql = """
+        SELECT DISTINCT r.id AS recipe_id,
+                        r.label AS recipe_label,
+                        r.description,
+                        r.caloricIntake,
+                        r.lastDateDone,
+                        r.timeToMake,
+                        r.isCold,
+                        d.label AS diet_label,
+                        m.label AS material_label,
+                        tm.label AS material_type_label
+        FROM Recipe r
+        JOIN Recipe_Material rm ON rm.recipe = r.id
+        JOIN Material m ON m.id = rm.material
+        JOIN Type_Material tm ON tm.id = m.type_id
+        JOIN Diet_Recipe dr ON dr.recipe = r.id
+        JOIN Diet d ON d.id = dr.diet
+        JOIN Ingredient_Amount ia ON ia.recipe = r.id
+        JOIN Food f ON f.id = ia.food
+        JOIN Food_In fi ON fi.food_id = f.id
+        JOIN Season_Food sf ON sf.food = f.id
+        WHERE sf.season = ?
+          AND fi.expirationDate < ?
+    """;
+
+        try (Connection conn = dbAccess.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, season);
+            ps.setDate(2, java.sql.Date.valueOf(date));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int recipeId = rs.getInt("recipe_id");
+
+                    SeasonalRecipe sr = recipeMap.get(recipeId);
+                    if (sr == null) {
+                        Recipe recipe = new Recipe(
+                                rs.getString("recipe_label"),
+                                rs.getString("description"),
+                                rs.getInt("caloricIntake"),
+                                rs.getDate("lastDateDone"),
+                                rs.getInt("timeToMake"),
+                                rs.getBoolean("isCold"),
+                                null
+                        );
+                        sr = new SeasonalRecipe(recipe);
+                        recipeMap.put(recipeId, sr);
+                    }
+
+                    sr.addDiet(new Diet(rs.getString("diet_label")));
+                    sr.addMaterial(new Material(rs.getString("material_label"), rs.getString("material_type_label")));
+                }
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        results.addAll(recipeMap.values());
+        return results;
+    }
+
+
+    private String getSeasonFromDate(LocalDate date) {
+        int month = date.getMonthValue();
+
+        if (month == 12 || month <= 2) return "Winter";
+        else if (month <= 5) return "Spring";
+        else if (month <= 8) return "Summer";
+        else return "Autumn";
     }
 }

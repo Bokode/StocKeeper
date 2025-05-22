@@ -16,9 +16,9 @@ public interface RecipeDAOInterface
 
     void addRecipe(Recipe recipe) throws SQLException;
 
-    Recipe getRecipeByLabel(String label);
+    Recipe getRecipe(String label);
 
-    Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type);
+    Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type);
 
     Integer deleteRecipe(String label);
 

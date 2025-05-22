@@ -6,13 +6,15 @@ import modelPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FoodInDAO implements FoodInDAOInterface {
 
     @Override
     public List<FoodIn> getAllFoodIns() throws AppException {
-        /*List<FoodIn> foodsIn = new ArrayList<>();
+        List<FoodIn> foodsIn = new ArrayList<>();
         String query = "SELECT * FROM food_in";
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -29,8 +31,7 @@ public class FoodInDAO implements FoodInDAOInterface {
             exceptionHandler(e);
         }
 
-        return foodsIn;*/
-        return null;
+        return foodsIn;
     }
 
     /*@Override
@@ -85,8 +86,9 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             conn.commit();
         } catch (SQLException e) {
-            conn.rollback();
-            throw e;
+            //conn.rollback();
+            //throw e;
+            exceptionHandler(e);
         } finally {
             conn.setAutoCommit(true);
             conn.close();
@@ -162,7 +164,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     @Override
     public Integer deleteFoodIn(String label) throws AppException
     {
-        /*String query = "DELETE FROM food_in WHERE id = ?";
+        String query = "DELETE FROM food_in WHERE label = ?";
         Integer rowsDeleted = 0;
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -177,21 +179,20 @@ public class FoodInDAO implements FoodInDAOInterface {
             exceptionHandler(e);
         }
 
-        return rowsDeleted;*/
-        return null;
+        return rowsDeleted;
     }
 
     @Override
     public FoodIn getFoodInByLabel(String label) throws AppException
     {
-        /*String query = "SELECT * FROM food_in WHERE id = ?";
+        String query = "SELECT * FROM food_in WHERE label = ?";
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
         FoodIn foodIn = null;
 
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, id);
+            //stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -203,8 +204,7 @@ public class FoodInDAO implements FoodInDAOInterface {
             exceptionHandler(e);
         }
 
-        return foodIn;*/
-        return null;
+        return foodIn;
     }
 
     private Integer executeFoodInUpdate(String query, Integer food, Integer storageType, Integer quantity, boolean isOpen,
@@ -278,8 +278,8 @@ public class FoodInDAO implements FoodInDAOInterface {
                 "f.Id AS food_id, f.label AS food_label, " +
                 "ft.Id AS foodType_id, ft.label AS foodType_label " +
                 "FROM food_in fi " +
-                "JOIN food f ON fi.food = f.Id " +
-                "JOIN food_type ft ON f.food_type = ft.Id";
+                "JOIN food f ON fi.food_id = f.Id " +
+                "JOIN food_type ft ON f.foodType = ft.Id";
 
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -290,11 +290,11 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             while (rs.next()) {
                 FoodType foodType = new FoodType(
-                        rs.getString("foodType_label")
+                        rs.getString("label")
                 );
 
                 Food food = new Food(
-                        rs.getString("food_label"),
+                        rs.getString("label"),
                         foodType
                 );
 
@@ -325,7 +325,90 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     // Search 2
-    public List<ExpiredFood> expiredFood(String storageType, String foodType) throws AppException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public List<ExpiredFood> expiredFood(StorageType storageType, FoodType foodType) throws AppException {
+        List<ExpiredFood> result = new ArrayList<>();
+
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        String query = """
+        SELECT fi.expirationDate, fi.quantity, fi.isOpen, fi.nutriScore, fi.purchaseDate,
+               f.label AS food_label,
+               ft.label AS food_type_label,
+               st.label AS storage_label,
+               s.label AS season_label,
+               a.label AS allergen_label
+        FROM food_in fi
+        JOIN food f ON fi.food_id = f.Id
+        JOIN food_type ft ON f.foodType = ft.Id
+        JOIN storage_type st ON fi.storageType_id = st.Id
+        LEFT JOIN season_food sf ON f.Id = sf.food
+        LEFT JOIN season s ON sf.season = s.label
+        LEFT JOIN food_allergen fa ON f.Id = fa.food
+        LEFT JOIN allergen a ON fa.allergen = a.label
+        WHERE fi.expirationDate < CURRENT_DATE()
+          AND st.label = ?
+          AND ft.label = ?
+    """;
+
+        try (Connection conn = dbAccess.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, storageType.getLabel());
+            stmt.setString(2, foodType.getLabel());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                Map<String, ExpiredFood> map = new HashMap<>();
+
+                while (rs.next()) {
+                    // Clé unique pour éviter les doublons
+                    String foodKey = rs.getString("food_label") + "_" + rs.getDate("expirationDate");
+
+                    ExpiredFood expiredFood;
+                    if (!map.containsKey(foodKey)) {
+                        Date expirationDate = rs.getDate("expirationDate");
+                        Integer quantity = rs.getInt("quantity");
+                        Boolean isOpen = rs.getBoolean("isOpen");
+                        Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
+                        Date purchaseDate = rs.getDate("purchaseDate");
+
+                        FoodType ft = new FoodType(rs.getString("food_type_label"));
+                        Food food = new Food(rs.getString("food_label"), ft);
+                        StorageType st = new StorageType(rs.getString("storage_label"));
+
+                        FoodIn foodIn = new FoodIn(
+                                expirationDate,
+                                quantity,
+                                isOpen,
+                                nutriScore,
+                                purchaseDate,
+                                food,
+                                st
+                        );
+
+                        expiredFood = new ExpiredFood(foodIn);
+                        map.put(foodKey, expiredFood);
+                    } else {
+                        expiredFood = map.get(foodKey);
+                    }
+
+                    String seasonLabel = rs.getString("season_label");
+                    if (seasonLabel != null && expiredFood.getSeasons().stream().noneMatch(s -> s.getLabel().equals(seasonLabel))) {
+                        expiredFood.addSeason(new Season(seasonLabel));
+                    }
+
+                    String allergenLabel = rs.getString("allergen_label");
+                    if (allergenLabel != null && expiredFood.getAllergens().stream().noneMatch(a -> a.getLabel().equals(allergenLabel))) {
+                        expiredFood.addAllergen(new Allergen(allergenLabel));
+                    }
+                }
+
+                result.addAll(map.values());
+            }
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        return result;
     }
+
 }

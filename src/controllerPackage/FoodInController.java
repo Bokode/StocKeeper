@@ -44,7 +44,7 @@ public class FoodInController {
     }
 
     // Search 2
-    public List<ExpiredFood> foodExpired(String storageType, String foodType) throws AppException {
+    public List<ExpiredFood> foodExpired(StorageType storageType, FoodType foodType) throws AppException {
         return foodInManager.expiredFood(storageType, foodType);
     }
 }

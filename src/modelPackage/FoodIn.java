@@ -32,7 +32,7 @@ public class FoodIn {
 
     public void setQuantity(Integer quantity) {
         if (quantity < 0) {
-            throw new WrongInputException("Quantity must be a positive number");
+            throw new WrongInputException("La quantité doit être un nombre positif");
         } else {
             this.quantity = quantity;
         }
@@ -44,7 +44,7 @@ public class FoodIn {
 
     public void setNutriScore(Character nutriScore) {
         if (nutriScore != null && (nutriScore < 'A' || nutriScore > 'E')) {
-            throw new WrongInputException("NutriScore must be between A and E");
+            throw new WrongInputException("Le NutriScore doit être compris entre A et E");
         } else {
             this.nutriScore = nutriScore;
         }
@@ -53,7 +53,7 @@ public class FoodIn {
     public void setPurchaseDate(Date purchaseDate) {
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
         if (purchaseDate != null && purchaseDate.after(today)) {
-            throw new WrongInputException("Purchase date cannot be in the future.");
+            throw new WrongInputException("La date d'achat ne peut pas être dans le future.");
         } else {
             this.purchaseDate = purchaseDate;
         }
