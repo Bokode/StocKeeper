@@ -73,7 +73,6 @@ public class SearchRecipePanel extends JPanel {
                 }
                 recipeController = new RecipeController();
                 Recipe recipe = recipeController.getRecipe(labelToFind);
-                JOptionPane.showMessageDialog(this, "La recette a été trouvée, vous allez pouvoir procéder aux modifications.", "Recette trouvée", JOptionPane.INFORMATION_MESSAGE);
                 labelField.setText("");
 
                 updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
