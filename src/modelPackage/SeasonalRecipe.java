@@ -23,7 +23,9 @@ public class SeasonalRecipe {
     }
 
     public void addMaterial(Material material) {
-        materials.add(material);
+        if (!materials.contains(material)) {
+            materials.add(material);
+        }
     }
 
     public Recipe getRecipe() {
