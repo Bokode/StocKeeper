@@ -18,6 +18,8 @@ public class UpdateRecipePanel extends JPanel {
     public UpdateRecipePanel(MainWindow mainWindow, Recipe recipe) {
         setLayout(new BorderLayout());
 
+        String labelToFind = recipe.getLabel();
+
         // Titre
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titleLabel = new JLabel("Modification de la recette : ");
@@ -63,7 +65,8 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(caloricInTakeLabel, gbc);
         gbc.gridx = 1;
         caloricIntakeField = new JTextField(20);
-        if (recipe.getCaloricIntake() != null) {
+        caloricIntakeField.setText("");
+        if (recipe.getCaloricIntake() != null && recipe.getCaloricIntake() != 0) {
             caloricIntakeField.setText(recipe.getCaloricIntake().toString());
         }
         FormPanel.add(caloricIntakeField, gbc);
@@ -76,7 +79,8 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(timeToMakeLabel, gbc);
         gbc.gridx = 1;
         timeToMakeField = new JTextField(20);
-        if (recipe.getTimeToMake() != null) {
+        timeToMakeField.setText("");
+        if (recipe.getTimeToMake() != null && recipe.getTimeToMake() != 0) {
             timeToMakeField.setText(recipe.getTimeToMake().toString());
         }
         FormPanel.add(timeToMakeField, gbc);
@@ -211,7 +215,7 @@ public class UpdateRecipePanel extends JPanel {
 
                 Recipe newRecipe = new Recipe(label, description, caloricIntake, lastDayDone, timeToMake, isCold, recipeType);
                 recipeController = new RecipeController();
-                recipeController.updateRecipe(newRecipe);
+                recipeController.updateRecipe(newRecipe, labelToFind);
                 JOptionPane.showMessageDialog(this, "Recette modifiée avec succès !", "Recette ajoutée", JOptionPane.INFORMATION_MESSAGE);
                 mainWindow.showHomePanel();
             }
