@@ -6,7 +6,9 @@ import modelPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FoodInDAO implements FoodInDAOInterface {
 
@@ -355,33 +357,52 @@ public class FoodInDAO implements FoodInDAOInterface {
             stmt.setString(2, foodType.getLabel());
 
             try (ResultSet rs = stmt.executeQuery()) {
+                Map<String, ExpiredFood> map = new HashMap<>();
+
                 while (rs.next()) {
-                    Date expirationDate = rs.getDate("expirationDate");
-                    Integer quantity = rs.getInt("quantity");
-                    Boolean isOpen = rs.getBoolean("isOpen");
-                    Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
-                    Date purchaseDate = rs.getDate("purchaseDate");
+                    // Clé unique pour éviter les doublons
+                    String foodKey = rs.getString("food_label") + "_" + rs.getDate("expirationDate");
 
-                    // Création des objets liés
-                    FoodType ft = new FoodType(rs.getString("label"));
-                    Food food = new Food(rs.getString("label"), ft);
-                    StorageType st = new StorageType(rs.getString("label"));
+                    ExpiredFood expiredFood;
+                    if (!map.containsKey(foodKey)) {
+                        Date expirationDate = rs.getDate("expirationDate");
+                        Integer quantity = rs.getInt("quantity");
+                        Boolean isOpen = rs.getBoolean("isOpen");
+                        Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
+                        Date purchaseDate = rs.getDate("purchaseDate");
 
-                    FoodIn foodIn = new FoodIn(
-                            expirationDate,
-                            quantity,
-                            isOpen,
-                            nutriScore,
-                            purchaseDate,
-                            food,
-                            st
-                    );
+                        FoodType ft = new FoodType(rs.getString("food_type_label"));
+                        Food food = new Food(rs.getString("food_label"), ft);
+                        StorageType st = new StorageType(rs.getString("storage_label"));
 
-                    Season season = rs.getString("label") != null ? new Season(rs.getString("label")) : null;
-                    Allergen allergen = rs.getString("label") != null ? new Allergen(rs.getString("label")) : null;
+                        FoodIn foodIn = new FoodIn(
+                                expirationDate,
+                                quantity,
+                                isOpen,
+                                nutriScore,
+                                purchaseDate,
+                                food,
+                                st
+                        );
 
-                    result.add(new ExpiredFood(foodIn, season, allergen));
+                        expiredFood = new ExpiredFood(foodIn);
+                        map.put(foodKey, expiredFood);
+                    } else {
+                        expiredFood = map.get(foodKey);
+                    }
+
+                    String seasonLabel = rs.getString("season_label");
+                    if (seasonLabel != null && expiredFood.getSeasons().stream().noneMatch(s -> s.getLabel().equals(seasonLabel))) {
+                        expiredFood.addSeason(new Season(seasonLabel));
+                    }
+
+                    String allergenLabel = rs.getString("allergen_label");
+                    if (allergenLabel != null && expiredFood.getAllergens().stream().noneMatch(a -> a.getLabel().equals(allergenLabel))) {
+                        expiredFood.addAllergen(new Allergen(allergenLabel));
+                    }
                 }
+
+                result.addAll(map.values());
             }
         } catch (SQLException e) {
             exceptionHandler(e);

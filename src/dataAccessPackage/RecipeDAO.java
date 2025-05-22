@@ -7,7 +7,9 @@ import modelPackage.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeDAO implements RecipeDAOInterface {
 
@@ -167,6 +169,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     @Override
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         List<SeasonalRecipe> results = new ArrayList<>();
+        Map<Integer, SeasonalRecipe> recipeMap = new HashMap<>();
         String season = getSeasonFromDate(date);
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
@@ -193,11 +196,9 @@ public class RecipeDAO implements RecipeDAOInterface {
         JOIN Season_Food sf ON sf.food = f.id
         WHERE sf.season = ?
           AND fi.expirationDate < ?
-        
     """;
 
         try (Connection conn = dbAccess.getConnection();
-
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, season);
@@ -205,23 +206,25 @@ public class RecipeDAO implements RecipeDAOInterface {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    Diet diet = new Diet(rs.getString("diet_label"));
-                    Material material = new Material(
-                            rs.getString("material_label"),
-                            rs.getString("material_type_label")
-                    );
+                    int recipeId = rs.getInt("recipe_id");
 
-                    Recipe recipe = new Recipe(
-                            rs.getString("recipe_label"),
-                            rs.getString("description"),
-                            rs.getInt("caloricIntake"),
-                            rs.getDate("lastDateDone"),
-                            rs.getInt("timeToMake"),
-                            rs.getBoolean("isCold"),
-                            null // ou récupère le RecipeType si nécessaire
-                    );
+                    SeasonalRecipe sr = recipeMap.get(recipeId);
+                    if (sr == null) {
+                        Recipe recipe = new Recipe(
+                                rs.getString("recipe_label"),
+                                rs.getString("description"),
+                                rs.getInt("caloricIntake"),
+                                rs.getDate("lastDateDone"),
+                                rs.getInt("timeToMake"),
+                                rs.getBoolean("isCold"),
+                                null
+                        );
+                        sr = new SeasonalRecipe(recipe);
+                        recipeMap.put(recipeId, sr);
+                    }
 
-                    results.add(new SeasonalRecipe(recipe, diet, material));
+                    sr.addDiet(new Diet(rs.getString("diet_label")));
+                    sr.addMaterial(new Material(rs.getString("material_label"), rs.getString("material_type_label")));
                 }
             }
 
@@ -229,8 +232,10 @@ public class RecipeDAO implements RecipeDAOInterface {
             exceptionHandler(e);
         }
 
+        results.addAll(recipeMap.values());
         return results;
     }
+
 
     private String getSeasonFromDate(LocalDate date) {
         int month = date.getMonthValue();
