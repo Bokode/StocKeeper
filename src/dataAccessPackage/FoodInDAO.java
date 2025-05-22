@@ -276,7 +276,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                 "f.Id AS food_id, f.label AS food_label, " +
                 "ft.Id AS foodType_id, ft.label AS foodType_label " +
                 "FROM food_in fi " +
-                "JOIN food f ON fi.food = f.Id " +
+                "JOIN food f ON fi.food_id = f.Id " +
                 "JOIN food_type ft ON f.foodType = ft.Id";
 
 
@@ -336,9 +336,9 @@ public class FoodInDAO implements FoodInDAOInterface {
                s.label AS season_label,
                a.label AS allergen_label
         FROM food_in fi
-        JOIN food f ON fi.food = f.Id
+        JOIN food f ON fi.food_id = f.Id
         JOIN food_type ft ON f.foodType = ft.Id
-        JOIN storage_type st ON fi.storageType = st.Id
+        JOIN storage_type st ON fi.storageType_id = st.Id
         LEFT JOIN season_food sf ON f.Id = sf.food
         LEFT JOIN season s ON sf.season = s.label
         LEFT JOIN food_allergen fa ON f.Id = fa.food

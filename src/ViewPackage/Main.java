@@ -23,15 +23,9 @@ public class Main {
         FoodInController foodController = new FoodInController();
         RecipeController recipeController = new RecipeController();
 
-
         // Test recherche 1 (Non fonctionnel)
         //List<RecipeWithExpiredFood> recipeWithExpiredFood = recipeController.recipeWithExpiredFood();
         //System.out.println(recipeWithExpiredFood.size());
 
-        // Test recherche 3 (A tester / Ajuster le nom des colonnes)
-        /*List<SeasonalRecipe> recipes = recipeController.RecipesOfSeason(LocalDate.now());
-        for (SeasonalRecipe recipe : recipes) {
-            System.out.println(recipe);
-        }*/
     }
 }

@@ -157,6 +157,78 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     @Override
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        List<SeasonalRecipe> results = new ArrayList<>();
+        String season = getSeasonFromDate(date);
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        String sql = """
+        SELECT DISTINCT r.id AS recipe_id,
+                        r.label AS recipe_label,
+                        r.description,
+                        r.caloricIntake,
+                        r.lastDateDone,
+                        r.timeToMake,
+                        r.isCold,
+                        d.label AS diet_label,
+                        m.label AS material_label,
+                        tm.label AS material_type_label
+        FROM Recipe r
+        JOIN Recipe_Material rm ON rm.recipe = r.id
+        JOIN Material m ON m.id = rm.material
+        JOIN Type_Material tm ON tm.id = m.type_id
+        JOIN Diet_Recipe dr ON dr.recipe = r.id
+        JOIN Diet d ON d.id = dr.diet
+        JOIN Ingredient_Amount ia ON ia.recipe = r.id
+        JOIN Food f ON f.id = ia.food
+        JOIN Food_In fi ON fi.food_id = f.id
+        JOIN Season_Food sf ON sf.food = f.id
+        WHERE sf.season = ?
+          AND fi.expirationDate < ?
+        
+    """;
+
+        try (Connection conn = dbAccess.getConnection();
+
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, season);
+            ps.setDate(2, java.sql.Date.valueOf(date));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Diet diet = new Diet(rs.getString("diet_label"));
+                    Material material = new Material(
+                            rs.getString("material_label"),
+                            rs.getString("material_type_label")
+                    );
+
+                    Recipe recipe = new Recipe(
+                            rs.getString("recipe_label"),
+                            rs.getString("description"),
+                            rs.getInt("caloricIntake"),
+                            rs.getDate("lastDateDone"),
+                            rs.getInt("timeToMake"),
+                            rs.getBoolean("isCold"),
+                            null // ou récupère le RecipeType si nécessaire
+                    );
+
+                    results.add(new SeasonalRecipe(recipe, diet, material));
+                }
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        return results;
+    }
+
+    private String getSeasonFromDate(LocalDate date) {
+        int month = date.getMonthValue();
+
+        if (month == 12 || month <= 2) return "Winter";
+        else if (month <= 5) return "Spring";
+        else if (month <= 8) return "Summer";
+        else return "Autumn";
     }
 }
