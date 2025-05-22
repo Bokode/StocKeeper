@@ -21,6 +21,10 @@ public class IngredientAmountController {
         ingredientAmountManager.addIngredientAmount(recipe, food, quantity);
     }
 
+    public void deleteIngredientAmount(String recipe, String food) throws AppException {
+        ingredientAmountManager.deleteIngredientAmount(recipe, food);
+    }
+
     public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException {
         ingredientAmountManager.updateIngredientAmount(recipe, food, quantity);
     }

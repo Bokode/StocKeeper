@@ -21,6 +21,10 @@ public class IngredientAmountManager {
         dao.addIngredientAmount(recipe, food, quantity);
     }
 
+    public void deleteIngredientAmount(String recipe, String food) throws AppException {
+        dao.deleteIngredientAmount(recipe, food);
+    }
+
     public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException {
         dao.updateIngredientAmount(recipe, food, quantity);
     }
