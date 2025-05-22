@@ -14,11 +14,9 @@ public class Recipe {
     private Integer timeToMake; // Facultatif
     private Boolean isCold;
     private RecipeType type; // Clé étrangère
-    private List<RecipeMaterial> materials;
-    private List<IngredientAmount> ingredients;
 
     public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake,
-                  Boolean isCold, RecipeType type, ArrayList<IngredientAmount> ingredients) {
+                  Boolean isCold, RecipeType type) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -26,8 +24,6 @@ public class Recipe {
         setTimeToMake(timeToMake);
         setIsCold(isCold);
         setType(type);
-        materials = new ArrayList<>();
-        ingredients = ingredients;
     }
 
     // Setter

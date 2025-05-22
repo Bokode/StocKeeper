@@ -166,8 +166,7 @@ public class RecipeDAO implements RecipeDAOInterface {
                 rs.getDate("lastDateDone"),
                 rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
                 rs.getBoolean("isCold"),
-                new RecipeType(rs.getString("label")),
-                new IngredientAmountDAO().getIngredientAmountsByRecipe(rs.getString("label"))
+                new RecipeType(rs.getString("label"))
         );
     }
 
@@ -371,6 +370,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         else if (month <= 8) return "Summer";
         else return "Autumn";
     }
-    */
+
 
 }
