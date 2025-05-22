@@ -12,6 +12,7 @@ public class SearchRecipePanel extends JPanel {
     private JTextField labelField;
     private JLabel titleLabel, labelLabel;
     private RecipeController recipeController;
+    private Recipe newRecipe;
     private UpdateRecipePanel updateRecipePanel;
     public SearchRecipePanel(MainWindow mainWindow){
         setLayout(new BorderLayout());
@@ -80,7 +81,7 @@ public class SearchRecipePanel extends JPanel {
                 mainWindow.getMainContainer().add(updateRecipePanel, BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
-                
+
             }
             catch (Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);

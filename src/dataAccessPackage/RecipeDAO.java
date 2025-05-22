@@ -120,7 +120,7 @@ public class RecipeDAO implements RecipeDAOInterface
 
             // 2. Insert into Recipe
             String sql = """
-        INSERT INTO recipe (label, description, calorieIntake, lastDateDone, timeToMake, isCold, type)
+        INSERT INTO recipe (label, description, caloricIntake, lastDateDone, timeToMake, isCold, type)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
