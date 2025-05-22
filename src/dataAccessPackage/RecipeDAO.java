@@ -138,16 +138,31 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
+        int typeId = rs.getInt("type");
+        RecipeType recipeType = null;
+
+        try (PreparedStatement stmt = rs.getStatement().getConnection().prepareStatement(
+                "SELECT label FROM Recipe_Type WHERE id = ?")) {
+            stmt.setInt(1, typeId);
+            try (ResultSet typeRs = stmt.executeQuery()) {
+                if (typeRs.next()) {
+                    String typeLabel = typeRs.getString("label");
+                    recipeType = new RecipeType(typeLabel);
+                }
+            }
+        }
+
         return new Recipe(
                 rs.getString("label"),
                 rs.getString("description"),
-                rs.getInt("caloricIntake"),
+                rs.getObject("caloricIntake") != null ? rs.getInt("caloricIntake") : null,
                 rs.getDate("lastDateDone"),
-                rs.getInt("timeToMake"),
+                rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
                 rs.getBoolean("isCold"),
-                new RecipeType(rs.getString("label"))
+                recipeType
         );
     }
+
 
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {
@@ -161,7 +176,7 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     @Override
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
-        /*List<RecipeWithExpiredFood> result = new ArrayList<>();
+        List<RecipeWithExpiredFood> result = new ArrayList<>();
         LocalDate date = LocalDate.now();
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
@@ -267,8 +282,7 @@ public class RecipeDAO implements RecipeDAOInterface {
             exceptionHandler(e);
         }
 
-        return result;*/
-        return null;
+        return result;
     }
 
     @Override
