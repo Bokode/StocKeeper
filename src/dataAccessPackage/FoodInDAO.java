@@ -6,7 +6,9 @@ import modelPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FoodInDAO implements FoodInDAOInterface {
 
@@ -276,8 +278,8 @@ public class FoodInDAO implements FoodInDAOInterface {
                 "f.Id AS food_id, f.label AS food_label, " +
                 "ft.Id AS foodType_id, ft.label AS foodType_label " +
                 "FROM food_in fi " +
-                "JOIN food f ON fi.food = f.Id " +
-                "JOIN food_type ft ON f.food_type = ft.Id";
+                "JOIN food f ON fi.food_id = f.Id " +
+                "JOIN food_type ft ON f.foodType = ft.Id";
 
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -288,11 +290,11 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             while (rs.next()) {
                 FoodType foodType = new FoodType(
-                        rs.getString("foodType_label")
+                        rs.getString("label")
                 );
 
                 Food food = new Food(
-                        rs.getString("food_label"),
+                        rs.getString("label"),
                         foodType
                 );
 
@@ -336,9 +338,9 @@ public class FoodInDAO implements FoodInDAOInterface {
                s.label AS season_label,
                a.label AS allergen_label
         FROM food_in fi
-        JOIN food f ON fi.food = f.Id
-        JOIN food_type ft ON f.food_type = ft.Id
-        JOIN storage_type st ON fi.storageType = st.Id
+        JOIN food f ON fi.food_id = f.Id
+        JOIN food_type ft ON f.foodType = ft.Id
+        JOIN storage_type st ON fi.storageType_id = st.Id
         LEFT JOIN season_food sf ON f.Id = sf.food
         LEFT JOIN season s ON sf.season = s.label
         LEFT JOIN food_allergen fa ON f.Id = fa.food
@@ -355,33 +357,52 @@ public class FoodInDAO implements FoodInDAOInterface {
             stmt.setString(2, foodType.getLabel());
 
             try (ResultSet rs = stmt.executeQuery()) {
+                Map<String, ExpiredFood> map = new HashMap<>();
+
                 while (rs.next()) {
-                    Date expirationDate = rs.getDate("expirationDate");
-                    Integer quantity = rs.getInt("quantity");
-                    Boolean isOpen = rs.getBoolean("isOpen");
-                    Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
-                    Date purchaseDate = rs.getDate("purchaseDate");
+                    // Clé unique pour éviter les doublons
+                    String foodKey = rs.getString("food_label") + "_" + rs.getDate("expirationDate");
 
-                    // Création des objets liés
-                    FoodType ft = new FoodType(rs.getString("food_type_label"));
-                    Food food = new Food(rs.getString("food_label"), ft);
-                    StorageType st = new StorageType(rs.getString("storage_label"));
+                    ExpiredFood expiredFood;
+                    if (!map.containsKey(foodKey)) {
+                        Date expirationDate = rs.getDate("expirationDate");
+                        Integer quantity = rs.getInt("quantity");
+                        Boolean isOpen = rs.getBoolean("isOpen");
+                        Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
+                        Date purchaseDate = rs.getDate("purchaseDate");
 
-                    FoodIn foodIn = new FoodIn(
-                            expirationDate,
-                            quantity,
-                            isOpen,
-                            nutriScore,
-                            purchaseDate,
-                            food,
-                            st
-                    );
+                        FoodType ft = new FoodType(rs.getString("food_type_label"));
+                        Food food = new Food(rs.getString("food_label"), ft);
+                        StorageType st = new StorageType(rs.getString("storage_label"));
 
-                    Season season = rs.getString("season_label") != null ? new Season(rs.getString("season_label")) : null;
-                    Allergen allergen = rs.getString("allergen_label") != null ? new Allergen(rs.getString("allergen_label")) : null;
+                        FoodIn foodIn = new FoodIn(
+                                expirationDate,
+                                quantity,
+                                isOpen,
+                                nutriScore,
+                                purchaseDate,
+                                food,
+                                st
+                        );
 
-                    result.add(new ExpiredFood(foodIn, season, allergen));
+                        expiredFood = new ExpiredFood(foodIn);
+                        map.put(foodKey, expiredFood);
+                    } else {
+                        expiredFood = map.get(foodKey);
+                    }
+
+                    String seasonLabel = rs.getString("season_label");
+                    if (seasonLabel != null && expiredFood.getSeasons().stream().noneMatch(s -> s.getLabel().equals(seasonLabel))) {
+                        expiredFood.addSeason(new Season(seasonLabel));
+                    }
+
+                    String allergenLabel = rs.getString("allergen_label");
+                    if (allergenLabel != null && expiredFood.getAllergens().stream().noneMatch(a -> a.getLabel().equals(allergenLabel))) {
+                        expiredFood.addAllergen(new Allergen(allergenLabel));
+                    }
                 }
+
+                result.addAll(map.values());
             }
         } catch (SQLException e) {
             exceptionHandler(e);

@@ -1,37 +1,40 @@
 package modelPackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExpiredFood {
     private FoodIn foodIn;
-    private Season season;
-    private Allergen allergen;
+    private List<Season> seasons;
+    private List<Allergen> allergens;
 
-    public ExpiredFood(FoodIn foodIn, Season season, Allergen allergen) {
+    public ExpiredFood(FoodIn foodIn) {
         setFoodIn(foodIn);
-        setSeason(season);
-        setAllergen(allergen);
+        seasons = new ArrayList<Season>();
+        allergens = new ArrayList<Allergen>();
     }
 
     public void setFoodIn(FoodIn foodIn) {
         this.foodIn = foodIn;
     }
 
-    public void setSeason(Season season) {
-        this.season = season;
+    public void addSeason(Season season) {
+        seasons.add(season);
     }
 
-    public void setAllergen(Allergen allergen) {
-        this.allergen = allergen;
+    public void addAllergen(Allergen allergen) {
+        allergens.add(allergen);
     }
 
     public FoodIn getFoodIn() {
         return foodIn;
     }
 
-    public Season getSeason() {
-        return season;
+    public List<Season> getSeasons() {
+        return seasons;
     }
 
-    public Allergen getAllergen() {
-        return allergen;
+    public List<Allergen> getAllergens() {
+        return allergens;
     }
 }
