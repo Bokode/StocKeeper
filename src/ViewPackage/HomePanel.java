@@ -18,3 +18,4 @@ public class HomePanel extends JPanel {
         this.add(line2Label);
     }
 }
+

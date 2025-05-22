@@ -32,7 +32,7 @@ public class IngredientAmountDAO
 
     private void deleteIngredientAmount(String recipe, String food) throws AppException
     {
-        String query = "DELETE FROM ingredient_amount WHERE recipe_id = ? AND food_id = ?";
+        String query = "DELETE FROM ingredientamount WHERE recipe = ? AND food = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection())
         {
             RecipeDAO recipeDAO = new RecipeDAO();

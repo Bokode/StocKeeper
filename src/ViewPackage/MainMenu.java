@@ -62,3 +62,4 @@ public class MainMenu extends JMenuBar {
         listingRecipe.addActionListener(e -> mainWindow.showRecipeListPanel());
     }
 }
+

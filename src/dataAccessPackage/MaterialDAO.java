@@ -25,6 +25,30 @@ public class MaterialDAO {
 
     /* ───────────── CRUD principal ─────────────── */
 
+    public void addMaterial(String label, String typeLabel) throws AppException {
+        final String sql = "INSERT INTO material (" + COL_LABEL + ", " + COL_TYPE + ") VALUES (?, ?)";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setString(1, label);
+            ps.setInt(2, typeDAO.getIdByLabel(typeLabel));
+            ps.executeUpdate();
+
+        } catch (SQLException e) { exceptionHandler(e); }
+    }
+
+    public void deleteMaterial(String label) throws AppException
+    {
+        String sql = "DELETE FROM material WHERE " + COL_LABEL + " = ?";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setString(1, label);
+            ps.executeUpdate();
+
+        } catch (SQLException e) { exceptionHandler(e); }
+    }
+
     public int getMaterialIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM material WHERE " + COL_LABEL + " = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
@@ -51,7 +75,7 @@ public class MaterialDAO {
         return null; // rien trouvé
     }
 
-    /** Ajoute un nouveau matériel (label + type). */
+
     public void addMaterial(Material mat) throws AppException {
         final String sql = "INSERT INTO material (" + COL_LABEL + ", " + COL_TYPE + ") VALUES (?, ?)";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();

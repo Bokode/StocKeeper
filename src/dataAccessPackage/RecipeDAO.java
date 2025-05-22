@@ -50,7 +50,8 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     @Override
-    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
+                                boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -158,16 +159,25 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     // transforme un ResultSet en objet Recipe
 
-    private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
-        return new Recipe(
-                rs.getString("label"),
-                rs.getString("description"),
-                rs.getObject("caloricIntake") != null ? rs.getInt("caloricIntake") : null,
-                rs.getDate("lastDateDone"),
-                rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
-                rs.getBoolean("isCold"),
-                new RecipeType(rs.getString("label"))
-        );
+    private Recipe mapResultSetToRecipe(ResultSet rs) throws AppException {
+        try
+        {
+            return new Recipe(
+                    rs.getString("label"),
+                    rs.getString("description"),
+                    rs.getObject("caloricIntake") != null ? rs.getInt("caloricIntake") : null,
+                    rs.getDate("lastDateDone"),
+                    rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
+                    rs.getBoolean("isCold"),
+                    new RecipeType(rs.getString("label"))
+            );
+        }
+        catch (SQLException e)
+        {
+            exceptionHandler(e);
+            return null;
+        }
+
     }
 
     private void exceptionHandler(SQLException e) throws AppException {

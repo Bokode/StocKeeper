@@ -226,3 +226,4 @@ public class UpdateRecipePanel extends JPanel {
     }
 
 }
+
