@@ -53,7 +53,7 @@ public class RecipeListPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         // Button Panel
-        JPanel ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         detailsButton = new JButton("Détails");
         detailsButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         backButton = new JButton("Retour");

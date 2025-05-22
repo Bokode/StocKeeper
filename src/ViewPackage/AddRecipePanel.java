@@ -45,8 +45,14 @@ public class AddRecipePanel extends JPanel {
         descriptionLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(descriptionLabel, gbc);
         gbc.gridx = 1;
-        descriptionField = new JTextField(20);
-        FormPanel.add(descriptionField, gbc);
+        JTextArea descriptionArea = new JTextArea(5, 20); // 5 lignes visibles, 20 colonnes
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        descriptionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        descriptionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        FormPanel.add(descriptionScrollPane, gbc);
 
         row++;
         gbc.gridx = 0; gbc.gridy = row;
@@ -111,6 +117,12 @@ public class AddRecipePanel extends JPanel {
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
                 }
+                else if (component instanceof JScrollPane) {
+                    Component view = ((JScrollPane) component).getViewport().getView();
+                    if (view instanceof JTextArea) {
+                        ((JTextArea) view).setText("");
+                    }
+                }
             }
             mainWindow.showHomePanel();
         });
@@ -124,13 +136,19 @@ public class AddRecipePanel extends JPanel {
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
                 }
+                else if (component instanceof JScrollPane) {
+                    Component view = ((JScrollPane) component).getViewport().getView();
+                    if (view instanceof JTextArea) {
+                        ((JTextArea) view).setText("");
+                    }
+                }
             }
         });
 
         addButton.addActionListener(e -> {
             try {
                 String label = labelField.getText().trim();
-                String description = descriptionField.getText().trim();
+                String description = descriptionArea.getText().trim();
 
                 if (label.isEmpty() || description.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
