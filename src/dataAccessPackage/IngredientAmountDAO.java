@@ -101,7 +101,7 @@ public class IngredientAmountDAO
             case "28000" -> throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
             case "22001" -> throw new DataSizeException("Chaîne trop longue pour le champ correspondant.", e);
             case "23000" -> throw new AlreadyExistException("Recette déjà existante.", e);
-            default -> throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
+            default -> throw new RecipeOperationException("Erreur lors de l'opération sur la recette." + e.getSQLState(), e);
         }
     }
 

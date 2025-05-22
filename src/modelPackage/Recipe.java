@@ -17,7 +17,8 @@ public class Recipe {
     private List<RecipeMaterial> materials;
     private List<IngredientAmount> ingredients;
 
-    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake, Boolean isCold, RecipeType type) {
+    public Recipe(String label, String description, Integer caloricIntake, Date lastDayDone, Integer timeToMake,
+                  Boolean isCold, RecipeType type, ArrayList<IngredientAmount> ingredients) {
         setLabel(label);
         setDescription(description);
         setCaloricIntake(caloricIntake);
@@ -26,7 +27,7 @@ public class Recipe {
         setIsCold(isCold);
         setType(type);
         materials = new ArrayList<>();
-        ingredients = new ArrayList<>();
+        ingredients = ingredients;
     }
 
     // Setter

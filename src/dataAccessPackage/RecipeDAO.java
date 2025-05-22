@@ -57,7 +57,11 @@ public class RecipeDAO implements RecipeDAOInterface {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, description);
-            stmt.setInt(2, caloricIntake);
+            if (caloricIntake == null) {
+                stmt.setNull(2, Types.INTEGER);
+            } else {
+                stmt.setInt(2, caloricIntake);
+            }
             stmt.setBoolean(3, isCold);
             stmt.setDate(4, lastDateDone);
             stmt.setInt(5, timeToMake);
@@ -109,6 +113,19 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
     }
 
+    public int getRecipeIdByLabel(String label) throws AppException {
+        String query = "SELECT id FROM recipe WHERE label = ?";
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, label);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+        return -1;
+    }
+
     private int getOrInsertRecipeType(Connection conn, RecipeType type) throws AppException {
         String select = "SELECT id FROM recipe_type WHERE label = ?";
         try (PreparedStatement stmt = conn.prepareStatement(select)) {
@@ -139,7 +156,8 @@ public class RecipeDAO implements RecipeDAOInterface {
                 rs.getDate("lastDateDone"),
                 rs.getInt("timeToMake"),
                 rs.getBoolean("isCold"),
-                new RecipeType(rs.getString("label"))
+                new RecipeType(rs.getString("label")),
+                new IngredientAmountDAO().getIngredientAmountsByRecipe(rs.getString("label"))
         );
     }
 

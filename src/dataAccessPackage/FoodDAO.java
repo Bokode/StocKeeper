@@ -1,6 +1,7 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import modelPackage.FoodType;
 
 import java.sql.*;
 
@@ -23,6 +24,19 @@ public class FoodDAO
             exceptionHandler(e);
         }
         return foodId;
+    }
+
+    public void addFood(String label, FoodType foodType) throws AppException
+    {
+        String query = "INSERT INTO food (label, type) VALUES (?, ?)";
+        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, label);
+            stmt.setInt(2, new FoodTypeDAO().getIdByLabel(foodType.getLabel()));
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
     }
 
     private void exceptionHandler(SQLException e) throws AppException {
