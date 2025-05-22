@@ -2,6 +2,7 @@ package dataAccessPackage;
 
 import exceptionPackage.*;
 import modelPackage.IngredientAmount;
+import dataAccessPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class IngredientAmountDAO
 
     public void addIngredientAmount(String recipe, String food, double quantity) throws AppException
     {
-        String query = "INSERT INTO ingredient_amount (recipe_id, food_id, quantity) VALUES (?, ?, ?)";
+        String query = "INSERT INTO ingredientamount (recipe, food, quantity) VALUES (?, ?, ?)";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection())
         {
             RecipeDAO recipeDAO = new RecipeDAO();
@@ -75,15 +76,17 @@ public class IngredientAmountDAO
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
-            stmt.setString(1, recipe);
+            int recipeId = new RecipeDAO().getRecipeIdByLabel(recipe);
+            stmt.setInt(1, recipeId);
             try (ResultSet rs = stmt.executeQuery())
             {
                 while (rs.next())
                 {
-                    String food = rs.getString("food_id");
+                    int foodId = rs.getInt("food_id");
+                    String foodLabel = new FoodDAO().getFoodLabelById(foodId);
 
                     double quantity = rs.getDouble("quantity");
-                    IngredientAmount ingredientAmount = new IngredientAmount(recipe, food, quantity);
+                    IngredientAmount ingredientAmount = new IngredientAmount(recipe, foodLabel, quantity);
                     ingredientAmounts.add(ingredientAmount);
                 }
             }

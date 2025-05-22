@@ -5,47 +5,61 @@ import modelPackage.FoodType;
 
 import java.sql.*;
 
-public class FoodDAO
-{
-    public int getFoodIdByLabel(String label) throws AppException
-    {
-        String query = "SELECT id FROM food WHERE label = ?";
-        int foodId = -1;
+public class FoodDAO {
+    private static final String TBL        = "food";
+    private static final String COL_ID     = "id";
+    private static final String COL_LABEL  = "label";
+    private static final String COL_TYPEID = "type_id";
 
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, label);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    foodId = rs.getInt("id");
-                }
+    private final FoodTypeDAO typeDAO;
+
+    public FoodDAO()            { this(new FoodTypeDAO()); }
+    public FoodDAO(FoodTypeDAO t) { this.typeDAO = t; }
+
+    /* ---------- READ ---------- */
+    public int getFoodIdByLabel(String label) throws AppException {
+        final String sql = "SELECT " + COL_ID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, label);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(COL_ID);
             }
-        } catch (SQLException e) {
-            exceptionHandler(e);
-        }
-        return foodId;
+        } catch (SQLException e) { exceptionHandler(e); }
+        return -1;
     }
 
-    public void addFood(String label, FoodType foodType) throws AppException
-    {
-        String query = "INSERT INTO food (label, type) VALUES (?, ?)";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, label);
-            stmt.setInt(2, new FoodTypeDAO().getIdByLabel(foodType.getLabel()));
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            exceptionHandler(e);
-        }
+    public String getFoodLabelById(int id) throws AppException {
+        final String sql = "SELECT " + COL_LABEL + " FROM " + TBL + " WHERE " + COL_ID + " = ?";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString(COL_LABEL);
+            }
+        } catch (SQLException e) { exceptionHandler(e); }
+        return null;
     }
 
+    /* ---------- CREATE ---------- */
+    public void addFood(String label, FoodType type) throws AppException {
+        final String sql = "INSERT INTO " + TBL + " (" + COL_LABEL + ", " + COL_TYPEID + ") VALUES (?, ?)";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, label);
+            ps.setInt(2, typeDAO.getIdByLabel(type.getLabel()));
+            ps.executeUpdate();
+        } catch (SQLException e) { exceptionHandler(e); }
+    }
+
+    /* ---------- ERRORS ---------- */
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {
-            case "08S01" -> throw new DataBaseUnavailableException("La base de données est indisponible.", e);
-            case "28000" -> throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
-            case "22001" -> throw new DataSizeException("Chaîne trop longue pour le champ correspondant.", e);
-            case "23000" -> throw new AlreadyExistException("Recette déjà existante.", e);
-            default -> throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
+            case "08S01" -> throw new DataBaseUnavailableException("Base de données indisponible.", e);
+            case "28000" -> throw new AuthenticationFailureException("Authentification refusée.", e);
+            case "23000" -> throw new AlreadyExistException("Aliment déjà existant.", e);
+            case "22001" -> throw new DataSizeException("Chaîne trop longue.", e);
+            default       -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }
 }

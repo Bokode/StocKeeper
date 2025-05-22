@@ -57,11 +57,15 @@ public class RecipeManager {
         return (recipes);
     }
 
-    public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
+    /*public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return dao.recipeWithExpireFood();
     }
 
-    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
+     */
+
+    /*public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         return dao.recipesOfSeason(date);
     }
+
+     */
 }

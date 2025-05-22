@@ -187,7 +187,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
     }
 
-    @Override
+    /*@Override
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
@@ -271,4 +271,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         else if (month <= 8) return "Summer";
         else return "Autumn";
     }
+    */
+
 }

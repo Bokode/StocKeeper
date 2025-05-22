@@ -1,17 +1,17 @@
 package dataAccessPackage;
 
+import exceptionPackage.*;
 import java.sql.*;
 
-import exceptionPackage.*;
 
-
-public class FoodTypeDAO {
+public class TypeMaterialDAO {
 
     private static final String COL_ID    = "id";
     private static final String COL_LABEL = "label";
 
+
     public int getIdByLabel(String label) throws AppException {
-        final String sql = "SELECT " + COL_ID + " FROM food_type WHERE " + COL_LABEL + " = ?";
+        final String sql = "SELECT " + COL_ID + " FROM typematerial WHERE " + COL_LABEL + " = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);
@@ -23,7 +23,7 @@ public class FoodTypeDAO {
     }
 
     public String getLabelById(int id) throws AppException {
-        final String sql = "SELECT " + COL_LABEL + " FROM food_type WHERE " + COL_ID + " = ?";
+        final String sql = "SELECT " + COL_LABEL + " FROM typematerial WHERE " + COL_ID + " = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -34,12 +34,13 @@ public class FoodTypeDAO {
         return null;
     }
 
+    /* ---------- Gestion centralisée des erreurs ---------- */
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {
             case "08S01" -> throw new DataBaseUnavailableException("Base de données indisponible.", e);
             case "28000" -> throw new AuthenticationFailureException("Authentification refusée.", e);
-            case "23000" -> throw new AlreadyExistException("Type d'aliment déjà existant.", e);
-            case "22001" -> throw new DataSizeException("Chaîne trop longue.", e);
+            case "22001" -> throw new DataSizeException("Chaîne trop longue pour un champ.", e);
+            case "23000" -> throw new AlreadyExistException("Type de matériel déjà existant.", e);
             default       -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }
