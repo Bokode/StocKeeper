@@ -32,6 +32,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
+
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
@@ -53,10 +54,18 @@ public class RecipeDAO implements RecipeDAOInterface {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, description);
-            stmt.setInt(2, caloricIntake);
+            if (caloricIntake == null) {
+                stmt.setNull(2, Types.INTEGER);
+            } else {
+                stmt.setInt(2, caloricIntake);
+            }
             stmt.setBoolean(3, isCold);
             stmt.setDate(4, lastDateDone);
-            stmt.setInt(5, timeToMake);
+            if (timeToMake == null) {
+                stmt.setNull(5, Types.INTEGER);
+            } else {
+                stmt.setInt(5, timeToMake);
+            }
             stmt.setInt(6, getOrInsertRecipeType(conn, type));
             stmt.setString(7, label);
 
