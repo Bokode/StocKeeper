@@ -40,7 +40,7 @@ public class Recipe {
     }
 
     public void setCaloricIntake(Integer caloricIntake) {
-        if (caloricIntake != null && caloricIntake <= 0) {
+        if (caloricIntake != null && caloricIntake < 0) {
             throw new WrongInputException("L'apport calorique doit être un nombre positif");
         } else {
             this.caloricIntake = caloricIntake;
@@ -57,7 +57,7 @@ public class Recipe {
     }
 
     public void setTimeToMake(Integer timeToMake) {
-        if (timeToMake != null && timeToMake <= 0) {
+        if (timeToMake != null && timeToMake < 0) {
             throw new WrongInputException("Le temps de préparation doit être un nombre positif");
         } else {
             this.timeToMake = timeToMake;
