@@ -85,11 +85,14 @@ public class RecipeDAO implements RecipeDAOInterface {
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
-            return stmt.executeUpdate();
+            if (stmt.executeUpdate() == 0) {
+                throw new NotFoundException("Recette non trouvée.");
+            }
         } catch (SQLException e) {
             exceptionHandler(e);
-            return 0;
+
         }
+        return 0;
     }
 
     public void addRecipe(Recipe recipe) throws AppException {
