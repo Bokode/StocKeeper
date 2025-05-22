@@ -26,6 +26,5 @@ public class Main {
         // Test recherche 1 (Non fonctionnel)
         //List<RecipeWithExpiredFood> recipeWithExpiredFood = recipeController.recipeWithExpiredFood();
         //System.out.println(recipeWithExpiredFood.size());
-
     }
 }

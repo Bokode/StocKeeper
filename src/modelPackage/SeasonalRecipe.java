@@ -1,37 +1,40 @@
 package modelPackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SeasonalRecipe {
     private Recipe recipe;
-    private Diet diet;
-    private Material material;
+    private List<Diet> diets;
+    private List<Material> materials;
 
-    public SeasonalRecipe(Recipe recipe, Diet diet, Material material) {
+    public SeasonalRecipe(Recipe recipe) {
         setRecipe(recipe);
-        setDiet(diet);
-        setMaterial(material);
+        diets = new ArrayList<Diet>();
+        materials = new ArrayList<Material>();
     }
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
 
-    public void setDiet(Diet diet) {
-        this.diet = diet;
+    public void addDiet(Diet diet) {
+        diets.add(diet);
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void addMaterial(Material material) {
+        materials.add(material);
     }
 
     public Recipe getRecipe() {
         return recipe;
     }
 
-    public Diet getDiet() {
-        return diet;
+    public List<Diet> getDiets() {
+        return diets;
     }
 
-    public Material getMaterial() {
-        return material;
+    public List<Material> getMaterials() {
+        return materials;
     }
 }
