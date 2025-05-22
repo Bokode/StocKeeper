@@ -40,8 +40,8 @@ public class RecipeManager {
         dao.deleteRecipe(label);
     }
 
-    public void updateRecipe(Recipe recipe) throws AppException {
-        dao.updateRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
+    public void updateRecipe(Recipe recipe, String labelToFind) throws AppException {
+        dao.updateRecipe(labelToFind, recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
     public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {

@@ -48,26 +48,27 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     @Override
-    public Integer updateRecipe(String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
-        String query = "UPDATE recipe SET description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
+    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+        String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, description);
+            stmt.setString(1, label);
+            stmt.setString(2, description);
             if (caloricIntake == null) {
-                stmt.setNull(2, Types.INTEGER);
+                stmt.setNull(3, Types.INTEGER);
             } else {
-                stmt.setInt(2, caloricIntake);
+                stmt.setInt(3, caloricIntake);
             }
-            stmt.setBoolean(3, isCold);
-            stmt.setDate(4, lastDateDone);
+            stmt.setBoolean(4, isCold);
+            stmt.setDate(5, lastDateDone);
             if (timeToMake == null) {
-                stmt.setNull(5, Types.INTEGER);
+                stmt.setNull(6, Types.INTEGER);
             } else {
-                stmt.setInt(5, timeToMake);
+                stmt.setInt(6, timeToMake);
             }
-            stmt.setInt(6, getOrInsertRecipeType(conn, type));
-            stmt.setString(7, label);
+            stmt.setInt(7, getOrInsertRecipeType(conn, type));
+            stmt.setString(8, labelToFind);
 
             return stmt.executeUpdate();
         } catch (SQLException e) {
