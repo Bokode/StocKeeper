@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class IngredientAmountDAO
 {
 
-    public void addIngredientAmount(String recipe, String food, double quantity) throws AppException
+    public void addIngredientAmount(String recipe, String food, Integer quantity) throws AppException
     {
         String query = "INSERT INTO ingredientamount (recipe, food, quantity) VALUES (?, ?, ?)";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection())
@@ -49,7 +49,7 @@ public class IngredientAmountDAO
         }
     }
 
-    public void updateIngredientAmount(String recipe, String food, double quantity) throws AppException
+    public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException
     {
         String query = "UPDATE ingredient_amount SET quantity = ? WHERE recipe_id = ? AND food_id = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection())
@@ -85,7 +85,7 @@ public class IngredientAmountDAO
                     int foodId = rs.getInt("food_id");
                     String foodLabel = new FoodDAO().getFoodLabelById(foodId);
 
-                    double quantity = rs.getDouble("quantity");
+                    Integer quantity = rs.getInt("quantity");
                     IngredientAmount ingredientAmount = new IngredientAmount(recipe, foodLabel, quantity);
                     ingredientAmounts.add(ingredientAmount);
                 }

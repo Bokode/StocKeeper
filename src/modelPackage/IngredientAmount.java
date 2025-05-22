@@ -3,9 +3,9 @@ package modelPackage;
 public class IngredientAmount {
     private String food;
     private String recipe;
-    private double quantity;
+    private Integer quantity;
 
-    public IngredientAmount(String recipe, String food, double quantity) {
+    public IngredientAmount(String recipe, String food, Integer quantity) {
         setRecipe(recipe);
         setFood(food);
         setQuantity(quantity);
@@ -27,7 +27,7 @@ public class IngredientAmount {
         this.food = food;
     }
 
-    public void setQuantity(double quantity)
+    public void setQuantity(Integer quantity)
     {
         this.quantity = quantity;
     }
