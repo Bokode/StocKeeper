@@ -71,6 +71,7 @@ public class MainWindow extends JFrame {
 
     public void showRecipeListPanel() {
         mainContainer.removeAll();
+        recipeListPanel.loadRecipes();
         mainContainer.add(recipeListPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
