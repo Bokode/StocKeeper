@@ -40,8 +40,8 @@ public class Recipe {
     }
 
     public void setCaloricIntake(Integer caloricIntake) {
-        if (caloricIntake != null && caloricIntake <= 0) {
-            throw new WrongInputException("Caloric intake must be a positive number");
+        if (caloricIntake != null && caloricIntake < 0) {
+            throw new WrongInputException("L'apport calorique doit être un nombre positif");
         } else {
             this.caloricIntake = caloricIntake;
         }
@@ -50,15 +50,15 @@ public class Recipe {
     public void setLastDayDone(Date lastDayDone) {
         Date today = new Date(System.currentTimeMillis());
         if (lastDayDone != null && lastDayDone.after(today)) {
-            throw new WrongInputException("Last day done must be before Now");
+            throw new WrongInputException("Le dernier jour doit être antérieur à maintenant");
         } else {
             this.lastDayDone = lastDayDone;
         }
     }
 
     public void setTimeToMake(Integer timeToMake) {
-        if (timeToMake != null && timeToMake <= 0) {
-            throw new WrongInputException("Time to make must be a positive number");
+        if (timeToMake != null && timeToMake < 0) {
+            throw new WrongInputException("Le temps de préparation doit être un nombre positif");
         } else {
             this.timeToMake = timeToMake;
         }

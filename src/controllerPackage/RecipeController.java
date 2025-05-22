@@ -35,8 +35,8 @@ public class RecipeController {
         recipeManager.deleteRecipe(label);
     }
 
-    public void updateRecipe(Recipe recipe) throws AppException {
-        recipeManager.updateRecipe(recipe);
+    public void updateRecipe(Recipe recipe, String labelToFind) throws AppException {
+        recipeManager.updateRecipe(recipe, labelToFind);
     }
 
     // Task 1

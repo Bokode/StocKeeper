@@ -1,5 +1,8 @@
 package ViewPackage;
 
+import modelPackage.Recipe;
+import modelPackage.RecipeType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -10,6 +13,8 @@ public class MainWindow extends JFrame {
     private JPanel homePanel;
     private AddRecipePanel addRecipePanel;
     private DeleteRecipePanel deleteRecipePanel;
+    private SearchRecipePanel searchRecipePanel;
+    private RecipeListPanel recipeListPanel;
     private MainMenu mainMenu;
     public MainWindow() {
         super("StocKeeper");
@@ -24,10 +29,16 @@ public class MainWindow extends JFrame {
         homePanel = new HomePanel();
         addRecipePanel = new AddRecipePanel(this);
         deleteRecipePanel = new DeleteRecipePanel(this);
+        searchRecipePanel = new SearchRecipePanel(this);
+        recipeListPanel = new RecipeListPanel(this);
         mainContainer = this.getContentPane();
         mainContainer.setLayout(new BorderLayout());
         mainContainer.add(homePanel,BorderLayout.CENTER);
         setVisible(true);
+    }
+
+    public Container getMainContainer() {
+        return mainContainer;
     }
 
     public void showHomePanel() {
@@ -50,4 +61,20 @@ public class MainWindow extends JFrame {
         mainContainer.revalidate();
         mainContainer.repaint();
     }
+
+    public void showSearchRecipePanel() {
+        mainContainer.removeAll();
+        mainContainer.add(searchRecipePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showRecipeListPanel() {
+        mainContainer.removeAll();
+        recipeListPanel.loadRecipes();
+        mainContainer.add(recipeListPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
 }

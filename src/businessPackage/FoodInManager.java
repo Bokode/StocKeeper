@@ -7,9 +7,7 @@ import java.util.Objects;
 import dataAccessPackage.FoodInDAO;
 import exceptionPackage.AppException;
 import interfacePackage.FoodInDAOInterface;
-import modelPackage.ExpiredFood;
-import modelPackage.FoodIn;
-import modelPackage.FoodInToSearch;
+import modelPackage.*;
 
 public class FoodInManager {
     private FoodInDAOInterface dao;
@@ -56,7 +54,7 @@ public class FoodInManager {
         return quantityLeft;
     }
 
-    public List<ExpiredFood> expiredFood(String storageType, String foodType) throws AppException {
+    public List<ExpiredFood> expiredFood(StorageType storageType, FoodType foodType) throws AppException {
         return dao.expiredFood(storageType, foodType);
     }
 }

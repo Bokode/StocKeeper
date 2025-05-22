@@ -33,15 +33,15 @@ public class RecipeManager {
     }
 
     public Recipe getRecipe(String label) throws AppException {
-        return dao.getRecipeByLabel(label);
+        return dao.getRecipe(label);
     }
 
     public void deleteRecipe(String label) throws AppException {
         dao.deleteRecipe(label);
     }
 
-    public void updateRecipe(Recipe recipe) throws AppException {
-        dao.updateRecipe(recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
+    public void updateRecipe(Recipe recipe, String labelToFind) throws AppException {
+        dao.updateRecipe(labelToFind, recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
     public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
@@ -49,7 +49,7 @@ public class RecipeManager {
         List<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
-            if (r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
+            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
                 recipes.add(r);
             }
         });

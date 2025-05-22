@@ -1,4 +1,4 @@
-/*package testPackage;
+package testPackage;
 
 import businessPackage.FoodInManager;
 
@@ -16,8 +16,7 @@ class TestShowQuantityLeft {
 
     @Test
     public void testShowQuantityLeft() {
-        Integer quantityTest = foodInManager.showQuantityLeft("Viande");
+        Integer quantityTest = foodInManager.showQuantityLeft("Légumes");
         assertNotEquals(0, quantityTest);
     }
 }
- */
