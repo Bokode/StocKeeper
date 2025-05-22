@@ -29,7 +29,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     @Override
-    public Recipe getRecipeByLabel(String label) throws AppException {
+    public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
 

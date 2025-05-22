@@ -277,7 +277,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                 "ft.Id AS foodType_id, ft.label AS foodType_label " +
                 "FROM food_in fi " +
                 "JOIN food f ON fi.food = f.Id " +
-                "JOIN food_type ft ON f.food_type = ft.Id";
+                "JOIN food_type ft ON f.foodType = ft.Id";
 
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -288,11 +288,11 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             while (rs.next()) {
                 FoodType foodType = new FoodType(
-                        rs.getString("foodType_label")
+                        rs.getString("label")
                 );
 
                 Food food = new Food(
-                        rs.getString("food_label"),
+                        rs.getString("label"),
                         foodType
                 );
 
@@ -337,7 +337,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                a.label AS allergen_label
         FROM food_in fi
         JOIN food f ON fi.food = f.Id
-        JOIN food_type ft ON f.food_type = ft.Id
+        JOIN food_type ft ON f.foodType = ft.Id
         JOIN storage_type st ON fi.storageType = st.Id
         LEFT JOIN season_food sf ON f.Id = sf.food
         LEFT JOIN season s ON sf.season = s.label
@@ -363,9 +363,9 @@ public class FoodInDAO implements FoodInDAOInterface {
                     Date purchaseDate = rs.getDate("purchaseDate");
 
                     // Création des objets liés
-                    FoodType ft = new FoodType(rs.getString("food_type_label"));
-                    Food food = new Food(rs.getString("food_label"), ft);
-                    StorageType st = new StorageType(rs.getString("storage_label"));
+                    FoodType ft = new FoodType(rs.getString("label"));
+                    Food food = new Food(rs.getString("label"), ft);
+                    StorageType st = new StorageType(rs.getString("label"));
 
                     FoodIn foodIn = new FoodIn(
                             expirationDate,
@@ -377,8 +377,8 @@ public class FoodInDAO implements FoodInDAOInterface {
                             st
                     );
 
-                    Season season = rs.getString("season_label") != null ? new Season(rs.getString("season_label")) : null;
-                    Allergen allergen = rs.getString("allergen_label") != null ? new Allergen(rs.getString("allergen_label")) : null;
+                    Season season = rs.getString("label") != null ? new Season(rs.getString("label")) : null;
+                    Allergen allergen = rs.getString("label") != null ? new Allergen(rs.getString("label")) : null;
 
                     result.add(new ExpiredFood(foodIn, season, allergen));
                 }
