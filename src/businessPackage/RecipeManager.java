@@ -28,7 +28,7 @@ public class RecipeManager {
         return recipes;
     }
 
-    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+    public void addRecipe(Recipe recipe) throws AppException {
         dao.addRecipe(recipe);
     }
 
@@ -57,11 +57,15 @@ public class RecipeManager {
         return (recipes);
     }
 
-    public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
+    /*public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return dao.recipeWithExpireFood();
     }
 
-    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
+     */
+
+    /*public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         return dao.recipesOfSeason(date);
     }
+
+     */
 }

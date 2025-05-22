@@ -39,12 +39,12 @@ public class RecipeController {
         recipeManager.updateRecipe(recipe, labelToFind);
     }
 
-    // Task 1
+    /* Task 1
     public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
         return recipeManager.showRecipesBasedOnTime(cookingTime);
     }
 
-    // Search 1
+     Search 1
     public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return recipeManager.recipeWithExpiredFood();
     }
@@ -53,4 +53,6 @@ public class RecipeController {
     public List<SeasonalRecipe> RecipesOfSeason(LocalDate date) throws AppException {
         return recipeManager.recipesOfSeason(date);
     }
+
+     */
 }
