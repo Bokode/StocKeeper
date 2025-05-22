@@ -183,7 +183,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     }
 
     @Override
-    public FoodIn getFoodInByLabel(String label) throws AppException
+    public FoodIn getFoodIn(String label) throws AppException
     {
         String query = "SELECT * FROM food_in WHERE label = ?";
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();

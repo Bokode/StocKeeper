@@ -30,7 +30,7 @@ public class FoodInManager {
     }
 
     public FoodIn getFoodIn(String label) throws AppException {
-        return dao.getFoodInByLabel(label);
+        return dao.getFoodIn(label);
     }
 
     public void deleteFoodIn(String label) throws AppException {
