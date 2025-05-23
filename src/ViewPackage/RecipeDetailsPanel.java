@@ -1,7 +1,9 @@
 package ViewPackage;
 
+import businessPackage.IngredientAmountManager;
+import controllerPackage.IngredientAmountController;
+import modelPackage.IngredientAmount;
 import modelPackage.Recipe;
-import modelPackage.RecipeType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,52 +20,65 @@ public class RecipeDetailsPanel extends JPanel {
         add(titleLabel, BorderLayout.NORTH);
 
         // Content Panel
-        JPanel content = new JPanel(new GridLayout(0, 1, 8, 8));
-        content.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
+        // Infos de base
+        JPanel infoPanel = new JPanel(new GridLayout(0, 1, 8, 8));
         Font contentFont = new Font("Poppins", Font.PLAIN, 15);
 
-        JLabel nameLabel = new JLabel("Nom : " + recipe.getLabel());
-        nameLabel.setFont(contentFont);
-        content.add(nameLabel);
+        infoPanel.add(createLabel("Nom : " + recipe.getLabel(), contentFont));
+        infoPanel.add(createLabel("Description : " + recipe.getDescription(), contentFont));
+        infoPanel.add(createLabel("Apport calorique : " +
+                (recipe.getCaloricIntake() != null ? recipe.getCaloricIntake() + " kcal" : "Non renseigné"), contentFont));
+        infoPanel.add(createLabel("Temps de préparation : " +
+                (recipe.getTimeToMake() != null ? recipe.getTimeToMake() + " minutes" : "Non renseigné"), contentFont));
+        infoPanel.add(createLabel("Type : " + recipe.getType().getLabel(), contentFont));
+        infoPanel.add(createLabel("Recette froide : " + (Boolean.TRUE.equals(recipe.getCold()) ? "Oui" : "Non"), contentFont));
+        infoPanel.add(createLabel("Dernière réalisation : " +
+                (recipe.getLastDayDone() != null ? recipe.getLastDayDone().toString() : "Jamais"), contentFont));
 
-        JLabel descLabel = new JLabel("Description : " + recipe.getDescription());
-        descLabel.setFont(contentFont);
-        content.add(descLabel);
+        contentPanel.add(infoPanel, BorderLayout.NORTH);
 
-        JLabel calLabel = new JLabel("Apport calorique : " +
-                (recipe.getCaloricIntake() != null ? recipe.getCaloricIntake() + " kcal" : "Non renseigné"));
-        calLabel.setFont(contentFont);
-        content.add(calLabel);
+        // Zone d'affichage des ingrédients (non cliquable)
+        JTextArea ingredientsArea = new JTextArea();
+        ingredientsArea.setFont(new Font("Poppins", Font.PLAIN, 14));
+        ingredientsArea.setEditable(false);
+        ingredientsArea.setOpaque(false);
+        ingredientsArea.setLineWrap(true);
+        ingredientsArea.setWrapStyleWord(true);
 
-        JLabel timeLabel = new JLabel("Temps de préparation : " +
-                (recipe.getTimeToMake() != null ? recipe.getTimeToMake() + " minutes" : "Non renseigné"));
-        timeLabel.setFont(contentFont);
-        content.add(timeLabel);
+        IngredientAmountManager ingredientAmountManager = new IngredientAmountManager();
+        if (ingredientAmountManager.getIngredientAmountsByRecipe(recipe.getLabel()) != null && !ingredientAmountManager.getIngredientAmountsByRecipe(recipe.getLabel()).isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (IngredientAmount ing : ingredientAmountManager.getIngredientAmountsByRecipe(recipe.getLabel())) {
+                sb.append("- ").append(ing.getFood()).append(" : ").append(ing.getQuantity()).append(" (qqt/g/cl)\n");
+            }
+            ingredientsArea.setText(sb.toString());
+        } else {
+            ingredientsArea.setText("Aucun ingrédient renseigné.");
+        }
 
-        JLabel typeLabel = new JLabel("Type : " + recipe.getType().getLabel());
-        typeLabel.setFont(contentFont);
-        content.add(typeLabel);
+        JScrollPane scrollPane = new JScrollPane(ingredientsArea);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Ingrédients"));
+        scrollPane.setPreferredSize(new Dimension(300, 150));
 
-        JLabel coldLabel = new JLabel("Recette froide : " + (recipe.getCold() != null && recipe.getCold() ? "Oui" : "Non"));
-        coldLabel.setFont(contentFont);
-        content.add(coldLabel);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
 
-        JLabel lastDoneLabel = new JLabel("Dernière réalisation : " +
-                (recipe.getLastDayDone() != null ? recipe.getLastDayDone().toString() : "Jamais"));
-        lastDoneLabel.setFont(contentFont);
-        content.add(lastDoneLabel);
-
-        add(content, BorderLayout.CENTER);
-
-        // Back Button Panel
+        // Bouton retour
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton backButton = new JButton("Retour");
         backButton.setFont(contentFont);
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Action
         backButton.addActionListener(e -> mainWindow.showRecipeListPanel());
+    }
+
+    private JLabel createLabel(String text, Font font) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        return label;
     }
 }

@@ -1,24 +1,24 @@
 package ViewPackage;
 
 import controllerPackage.IngredientAmountController;
-import modelPackage.IngredientAmount;
+import controllerPackage.MaterialController;
+import controllerPackage.RecipeMaterialController;
 import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddIngredientPanel extends JPanel {
-
+public class AddMaterialPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel;
-    private JLabel titleLabel, labelLabel, ingredientAmountLabel;
-    private JTextField labelField, ingredientAmountField;
-    private IngredientAmountController ingredientAmountController;
-
-    public AddIngredientPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
+    private JLabel titleLabel, labelLabel, materialTypeLabel;
+    private JTextField labelField, materialField;
+    private MaterialController materialController;
+    private RecipeMaterialController recipeMaterialController;
+    public AddMaterialPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout());
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Ajouter un ingrédient : ");
+        titleLabel = new JLabel("Ajouter du matériel : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);
@@ -31,10 +31,10 @@ public class AddIngredientPanel extends JPanel {
 
         int row = 0;
 
-        // Nom
+        // Nom du matériel
         gbc.gridx = 0;
         gbc.gridy = row;
-        labelLabel = new JLabel("Nom :");
+        labelLabel = new JLabel("Nom du matériel à ajouter :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
 
@@ -42,17 +42,19 @@ public class AddIngredientPanel extends JPanel {
         labelField = new JTextField(20);
         FormPanel.add(labelField, gbc);
 
-        // Quantité
+        // Type de matériel
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        ingredientAmountLabel = new JLabel("Quantité (qqt/g/cl) :");
-        ingredientAmountLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(ingredientAmountLabel, gbc);
+        materialTypeLabel = new JLabel("Type de matériel :");
+        materialTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(materialTypeLabel, gbc);
 
         gbc.gridx = 1;
-        ingredientAmountField = new JTextField(20);
-        FormPanel.add(ingredientAmountField, gbc);
+        String[] materialsType = {"Ustensile", "Truc qui chauffe", "Récipient"};
+        JComboBox<String> materialTypeComboBox = new JComboBox<>(materialsType);
+        materialTypeComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(materialTypeComboBox, gbc);
 
         add(FormPanel, BorderLayout.CENTER);
 
@@ -87,9 +89,9 @@ public class AddIngredientPanel extends JPanel {
                     ((JComboBox<?>) component).setSelectedIndex(0);
                 }
             }
-            if (cancelPanelName.equals("addMaterial")){
-                JOptionPane.showMessageDialog(this, "Vous allez pouvoir maintenant renseigner le matériel nécessaire pour la recette");
-                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "addMaterial"));
+            if (cancelPanelName.equals("home")){
+                JOptionPane.showMessageDialog(this, "Toutes les informations ont bien été renseignées !");
+                mainWindow.showHomePanel();
             } else if (cancelPanelName.equals("updateRecipe")) {
                 UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
@@ -98,35 +100,21 @@ public class AddIngredientPanel extends JPanel {
 
         addButton.addActionListener(e -> {
             String name = labelField.getText().trim();
-            String amountStr = ingredientAmountField.getText().trim();
-
-            if (name.isEmpty() || amountStr.isEmpty()) {
+            String typeString = materialTypeComboBox.getSelectedItem().toString();
+            if (name.isEmpty() || typeString.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Champs manquants", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
-            Integer amount;
-            try {
-                amount = Integer.valueOf(amountStr);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre entier.");
-                return;
-            }
-            if (amount < 0){
-                JOptionPane.showMessageDialog(this, "La quantité doit être un nombre positif", "Erreur", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             try {
                 // Ajout et création de l'ingrédient
-                ingredientAmountController = new IngredientAmountController();
-                ingredientAmountController.addIngredientAmount(recipe.getLabel(), name, amount);
+                recipeMaterialController = new RecipeMaterialController();
+                recipeMaterialController.addMaterialToRecipe(recipe.getLabel(), name);
 
-                JOptionPane.showMessageDialog(this, "Ingrédient ajouté avec succès !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Matériel ajouté avec succès !", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
                 // Réinitialisation des champs pour un ajout en série
                 labelField.setText("");
-                ingredientAmountField.setText("");
+                materialTypeComboBox.setSelectedIndex(0);
                 labelField.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
