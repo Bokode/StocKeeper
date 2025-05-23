@@ -13,6 +13,7 @@ public class MainWindow extends JFrame {
     private SearchRecipePanel searchRecipePanel;
     private RecipeListPanel recipeListPanel;
     private AddFoodInPanel addFoodInPanel;
+    private FoodInListPanel foodInListPanel;
     private DeleteFoodInPanel deleteFoodInPanel;
     private SearchFoodInPanel searchFoodInPanel;
     private MainMenu mainMenu;
@@ -31,6 +32,7 @@ public class MainWindow extends JFrame {
         deleteRecipePanel = new DeleteRecipePanel(this);
         searchRecipePanel = new SearchRecipePanel(this);
         recipeListPanel = new RecipeListPanel(this);
+        foodInListPanel = new FoodInListPanel(this);
         addFoodInPanel = new AddFoodInPanel(this);
         deleteFoodInPanel = new DeleteFoodInPanel(this);
         searchFoodInPanel = new SearchFoodInPanel(this);
@@ -76,6 +78,13 @@ public class MainWindow extends JFrame {
         mainContainer.removeAll();
         recipeListPanel.loadRecipes();
         mainContainer.add(recipeListPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+    public void showFoodInListPanel() {
+        mainContainer.removeAll();
+        foodInListPanel.loadFoodIns();
+        mainContainer.add(foodInListPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
     }
@@ -128,7 +137,7 @@ public class MainWindow extends JFrame {
         mainContainer.revalidate();
         mainContainer.repaint();
     }
-  
+
     public void showAddMaterialPanel(AddMaterialPanel addMaterialPanel){
         mainContainer.removeAll();
         mainContainer.add(addMaterialPanel, BorderLayout.CENTER);
