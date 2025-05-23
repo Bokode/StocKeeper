@@ -192,7 +192,7 @@ public class AddRecipePanel extends JPanel {
                 System.out.println("Recette créée : " + newRecipe);
 
                 JOptionPane.showMessageDialog(this, "Recette crée, vous allez pouvoir maintenant ajouter les aliments", "Recette crée", JOptionPane.INFORMATION_MESSAGE);
-                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, newRecipe, "home"));
+                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, newRecipe, "addMaterial"));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

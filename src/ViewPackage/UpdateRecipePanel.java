@@ -139,15 +139,15 @@ public class UpdateRecipePanel extends JPanel {
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton resetButton = new JButton("Réinitialiser");
-        resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton manageIngredientButton = new JButton("Gérer ingrédients");
         manageIngredientButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton manageMaterialButton = new JButton("Gérer matériel");
+        manageMaterialButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
         ButtonsPanel.add(updateButton);
         ButtonsPanel.add(cancelButton);
-        ButtonsPanel.add(resetButton);
         ButtonsPanel.add(manageIngredientButton);
+        ButtonsPanel.add(manageMaterialButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
         cancelButton.addActionListener(e -> {
@@ -166,23 +166,6 @@ public class UpdateRecipePanel extends JPanel {
                 }
             }
             mainWindow.showSearchRecipePanel();
-        });
-
-        resetButton.addActionListener(e -> {
-            for (Component component : FormPanel.getComponents()) {
-                if (component instanceof JTextField) {
-                    ((JTextField) component).setText("");
-                } else if (component instanceof JScrollPane) {
-                    Component view = ((JScrollPane) component).getViewport().getView();
-                    if (view instanceof JTextArea) {
-                        ((JTextArea) view).setText("");
-                    }
-                } else if (component instanceof JCheckBox) {
-                    ((JCheckBox) component).setSelected(false);
-                } else if (component instanceof JComboBox) {
-                    ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-            }
         });
 
         updateButton.addActionListener(e -> {
