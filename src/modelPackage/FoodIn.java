@@ -31,7 +31,7 @@ public class FoodIn {
     }
 
     public void setQuantity(Integer quantity) {
-        if (quantity < 0) {
+        if (quantity <= 0) {
             throw new WrongInputException("La quantité doit être un nombre positif");
         } else {
             this.quantity = quantity;
