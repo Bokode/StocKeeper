@@ -1,5 +1,7 @@
 package ViewPackage;
 
+import controllerPackage.IngredientAmountController;
+import modelPackage.IngredientAmount;
 import modelPackage.Recipe;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ public class AddIngredientPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel;
     private JLabel titleLabel, labelLabel, ingredientAmountLabel, foodTypeLabel;
     private JTextField labelField, ingredientAmountField;
+    private IngredientAmountController ingredientAmountController;
 
     public AddIngredientPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout());
@@ -43,7 +46,7 @@ public class AddIngredientPanel extends JPanel {
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        ingredientAmountLabel = new JLabel("Quantité :");
+        ingredientAmountLabel = new JLabel("Quantité (qqt/g/cl) :");
         ingredientAmountLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(ingredientAmountLabel, gbc);
 
@@ -52,18 +55,18 @@ public class AddIngredientPanel extends JPanel {
         FormPanel.add(ingredientAmountField, gbc);
 
         // Type de mesure
-        row++;
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        foodTypeLabel = new JLabel("Unité :");
-        foodTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(foodTypeLabel, gbc);
+//        row++;
+//        gbc.gridx = 0;
+//        gbc.gridy = row;
+//        foodTypeLabel = new JLabel("Unité :");
+//        foodTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+//        FormPanel.add(foodTypeLabel, gbc);
 
-        gbc.gridx = 1;
-        String[] foodTypes = {"quantité", "centilitres", "grammes"};
-        JComboBox<String> foodTypeComboBox = new JComboBox<>(foodTypes);
-        foodTypeComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(foodTypeComboBox, gbc);
+//        gbc.gridx = 1;
+//        String[] foodTypes = {"quantité", "centilitres", "grammes"};
+//        JComboBox<String> foodTypeComboBox = new JComboBox<>(foodTypes);
+//        foodTypeComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+//        FormPanel.add(foodTypeComboBox, gbc);
 
         add(FormPanel, BorderLayout.CENTER);
 
@@ -106,7 +109,38 @@ public class AddIngredientPanel extends JPanel {
         });
 
         addButton.addActionListener(e -> {
+            String name = labelField.getText().trim();
+            String amountStr = ingredientAmountField.getText().trim();
+            // String unit = foodTypeComboBox.getSelectedItem().toString();
 
+            if (name.isEmpty() || amountStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Champs manquants", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Integer amount;
+            try {
+                amount = Integer.valueOf(amountStr);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre entier.");
+                return;
+            }
+
+            try {
+                // Ajout et création de l'ingrédient
+                ingredientAmountController = new IngredientAmountController();
+                ingredientAmountController.addIngredientAmount(recipe.getLabel(), name, amount);
+
+                JOptionPane.showMessageDialog(this, "Ingrédient ajouté avec succès !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                // Réinitialisation des champs pour un ajout en série
+                labelField.setText("");
+                ingredientAmountField.setText("");
+                labelField.requestFocus();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         });
+
     }
 }
