@@ -68,7 +68,7 @@ public class FoodInDAO implements FoodInDAOInterface {
      * ─────────────────────────── */
     public void addFoodIn(FoodIn fi) throws AppException {
         String sql = """
-            INSERT INTO foodin
+            INSERT INTO food_in
                 (expirationDate, quantity, isOpen,
                  nutriScore, purchaseDate, food_id, storageType_id)
              VALUES (?,?,?,?,?,?,?)
@@ -173,7 +173,7 @@ public class FoodInDAO implements FoodInDAOInterface {
         SELECT fi.*, f.label AS food_label, ft.label AS foodType_label, st.label AS storage_label
           FROM foodin fi
           JOIN food f          ON fi.food_id        = f.id
-          JOIN foodtype ft    ON f.foodT ype       = ft.id
+          JOIN foodtype ft    ON f.foodType       = ft.id
           JOIN storagetype st ON fi.storageType_id = st.id
          WHERE f.label = ?
          LIMIT 1

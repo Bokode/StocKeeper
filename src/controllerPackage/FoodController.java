@@ -2,6 +2,7 @@ package controllerPackage;
 
 import businessPackage.FoodManager;
 import exceptionPackage.AppException;
+import modelPackage.Food;
 import modelPackage.FoodType;
 
 public class FoodController {
@@ -25,5 +26,9 @@ public class FoodController {
 
     public void addFood(String label, FoodType type) throws AppException {
         foodManager.addFood(label, type);
+    }
+
+    public Food getFoodByLabel(String label) throws AppException {
+        return foodManager.getFoodByLabel(label);
     }
 }

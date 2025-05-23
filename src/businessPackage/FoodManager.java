@@ -2,6 +2,7 @@ package businessPackage;
 
 import dataAccessPackage.FoodDAO;
 import exceptionPackage.AppException;
+import modelPackage.Food;
 import modelPackage.FoodType;
 
 public class FoodManager {
@@ -25,5 +26,9 @@ public class FoodManager {
 
     public void addFood(String label, FoodType type) throws AppException {
         dao.addFood(label, type);
+    }
+
+    public Food getFoodByLabel(String label) throws AppException {
+        return dao.getFoodByLabel(label);
     }
 }
