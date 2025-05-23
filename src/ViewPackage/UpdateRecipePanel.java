@@ -22,6 +22,7 @@ public class UpdateRecipePanel extends JPanel {
 
         String labelToFind = recipe.getLabel();
 
+        // Titre de Fenêtre
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titleLabel = new JLabel("Modification de la recette : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
@@ -36,6 +37,7 @@ public class UpdateRecipePanel extends JPanel {
 
         int row = 0;
 
+        // Nom de la recette
         gbc.gridx = 0; gbc.gridy = row;
         labelLabel = new JLabel("Nom :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -45,6 +47,7 @@ public class UpdateRecipePanel extends JPanel {
         labelField.setText(recipe.getLabel());
         FormPanel.add(labelField, gbc);
 
+        // Description de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         descriptionLabel = new JLabel("Description de la recette : ");
@@ -61,6 +64,7 @@ public class UpdateRecipePanel extends JPanel {
         descriptionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         FormPanel.add(descriptionScrollPane, gbc);
 
+        // Apport calorique de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         caloricInTakeLabel = new JLabel("Apport calorique (facultatif) : ");
@@ -73,6 +77,7 @@ public class UpdateRecipePanel extends JPanel {
         }
         FormPanel.add(caloricIntakeField, gbc);
 
+        // Durée de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         timeToMakeLabel = new JLabel("Durée de la recette (facultatif) : ");
@@ -85,6 +90,7 @@ public class UpdateRecipePanel extends JPanel {
         }
         FormPanel.add(timeToMakeField, gbc);
 
+        // Dernière date de réalisation de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.gridwidth = 2;
@@ -101,6 +107,7 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(hasBeenDoneToday, gbc);
         gbc.gridwidth = 1;
 
+        // Si la recette est froide ou non
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.gridwidth = 2;
@@ -110,6 +117,7 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(isColdCheckBox, gbc);
         gbc.gridwidth = 1;
 
+        // Type de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -125,6 +133,7 @@ public class UpdateRecipePanel extends JPanel {
 
         add(FormPanel, BorderLayout.CENTER);
 
+        // Panel des bouttons
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton updateButton = new JButton("Modifier");
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));

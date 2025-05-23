@@ -30,11 +30,11 @@ public class FoodInManager {
     }
 
     public FoodIn getFoodIn(String label) throws AppException {
-        return dao.getFoodIn(label);
+        return dao.getFoodInByFoodLabel(label);
     }
 
     public void deleteFoodIn(String label) throws AppException {
-        dao.deleteFoodIn(label);
+        dao.deleteFoodInByFoodLabel(label);
     }
 
     public void updateFoodIn(FoodIn foodIn) throws AppException {
