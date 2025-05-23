@@ -5,268 +5,303 @@ import interfacePackage.FoodInDAOInterface;
 import modelPackage.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FoodInDAO implements FoodInDAOInterface {
 
+    /* ───────────────────────────
+     *  Constantes table / colonnes
+     * ─────────────────────────── */
+    private static final String TBL_FOOD_IN        = "food_in";
+    private static final String COL_ID             = "id";
+    private static final String COL_EXPIRATION     = "expirationDate";
+    private static final String COL_QTY            = "quantity";
+    private static final String COL_IS_OPEN        = "isOpen";
+    private static final String COL_NUTRI          = "nutriScore";
+    private static final String COL_PURCHASE       = "purchaseDate";
+    private static final String COL_FOOD_ID        = "food_id";
+    private static final String COL_STORAGE_ID     = "storageType_id";
+
+    /* ───────────────────────────
+     *  DAO dépendants injectables
+     * ─────────────────────────── */
+    private final FoodDAO        foodDAO;
+    private final FoodTypeDAO    foodTypeDAO;
+    private final StorageTypeDAO storageDAO;
+
+    public FoodInDAO() {
+        this(new FoodDAO(), new FoodTypeDAO(), new StorageTypeDAO());
+    }
+    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO, StorageTypeDAO storageDAO) {
+        this.foodDAO     = foodDAO;
+        this.foodTypeDAO = foodTypeDAO;
+        this.storageDAO  = storageDAO;
+    }
+
+    /* ───────────────────────────
+     *  CRUD : read all
+     * ─────────────────────────── */
     @Override
     public List<FoodIn> getAllFoodIns() throws AppException {
-        List<FoodIn> foodsIn = new ArrayList<>();
-        String query = "SELECT * FROM food_in";
-
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                foodsIn.add(mapResultSetToFoodIn(rs));
-            }
-
-        } catch (SQLException e) {
-            exceptionHandler(e);
-        }
-
-        return foodsIn;
-    }
-
-    /*@Override
-    public Integer addFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, Date purchaseDate, Date expirationDate) throws AppException
-    {
-        String query = "INSERT INTO food_in (food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, null);
-    }*/
-
-
-    public void addFoodIn(FoodIn foodIn) throws SQLException {
-        System.out.println(foodIn);
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-        Connection conn = dbAccess.getConnection();
-        System.out.println("Connecting to database...");
-        try {
-            conn.setAutoCommit(false);
-
-            // 1. Vérifie et insère FoodType
-            int foodTypeId = getOrInsertFoodType(conn, foodIn.getFood().getFoodType());
-
-            // 2. Vérifie et insère Food
-            int foodId = getOrInsertFood(conn, foodIn.getFood(), foodTypeId);
-
-            // 3. Vérifie et insère StorageType
-            int storageTypeId = getOrInsertStorageType(conn, foodIn.getStorageType());
-
-            // 4. Insère FoodIn
-            String sql = """
-            INSERT INTO food_in (expirationDate, quantity, isOpen, nutriScore, purchaseDate, food, storageType)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+        String sql = """
+            SELECT fi.*,
+                   f.label        AS food_label,
+                   ft.label       AS foodType_label,
+                   st.label       AS storage_label
+              FROM food_in fi
+              JOIN food f          ON fi.food_id       = f.id
+              JOIN food_type ft    ON f.food_type      = ft.id
+              JOIN storage_type st ON fi.storageType_id = st.id
         """;
 
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setDate(1, new java.sql.Date(foodIn.getExpirationDate().getTime()));
-                stmt.setInt(2, foodIn.getQuantity());
-                stmt.setBoolean(3, foodIn.getOpen() != null && foodIn.getOpen());
-                if (foodIn.getNutriScore() != null) {
-                    stmt.setString(4, foodIn.getNutriScore().toString());
-                } else {
-                    stmt.setNull(4, Types.VARCHAR);
-                }
-                if (foodIn.getPurchaseDate() != null) {
-                    stmt.setDate(5, new java.sql.Date(foodIn.getPurchaseDate().getTime()));
-                } else {
-                    stmt.setNull(5, Types.DATE);
-                }
-                stmt.setInt(6, foodId);
-                stmt.setInt(7, storageTypeId);
-                stmt.executeUpdate();
+        List<FoodIn> list = new ArrayList<>();
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) list.add(mapResultSetToFoodIn(rs));
+
+        } catch (SQLException e) { exceptionHandler(e); }
+        return list;
+    }
+
+    /* ───────────────────────────
+     *  CRUD : insert
+     * ─────────────────────────── */
+    public void addFoodIn(FoodIn fi) throws AppException {
+        String sql = """
+            INSERT INTO foodin
+                (expirationDate, quantity, isOpen,
+                 nutriScore, purchaseDate, food_id, storageType_id)
+             VALUES (?,?,?,?,?,?,?)
+        """;
+
+        try (Connection c = FridgeDBAccess.getInstance().getConnection()) {
+
+            int typeId     = getOrInsertFoodType(c, fi.getFood().getFoodType());
+            int foodId     = getOrInsertFood(c, fi.getFood(), typeId);
+            int storageId  = getOrInsertStorageType(c, fi.getStorageType());
+
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
+                ps.setDate   (1, new java.sql.Date(fi.getExpirationDate().getTime()));
+                ps.setInt    (2, fi.getQuantity());
+                ps.setBoolean(3, Boolean.TRUE.equals(fi.getOpen()));
+                if (fi.getNutriScore() != null)
+                    ps.setString(4, fi.getNutriScore().toString());
+                else
+                    ps.setNull  (4, Types.CHAR);
+                if (fi.getPurchaseDate() != null)
+                    ps.setDate(5, new java.sql.Date(fi.getPurchaseDate().getTime()));
+                else
+                    ps.setNull(5, Types.DATE);
+                ps.setInt(6, foodId);
+                ps.setInt(7, storageId);
+                ps.executeUpdate();
             }
 
-            conn.commit();
-        } catch (SQLException e) {
-            //conn.rollback();
-            //throw e;
-            exceptionHandler(e);
-        } finally {
-            conn.setAutoCommit(true);
-            conn.close();
-        }
+        } catch (SQLException e) { exceptionHandler(e); }
     }
 
-    private int getOrInsertFoodType(Connection conn, FoodType foodType) throws SQLException {
-        String select = "SELECT Id FROM food_type WHERE label = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(select)) {
-            stmt.setString(1, foodType.getLabel());
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return rs.getInt("Id");
-        }
-
-        String insert = "INSERT INTO food_type (label) VALUES (?)";
-        try (PreparedStatement stmt = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, foodType.getLabel());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
-        }
-        throw new SQLException("Unable to insert or get food_type");
-    }
-
-    private int getOrInsertFood(Connection conn, Food food, int foodTypeId) throws SQLException {
-        String select = "SELECT Id FROM food WHERE label = ? AND food_type = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(select)) {
-            stmt.setString(1, food.getLabel());
-            stmt.setInt(2, foodTypeId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return rs.getInt("Id");
-        }
-
-        String insert = "INSERT INTO food (label, food_type) VALUES (?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, food.getLabel());
-            stmt.setInt(2, foodTypeId);
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
-        }
-        throw new SQLException("Unable to insert or get food");
-    }
-
-    private int getOrInsertStorageType(Connection conn, StorageType storageType) throws SQLException {
-        String select = "SELECT Id FROM storage_type WHERE label = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(select)) {
-            stmt.setString(1, storageType.getLabel());
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return rs.getInt("Id");
-        }
-
-        String insert = "INSERT INTO storage_type (label) VALUES (?)";
-        try (PreparedStatement stmt = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, storageType.getLabel());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
-        }
-        throw new SQLException("Unable to insert or get storage_type");
-    }
-
-
-
+    /* ───────────────────────────
+     *  CRUD : update
+     * ─────────────────────────── */
     @Override
-    public Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate) throws AppException
-    {
-        /*String query = "UPDATE food_in SET food = ?, storageType = ?, quantity = ?, isOpen = ?, nutriScore = ?, purchaseDate = ?, expirationDate = ? WHERE id = ?";
-        return executeFoodInUpdate(query, food, storageType, quantity, isOpen, nutriScore, purchaseDate, expirationDate, id);*/
-        return null;
+    public Integer updateFoodIn(Food food,
+                                StorageType storage,
+                                Integer quantity,
+                                boolean isOpen,
+                                char nutri,
+                                java.util.Date purchase,
+                                java.util.Date expiration) throws AppException {
+
+        String sql = """
+            UPDATE foodin
+               SET quantity = ?, isOpen = ?, nutriScore = ?,
+                   purchaseDate = ?, expirationDate = ?
+             WHERE food_id = ? AND storageType_id = ?
+        """;
+
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            int typeId   = getOrInsertFoodType(c, food.getFoodType());
+            int foodId   = getOrInsertFood    (c, food, typeId);
+            int storageId= getOrInsertStorageType(c, storage);
+
+            ps.setInt    (1, quantity);
+            ps.setBoolean(2, isOpen);
+            ps.setString (3, String.valueOf(nutri));
+            ps.setDate   (4, new java.sql.Date(purchase.getTime()));
+            ps.setDate   (5, new java.sql.Date(expiration.getTime()));
+            ps.setInt    (6, foodId);
+            ps.setInt    (7, storageId);
+
+            return ps.executeUpdate();
+
+        } catch (SQLException e) { exceptionHandler(e); return 0; }
     }
 
+    /* ───────────────────────────
+     *  CRUD : delete (par id)
+     * ─────────────────────────── */
     @Override
-    public Integer deleteFoodIn(String label) throws AppException
-    {
-        String query = "DELETE FROM food_in WHERE label = ?";
-        Integer rowsDeleted = 0;
+    public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
+        String sql = "DELETE FROM foodin WHERE food_id = ?";
 
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
 
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Obtenir l'id de la food via son label
+            int foodId = foodDAO.getFoodIdByLabel(foodLabel);
+            if (foodId == -1) {
+                throw new NotFoundException("Aucune food trouvée avec le label : " + foodLabel);
+            }
 
-            //stmt.setInt(1, id);
-            rowsDeleted = stmt.executeUpdate();
+            ps.setInt(1, foodId);
+            return ps.executeUpdate();
 
         } catch (SQLException e) {
             exceptionHandler(e);
+            return 0;
         }
-
-        return rowsDeleted;
     }
 
+    /* ───────────────────────────
+     *  CRUD : read unique (par id)
+     * ─────────────────────────── */
     @Override
-    public FoodIn getFoodIn(String label) throws AppException
-    {
-        String query = "SELECT * FROM food_in WHERE label = ?";
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
-        FoodIn foodIn = null;
+    public FoodIn getFoodInByFoodLabel(String foodLabel) throws AppException {
+        String sql = """
+        SELECT fi.*, f.label AS food_label, ft.label AS foodType_label, st.label AS storage_label
+          FROM foodin fi
+          JOIN food f          ON fi.food_id        = f.id
+          JOIN foodtype ft    ON f.foodT ype       = ft.id
+          JOIN storagetype st ON fi.storageType_id = st.id
+         WHERE f.label = ?
+         LIMIT 1
+    """;
 
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
 
-            //stmt.setInt(1, id);
+            ps.setString(1, foodLabel);
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    foodIn = mapResultSetToFoodIn(rs);
-                }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapResultSetToFoodIn(rs);
             }
 
         } catch (SQLException e) {
             exceptionHandler(e);
         }
 
-        return foodIn;
+        return null;
     }
 
-    private Integer executeFoodInUpdate(String query, Integer food, Integer storageType, Integer quantity, boolean isOpen,
-                                    char nutriScore, Date purchaseDate, Date expirationDate, Integer id) throws AppException
-    {
-        /*Integer rowsAffected = 0;
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+    /* ───────────────────────────
+     *  Mapping ResultSet → objet
+     * ─────────────────────────── */
+    private FoodIn mapResultSetToFoodIn(ResultSet rs) throws SQLException {
+        FoodType ft = new FoodType(rs.getString("foodType_label"));
+        Food     f  = new Food   (rs.getString("food_label"), ft);
+        StorageType st = new StorageType(rs.getString("storage_label"));
 
-        try (Connection conn = dbAccess.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query))
-        {
+        Character nutri = null;
+        String nutriStr = rs.getString(COL_NUTRI);
+        if (nutriStr != null && !nutriStr.isEmpty()) nutri = nutriStr.charAt(0);
 
-            stmt.setInt(1, food);
-            stmt.setInt(2, storageType);
-            stmt.setInt(3, quantity);
-            stmt.setBoolean(4, isOpen);
-            stmt.setString(5, String.valueOf(nutriScore));
-            stmt.setDate(6, new java.sql.Date(purchaseDate.getTime()));
-            stmt.setDate(7, new java.sql.Date(expirationDate.getTime()));
-            if (id != 0)
-            {
-                stmt.setInt(8, id);
+        return new FoodIn(
+                rs.getDate(COL_EXPIRATION),
+                rs.getInt(COL_QTY),
+                rs.getBoolean(COL_IS_OPEN),
+                nutri,
+                rs.getDate(COL_PURCHASE),
+                f,
+                st
+        );
+    }
+
+    /* ───────────────────────────
+     *  Helpers d’insertion ou récupération
+     * ─────────────────────────── */
+    private int getOrInsertFoodType(Connection c, FoodType ft) throws SQLException {
+        if (ft == null || ft.getLabel() == null)
+            throw new SQLException("FoodType ou label nul");
+
+        final String label = ft.getLabel();
+
+        /* 1) Cherche d’abord */
+        String select = "SELECT id FROM foodtype WHERE label = ?";
+        try (PreparedStatement ps = c.prepareStatement(select)) {
+            ps.setString(1, label);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("id");
             }
-            rowsAffected = stmt.executeUpdate();
-
-        } catch (SQLException e)
-        {
-            exceptionHandler(e);
         }
 
-        return rowsAffected;*/
-        return null;
+        /* 2) Tente l’insert */
+        String insert = "INSERT INTO foodtype (label) VALUES (?)";
+        try (PreparedStatement ps = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, label);
+            ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) return keys.getInt(1);
+            }
+        } catch (SQLException dup) {
+            if ("23000".equals(dup.getSQLState())) {
+                try (PreparedStatement ps = c.prepareStatement(select)) {
+                    ps.setString(1, label);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) return rs.getInt("id");
+                    }
+                }
+            }
+            throw dup;
+        }
+
+        throw new SQLException("Impossible d’obtenir/insérer food_type pour label=" + label);
     }
 
-
-
-    private FoodIn mapResultSetToFoodIn(ResultSet rs) throws SQLException
-    {
-        /*return new FoodIn(
-                rs.getDate("expirationDate"),
-                rs.getInt("quantity"),
-                rs.getBoolean("isOpen"),
-                rs.getString("nutriScore").charAt(0),
-                rs.getDate("purchaseDate"),
-                rs.getInt("food"),
-                rs.getInt("storageType")
-        );*/
-        return null;
+    private int getOrInsertFood(Connection c, Food f, int typeId) throws SQLException {
+        String s = "SELECT id FROM food WHERE label = ? AND foodType = ?";
+        try (PreparedStatement ps = c.prepareStatement(s)) {
+            ps.setString(1, f.getLabel()); ps.setInt(2, typeId);
+            try (ResultSet rs = ps.executeQuery()) { if (rs.next()) return rs.getInt(1); }
+        }
+        String i = "INSERT INTO food (label, foodType) VALUES (?, ?)";
+        try (PreparedStatement ps = c.prepareStatement(i, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, f.getLabel()); ps.setInt(2, typeId);
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) { if (rs.next()) return rs.getInt(1); }
+        }
+        throw new SQLException("food insert failed");
     }
 
-    private void exceptionHandler(SQLException e) throws AppException
-    {
-        String state = e.getSQLState();
-        switch (state) {
-            case "08S01":
-                throw new DataBaseUnavailableException("La base de données est indisponible.", e);
-            case "28000":
-                throw new AuthenticationFailureException("L'utilisateur ou le mot de passe est incorrect.", e);
-            case "22001":
-                throw new DataSizeException("Chaine trop longue pour le champ correspondant.", e);
-            default:
-                throw new RecipeOperationException("Erreur lors de l'opération sur la recette.", e);
+    private int getOrInsertStorageType(Connection c, StorageType st) throws SQLException {
+        String s = "SELECT id FROM storagetype WHERE label = ?";
+        try (PreparedStatement ps = c.prepareStatement(s)) {
+            ps.setString(1, st.getLabel());
+            try (ResultSet rs = ps.executeQuery()) { if (rs.next()) return rs.getInt(1); }
+        }
+        String i = "INSERT INTO storagetype (label) VALUES (?)";
+        try (PreparedStatement ps = c.prepareStatement(i, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, st.getLabel());
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) { if (rs.next()) return rs.getInt(1); }
+        }
+        throw new SQLException("storage_type insert failed");
+    }
+
+    /* ───────────────────────────
+     *  Exception handler centralisé
+     * ─────────────────────────── */
+    private void exceptionHandler(SQLException e) throws AppException {
+        switch (e.getSQLState()) {
+            case "08S01" -> throw new DataBaseUnavailableException("Base de données indisponible.", e);
+            case "28000" -> throw new AuthenticationFailureException("Identifiants incorrects.", e);
+            case "22001" -> throw new DataSizeException("Valeur trop longue pour la colonne.", e);
+            case "23000" -> throw new AlreadyExistException("Nourriture déja présente.", e);
+            default      -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }
 
@@ -365,11 +400,11 @@ public class FoodInDAO implements FoodInDAOInterface {
 
                     ExpiredFood expiredFood;
                     if (!map.containsKey(foodKey)) {
-                        Date expirationDate = rs.getDate("expirationDate");
+                        java.sql.Date expirationDate = rs.getDate("expirationDate");
                         Integer quantity = rs.getInt("quantity");
                         Boolean isOpen = rs.getBoolean("isOpen");
                         Character nutriScore = rs.getString("nutriScore") != null ? rs.getString("nutriScore").charAt(0) : null;
-                        Date purchaseDate = rs.getDate("purchaseDate");
+                        java.sql.Date purchaseDate = rs.getDate("purchaseDate");
 
                         FoodType ft = new FoodType(rs.getString("food_type_label"));
                         Food food = new Food(rs.getString("food_label"), ft);
