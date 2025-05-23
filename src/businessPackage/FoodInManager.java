@@ -41,6 +41,10 @@ public class FoodInManager {
         dao.updateFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
+    public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
+        return dao.deleteFoodInByFoodLabel(foodLabel);
+    }
+
     public Integer showQuantityLeft(String typeOfFood) throws AppException {
         List<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;

@@ -48,7 +48,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                    st.label       AS storage_label
               FROM foodin fi
               JOIN food f          ON fi.food_id       = f.id
-              JOIN foodtype ft    ON f.food_type      = ft.id
+              JOIN foodtype ft    ON f.foodType      = ft.id
               JOIN storagetype st ON fi.storageType_id = st.id
         """;
 
@@ -108,15 +108,15 @@ public class FoodInDAO implements FoodInDAOInterface {
                                 StorageType storage,
                                 Integer quantity,
                                 boolean isOpen,
-                                char nutri,
+                                Character nutri,
                                 java.util.Date purchase,
                                 java.util.Date expiration) throws AppException {
 
         String sql = """
             UPDATE foodin
                SET quantity = ?, isOpen = ?, nutriScore = ?,
-                   purchaseDate = ?, expirationDate = ?
-             WHERE food_id = ? AND storageType_id = ?
+                   purchaseDate = ?, expirationDate = ?, storageType_id = ?
+             WHERE food_id = ?
         """;
 
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
@@ -128,11 +128,18 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             ps.setInt    (1, quantity);
             ps.setBoolean(2, isOpen);
-            ps.setString (3, String.valueOf(nutri));
-            ps.setDate   (4, new java.sql.Date(purchase.getTime()));
+            if (nutri != null)
+                ps.setString(3, String.valueOf(nutri));
+            else
+                ps.setNull  (3, Types.CHAR);
+
+            if (purchase != null)
+                ps.setDate(4, new java.sql.Date(purchase.getTime()));
+            else
+                ps.setNull(4, Types.DATE);
             ps.setDate   (5, new java.sql.Date(expiration.getTime()));
-            ps.setInt    (6, foodId);
-            ps.setInt    (7, storageId);
+            ps.setInt    (6, storageId);
+            ps.setInt    (7, foodId);
 
             return ps.executeUpdate();
 
@@ -443,5 +450,4 @@ public class FoodInDAO implements FoodInDAOInterface {
 
         return result;
     }
-
 }

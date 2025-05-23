@@ -12,7 +12,7 @@ public interface FoodInDAOInterface
 
     List<FoodIn> getAllFoodIns();
 
-    Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
+    Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, Character nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
     public Integer deleteFoodInByFoodLabel(String foodLabel);
 
