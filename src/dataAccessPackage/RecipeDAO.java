@@ -162,6 +162,20 @@ public class RecipeDAO implements RecipeDAOInterface {
     private Recipe mapResultSetToRecipe(ResultSet rs) throws AppException {
         try
         {
+            int typeId = rs.getInt("type");
+            RecipeType recipeType = null;
+
+            try (PreparedStatement stmt = rs.getStatement().getConnection().prepareStatement(
+                    "SELECT label FROM Recipe_Type WHERE id = ?")) {
+                stmt.setInt(1, typeId);
+                try (ResultSet typeRs = stmt.executeQuery()) {
+                    if (typeRs.next()) {
+                        String typeLabel = typeRs.getString("label");
+                        recipeType = new RecipeType(typeLabel);
+                    }
+                }
+            }
+
             return new Recipe(
                     rs.getString("label"),
                     rs.getString("description"),
@@ -169,7 +183,7 @@ public class RecipeDAO implements RecipeDAOInterface {
                     rs.getDate("lastDateDone"),
                     rs.getObject("timeToMake") != null ? rs.getInt("timeToMake") : null,
                     rs.getBoolean("isCold"),
-                    new RecipeType(rs.getString("label"))
+                    recipeType
             );
         }
         catch (SQLException e)
@@ -177,7 +191,6 @@ public class RecipeDAO implements RecipeDAOInterface {
             exceptionHandler(e);
             return null;
         }
-
     }
 
     private void exceptionHandler(SQLException e) throws AppException {
