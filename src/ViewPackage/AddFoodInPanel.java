@@ -217,7 +217,6 @@ public class AddFoodInPanel extends JPanel {
 
                 if (food == null) {
                     JOptionPane.showMessageDialog(this, "Aliment non trouvé");
-                    return;
                 } else {
                     StorageType storageType = new StorageType(typeStorageString);
                     FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
