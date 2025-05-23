@@ -214,16 +214,20 @@ public class AddFoodInPanel extends JPanel {
                 }
 
                 Food food = foodController.getFoodByLabel(foodString);
-                StorageType storageType = new StorageType(typeStorageString);
-                FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
 
-                System.out.println("Jusqu'ici ça va");
+                if (food == null) {
+                    JOptionPane.showMessageDialog(this, "Aliment non trouvé");
+                    return;
+                } else {
+                    StorageType storageType = new StorageType(typeStorageString);
+                    FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
 
-                foodInController.addFoodIn(newFoodIn);
+                    foodInController.addFoodIn(newFoodIn);
 
-                System.out.println("Hourra");
+                    JOptionPane.showMessageDialog(this, "Aliment ajouté", "Ajout aliment", JOptionPane.INFORMATION_MESSAGE);
+                }
 
-                JOptionPane.showMessageDialog(this, "Aliment ajouté", "Ajout aliment", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
