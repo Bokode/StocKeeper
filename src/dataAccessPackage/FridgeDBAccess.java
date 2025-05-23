@@ -9,8 +9,6 @@ public class FridgeDBAccess {
     private static final String URL = "jdbc:mysql://localhost:3306/food_recipes?serverTimezone=UTC"; // Remplacer test par le nom de la DB
     private static final String USER = "root";
     private static final String PASSWORD = "20JGRL9q9"; // Remplacer par ton vrai mot de passe
-    private static final String PASSWORD = "lolilol5"; // Remplacer par ton vrai mot de passe
-  
     private static FridgeDBAccess instance;
 
 
