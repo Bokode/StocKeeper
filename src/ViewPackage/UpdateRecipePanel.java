@@ -145,9 +145,9 @@ public class UpdateRecipePanel extends JPanel {
         manageMaterialButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
         ButtonsPanel.add(updateButton);
-        ButtonsPanel.add(cancelButton);
         ButtonsPanel.add(manageIngredientButton);
         ButtonsPanel.add(manageMaterialButton);
+        ButtonsPanel.add(cancelButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
         cancelButton.addActionListener(e -> {
@@ -221,7 +221,7 @@ public class UpdateRecipePanel extends JPanel {
             }
         });
 
-        manageIngredientButton.addActionListener(e -> {
+        manageIngredientButton.addActionListener(eIngredient -> {
             String[] options = {"Ajouter", "Supprimer"};
             int choix = JOptionPane.showOptionDialog(
                     this,
@@ -238,6 +238,25 @@ public class UpdateRecipePanel extends JPanel {
                 mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, recipe, "updateRecipe"));
             } else if (choix == 1) {
                 mainWindow.showDeleteIngredientPanel(new DeleteIngredientPanel(mainWindow, recipe));
+            }
+        });
+
+        manageMaterialButton.addActionListener(eMaterial -> {
+            String[] opt = {"Ajouter", "Supprimer"};
+            int choice = JOptionPane.showOptionDialog(
+                    this,
+                    "Souhaittez vous ajouter ou supprimer du matériel ?",
+                    "Choix de l'action",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Pas d'icône personnalisée
+                    opt, // Texte des boutons
+                    opt[0] // Option par défaut sélectionnée
+            );
+            if (choice == 0) {
+                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "updateRecipe"));
+            } else if (choice == 1) {
+                mainWindow.showDeleteMaterialPanel(new DeleteMaterialPanel(mainWindow, recipe));
             }
         });
     }
