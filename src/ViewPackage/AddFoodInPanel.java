@@ -2,7 +2,6 @@ package ViewPackage;
 
 import controllerPackage.FoodController;
 import controllerPackage.FoodInController;
-import controllerPackage.RecipeController;
 import modelPackage.*;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -224,8 +223,9 @@ public class AddFoodInPanel extends JPanel {
                     foodInController.addFoodIn(newFoodIn);
 
                     JOptionPane.showMessageDialog(this, "Aliment ajouté", "Ajout aliment", JOptionPane.INFORMATION_MESSAGE);
-                }
 
+                    resetButton.doClick();
+                }
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
