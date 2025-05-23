@@ -49,7 +49,9 @@ public class FoodInListPanel extends JPanel
                     FoodIn foodIn = (FoodIn) value;
                     String label = foodIn.getFood().getLabel();
                     int quantity = foodIn.getQuantity();
-                    setText(label + " " + quantity + " (qqt/g/cl)");
+
+                    setText(label + " " + quantity + " (qqt/g/cl)   "+ (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +"   NutriScore : " + foodIn.getNutriScore() +
+                            "  Date de péremption : " + foodIn.getExpirationDate());
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));
                 return this;

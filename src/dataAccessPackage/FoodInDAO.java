@@ -450,5 +450,4 @@ public class FoodInDAO implements FoodInDAOInterface {
 
         return result;
     }
-
 }
