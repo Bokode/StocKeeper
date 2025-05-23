@@ -11,8 +11,9 @@ import java.sql.Date;
 
 public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-        private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
+    private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
     private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
+    private AddIngredientPanel addIngredientPanel;
     RecipeController recipeController;
     public AddRecipePanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
@@ -191,10 +192,12 @@ public class AddRecipePanel extends JPanel {
                 recipeController.addRecipe(newRecipe);
                 System.out.println("Recette créée : " + newRecipe);
 
-                JOptionPane.showMessageDialog(this, "Recette ajoutée avec succès !", "Recette ajoutée", JOptionPane.INFORMATION_MESSAGE);
-                // Optionnel : vider les champs ou revenir à l’accueil
-                // mainWindow.showHomePanel();
-
+                JOptionPane.showMessageDialog(this, "Recette crée, vous allez pouvoir maintenant ajouter les aliments", "Recette crée", JOptionPane.INFORMATION_MESSAGE);
+                addIngredientPanel = new AddIngredientPanel(mainWindow, newRecipe, "home");
+                mainWindow.getMainContainer().removeAll();
+                mainWindow.getMainContainer().add(addIngredientPanel, BorderLayout.CENTER);
+                mainWindow.getMainContainer().revalidate();
+                mainWindow.getMainContainer().repaint();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
