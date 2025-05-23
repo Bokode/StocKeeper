@@ -15,7 +15,7 @@ public interface FoodInDAOInterface
 
     Integer deleteFoodIn(String label);
 
-    FoodIn getFoodInByLabel(String label);
+    FoodIn getFoodIn(String label);
 
     List<FoodInToSearch> getFoodInToSearch();
 
