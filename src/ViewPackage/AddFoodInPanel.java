@@ -16,6 +16,8 @@ public class AddFoodInPanel extends JPanel {
 
     private JLabel titleLabel, expirationDateLabel, quantityLabel, nutriScoreLabel, purchaseLabel, foodLabel, storageTypeLabel;
 
+    private UtilDateModel expirationModel, purchaseModel;
+
     FoodInController foodInController = new FoodInController();
 
     public AddFoodInPanel(MainWindow mainWindow) {
@@ -47,7 +49,7 @@ public class AddFoodInPanel extends JPanel {
         expirationDateLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(expirationDateLabel, gbc);
         gbc.gridx = 1;
-        UtilDateModel expirationModel = new UtilDateModel();
+        expirationModel = new UtilDateModel();
         JDatePanelImpl expirationPanel = new JDatePanelImpl(expirationModel, p);
         JDatePickerImpl expirationDatePicker = new JDatePickerImpl(expirationPanel, new DateLabelFormatter());
         FormPanel.add(expirationDatePicker, gbc);
@@ -93,7 +95,7 @@ public class AddFoodInPanel extends JPanel {
         purchaseLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(purchaseLabel, gbc);
         gbc.gridx = 1;
-        UtilDateModel purchaseModel = new UtilDateModel();
+        purchaseModel = new UtilDateModel();
         JDatePanelImpl purchasePanel = new JDatePanelImpl(purchaseModel, p);
         JDatePickerImpl purchaseDatePicker = new JDatePickerImpl(purchasePanel, new DateLabelFormatter());
         FormPanel.add(purchaseDatePicker, gbc);
@@ -101,10 +103,87 @@ public class AddFoodInPanel extends JPanel {
         row++;
 
         // Food
+        gbc.gridx = 0; gbc.gridy = row;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        foodLabel = new JLabel("Aliment : ");
+        foodLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(foodLabel, gbc);
+        gbc.gridx = 1;
+        // A revoir
+        String[] aliment = {"Pomme", "Patate", "Pate", "Pizza"};
+        JComboBox<String> alimentComboBox = new JComboBox<>(aliment);
+        alimentComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(alimentComboBox, gbc);
 
+        row++;
 
         // StorageType
+        gbc.gridx = 0; gbc.gridy = row;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        storageTypeLabel = new JLabel("Type de stockage : ");
+        storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(storageTypeLabel, gbc);
+        gbc.gridx = 1;
+        // A revoir
+        String[] typeStorage = {"Frigo", "Congélateur"};
+        JComboBox<String> typeStorageComboBox = new JComboBox<>(typeStorage);
+        typeStorageComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(typeStorageComboBox, gbc);
 
         add(FormPanel, BorderLayout.CENTER);
+
+        ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JButton addButton = new JButton("Ajouter");
+        addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton cancelButton = new JButton("Annuler");
+        cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton resetButton = new JButton("Réinitialiser");
+        resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+
+        ButtonsPanel.add(addButton);
+        ButtonsPanel.add(cancelButton);
+        ButtonsPanel.add(resetButton);
+        add(ButtonsPanel, BorderLayout.SOUTH);
+
+        cancelButton.addActionListener(e -> {
+            for (Component component : FormPanel.getComponents()){
+                if (component instanceof JTextField){
+                    ((JTextField) component).setText("");
+                } else if (component instanceof JCheckBox) {
+                    ((JCheckBox) component).setSelected(false);
+                } else if (component instanceof JComboBox) {
+                    ((JComboBox<?>) component).setSelectedIndex(0);
+                }
+                else if (component instanceof JScrollPane) {
+                    Component view = ((JScrollPane) component).getViewport().getView();
+                    if (view instanceof JTextArea) {
+                        ((JTextArea) view).setText("");
+                    }
+                }
+            }
+            expirationModel.setValue(null);
+            purchaseModel.setValue(null);
+            mainWindow.showHomePanel();
+        });
+
+        resetButton.addActionListener(e -> {
+            for (Component component : FormPanel.getComponents()){
+                if (component instanceof JTextField){
+                    ((JTextField) component).setText("");
+                } else if (component instanceof JCheckBox) {
+                    ((JCheckBox) component).setSelected(false);
+                } else if (component instanceof JComboBox) {
+                    ((JComboBox<?>) component).setSelectedIndex(0);
+                }
+                else if (component instanceof JScrollPane) {
+                    Component view = ((JScrollPane) component).getViewport().getView();
+                    if (view instanceof JTextArea) {
+                        ((JTextArea) view).setText("");
+                    }
+                }
+            }
+            expirationModel.setValue(null);
+            purchaseModel.setValue(null);
+        });
     }
 }
