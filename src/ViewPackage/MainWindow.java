@@ -78,7 +78,6 @@ public class MainWindow extends JFrame {
 
     public void showAddIngredientPanel(AddIngredientPanel addIngredientPanel){
         mainContainer.removeAll();
-        recipeListPanel.loadRecipes();
         mainContainer.add(addIngredientPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
@@ -86,7 +85,6 @@ public class MainWindow extends JFrame {
 
     public void showDeleteIngredientPanel(DeleteIngredientPanel deleteIngredientPanel){
         mainContainer.removeAll();
-        recipeListPanel.loadRecipes();
         mainContainer.add(deleteIngredientPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
@@ -94,7 +92,6 @@ public class MainWindow extends JFrame {
 
     public void showUpdateRecipePanel(UpdateRecipePanel updateRecipePanel){
         mainContainer.removeAll();
-        recipeListPanel.loadRecipes();
         mainContainer.add(updateRecipePanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
