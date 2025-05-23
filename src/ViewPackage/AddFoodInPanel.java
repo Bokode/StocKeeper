@@ -11,11 +11,8 @@ import java.util.Properties;
 
 public class AddFoodInPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-
     private JTextField quantityField, nutriScoreField;
-
     private JLabel titleLabel, expirationDateLabel, quantityLabel, nutriScoreLabel, purchaseLabel, foodLabel, storageTypeLabel;
-
     private UtilDateModel expirationModel, purchaseModel;
 
     FoodInController foodInController = new FoodInController();
@@ -125,7 +122,7 @@ public class AddFoodInPanel extends JPanel {
         FormPanel.add(storageTypeLabel, gbc);
         gbc.gridx = 1;
         // A revoir
-        String[] typeStorage = {"Frigo", "Congélateur"};
+        String[] typeStorage = {"Frigo", "Congélateur", "Armoire"};
         JComboBox<String> typeStorageComboBox = new JComboBox<>(typeStorage);
         typeStorageComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(typeStorageComboBox, gbc);
