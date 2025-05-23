@@ -23,7 +23,7 @@ public class DeleteMaterialPanel extends JPanel {
 
         // Titre
         JLabel titleLabel = new JLabel("Matériels de : " + recipe.getLabel(), SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Poppins", Font.PLAIN, 24));
+        titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         add(titleLabel, BorderLayout.NORTH);
 
         // Liste des matériels
