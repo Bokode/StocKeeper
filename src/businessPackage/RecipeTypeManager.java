@@ -1,4 +1,4 @@
-package businessPackage;
+/*package businessPackage;
 
 import dataAccessPackage.RecipeDAO;
 import modelPackage.RecipeType;
@@ -20,4 +20,4 @@ public class RecipeTypeManager {
         //ArrayList<RecipeType> recipesType = dao.getAllRecipeTypes();
         return null;
     }
-}
+}*/
