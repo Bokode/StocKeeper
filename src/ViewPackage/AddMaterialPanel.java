@@ -106,6 +106,10 @@ public class AddMaterialPanel extends JPanel {
                 return;
             }
             try {
+                MaterialController materialController = new MaterialController();
+                if (materialController.getMaterialIdByLabel(name) == -1){
+                    materialController.addMaterial(name, typeString);
+                }
                 // Ajout et création de l'ingrédient
                 recipeMaterialController = new RecipeMaterialController();
                 recipeMaterialController.addMaterialToRecipe(recipe.getLabel(), name);
