@@ -21,6 +21,10 @@ public class IngredientAmount {
         return food;
     }
 
+    public Integer getQuantity(){
+        return quantity;
+    }
+
     public void setRecipe(String recipe) {
         this.recipe = recipe;
     }

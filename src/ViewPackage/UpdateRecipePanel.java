@@ -252,10 +252,9 @@ public class UpdateRecipePanel extends JPanel {
             );
 
             if (choix == 0) {
-                AddIngredientPanel addIngredientPanel = new AddIngredientPanel(mainWindow, recipe, "updateRecipe");
-                mainWindow.showAddIngredientPanel(addIngredientPanel);
+                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, recipe, "updateRecipe"));
             } else if (choix == 1) {
-                // Ajouter panel de suppression d'aliments
+                mainWindow.showDeleteIngredientPanel(new DeleteIngredientPanel(mainWindow, recipe));
             }
         });
     }

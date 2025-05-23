@@ -82,6 +82,14 @@ public class MainWindow extends JFrame {
         mainContainer.repaint();
     }
 
+    public void showDeleteIngredientPanel(DeleteIngredientPanel deleteIngredientPanel){
+        mainContainer.removeAll();
+        recipeListPanel.loadRecipes();
+        mainContainer.add(deleteIngredientPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
     public void showUpdateRecipePanel(UpdateRecipePanel updateRecipePanel){
         mainContainer.removeAll();
         recipeListPanel.loadRecipes();

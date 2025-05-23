@@ -18,7 +18,7 @@ public class AddIngredientPanel extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Ajout d'un aliment : ");
+        titleLabel = new JLabel("Ajouter un ingrédient : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);

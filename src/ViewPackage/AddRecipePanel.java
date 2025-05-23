@@ -13,7 +13,7 @@ public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
     private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
-    RecipeController recipeController;
+    private RecipeController recipeController;
     public AddRecipePanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
