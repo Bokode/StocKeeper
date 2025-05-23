@@ -27,15 +27,13 @@ public class FoodInDAO implements FoodInDAOInterface {
      * ─────────────────────────── */
     private final FoodDAO        foodDAO;
     private final FoodTypeDAO    foodTypeDAO;
-    private final StorageTypeDAO storageDAO;
 
     public FoodInDAO() {
-        this(new FoodDAO(), new FoodTypeDAO(), new StorageTypeDAO());
+        this(new FoodDAO(), new FoodTypeDAO());
     }
-    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO, StorageTypeDAO storageDAO) {
+    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO) {
         this.foodDAO     = foodDAO;
         this.foodTypeDAO = foodTypeDAO;
-        this.storageDAO  = storageDAO;
     }
 
     /* ───────────────────────────
@@ -300,7 +298,7 @@ public class FoodInDAO implements FoodInDAOInterface {
             case "08S01" -> throw new DataBaseUnavailableException("Base de données indisponible.", e);
             case "28000" -> throw new AuthenticationFailureException("Identifiants incorrects.", e);
             case "22001" -> throw new DataSizeException("Valeur trop longue pour la colonne.", e);
-            case "23000" -> throw new AlreadyExistException("Contrainte d'unicité violée.", e);
+            case "23000" -> throw new AlreadyExistException("Nourriture déja présente.", e);
             default      -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }

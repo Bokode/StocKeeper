@@ -1,8 +1,5 @@
 package ViewPackage;
 
-import modelPackage.Recipe;
-import modelPackage.RecipeType;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -75,6 +72,27 @@ public class MainWindow extends JFrame {
         mainContainer.removeAll();
         recipeListPanel.loadRecipes();
         mainContainer.add(recipeListPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showAddIngredientPanel(AddIngredientPanel addIngredientPanel){
+        mainContainer.removeAll();
+        mainContainer.add(addIngredientPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showDeleteIngredientPanel(DeleteIngredientPanel deleteIngredientPanel){
+        mainContainer.removeAll();
+        mainContainer.add(deleteIngredientPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showUpdateRecipePanel(UpdateRecipePanel updateRecipePanel){
+        mainContainer.removeAll();
+        mainContainer.add(updateRecipePanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
     }
