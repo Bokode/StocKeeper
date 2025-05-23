@@ -1,5 +1,7 @@
 package modelPackage;
 
+import exceptionPackage.WrongInputException;
+
 public class IngredientAmount {
     private String food;
     private String recipe;
