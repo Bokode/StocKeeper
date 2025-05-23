@@ -137,14 +137,17 @@ public class UpdateRecipePanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton updateButton = new JButton("Modifier");
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton manageIngredientButton = new JButton("Gérer ingrédients");
+        manageIngredientButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
         ButtonsPanel.add(updateButton);
         ButtonsPanel.add(cancelButton);
         ButtonsPanel.add(resetButton);
+        ButtonsPanel.add(manageIngredientButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
         cancelButton.addActionListener(e -> {
@@ -229,10 +232,29 @@ public class UpdateRecipePanel extends JPanel {
                 recipeController.updateRecipe(newRecipe, labelToFind);
 
                 JOptionPane.showMessageDialog(this, "Recette modifiée avec succès !", "Recette ajoutée", JOptionPane.INFORMATION_MESSAGE);
-                mainWindow.showHomePanel();
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        manageIngredientButton.addActionListener(e -> {
+            String[] options = {"Ajouter", "Supprimer"};
+            int choix = JOptionPane.showOptionDialog(
+                    this,
+                    "Souhaittez vous ajouter ou supprimer des aliments ?",
+                    "Choix de l'action",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Pas d'icône personnalisée
+                    options, // Texte des boutons
+                    options[0] // Option par défaut sélectionnée
+            );
+
+            if (choix == 0) {
+                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, recipe, "updateRecipe"));
+            } else if (choix == 1) {
+                mainWindow.showDeleteIngredientPanel(new DeleteIngredientPanel(mainWindow, recipe));
             }
         });
     }

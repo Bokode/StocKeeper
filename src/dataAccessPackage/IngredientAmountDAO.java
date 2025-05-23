@@ -59,7 +59,7 @@ public class IngredientAmountDAO
             int recipeId = recipeDAO.getRecipeIdByLabel(recipe);
             int foodId = foodDAO.getFoodIdByLabel(food);
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setDouble(1, quantity);
+            preparedStatement.setInt(1, quantity);
             preparedStatement.setInt(2, recipeId);
             preparedStatement.setInt(3, foodId);
             preparedStatement.executeUpdate();
