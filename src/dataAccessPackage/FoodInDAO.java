@@ -27,15 +27,13 @@ public class FoodInDAO implements FoodInDAOInterface {
      * ─────────────────────────── */
     private final FoodDAO        foodDAO;
     private final FoodTypeDAO    foodTypeDAO;
-    private final StorageTypeDAO storageDAO;
 
     public FoodInDAO() {
-        this(new FoodDAO(), new FoodTypeDAO(), new StorageTypeDAO());
+        this(new FoodDAO(), new FoodTypeDAO());
     }
-    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO, StorageTypeDAO storageDAO) {
+    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO) {
         this.foodDAO     = foodDAO;
         this.foodTypeDAO = foodTypeDAO;
-        this.storageDAO  = storageDAO;
     }
 
     /* ───────────────────────────

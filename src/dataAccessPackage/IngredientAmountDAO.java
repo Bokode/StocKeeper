@@ -51,7 +51,7 @@ public class IngredientAmountDAO
 
     public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException
     {
-        String query = "UPDATE ingredient_amount SET quantity = ? WHERE recipe_id = ? AND food_id = ?";
+        String query = "UPDATE ingredientamount SET quantity = ? WHERE recipe = ? AND food = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection())
         {
             RecipeDAO recipeDAO = new RecipeDAO();
@@ -72,7 +72,7 @@ public class IngredientAmountDAO
     public ArrayList<IngredientAmount> getIngredientAmountsByRecipe(String recipe) throws AppException
     {
         ArrayList<IngredientAmount> ingredientAmounts = new ArrayList<>();
-        String query = "SELECT * FROM ingredient_amount WHERE recipe_id = ?";
+        String query = "SELECT * FROM ingredientamount WHERE recipe = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
@@ -82,7 +82,7 @@ public class IngredientAmountDAO
             {
                 while (rs.next())
                 {
-                    int foodId = rs.getInt("food_id");
+                    int foodId = rs.getInt("food");
                     String foodLabel = new FoodDAO().getFoodLabelById(foodId);
 
                     Integer quantity = rs.getInt("quantity");
