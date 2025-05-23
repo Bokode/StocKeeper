@@ -48,8 +48,8 @@ public class FoodInListPanel extends JPanel
                 {
                     FoodIn foodIn = (FoodIn) value;
                     String label = foodIn.getFood().getLabel();
-                    double quantity = foodIn.getQuantity();
-                    setText(label + " (" + quantity + ")");
+                    int quantity = foodIn.getQuantity();
+                    setText(label + " " + quantity + " (qqt/g/cl)");
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));
                 return this;
