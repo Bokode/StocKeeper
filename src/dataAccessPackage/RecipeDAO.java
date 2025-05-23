@@ -33,7 +33,6 @@ public class RecipeDAO implements RecipeDAOInterface {
     public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
