@@ -29,6 +29,10 @@ public class IngredientAmount {
 
     public void setQuantity(Integer quantity)
     {
-        this.quantity = quantity;
+       if (quantity < 0) {
+            throw new WrongInputException("La quantité doit être un nombre positif");
+        } else {
+            this.quantity = quantity;
+        }
     }
 }
