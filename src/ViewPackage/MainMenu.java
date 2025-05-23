@@ -64,6 +64,8 @@ public class MainMenu extends JMenuBar {
         listingFoodIn.addActionListener(e -> mainWindow.showFoodInListPanel());
         deleteFoodIn.addActionListener(e -> mainWindow.showDeleteFoodInPanel());
         updateFoodIn.addActionListener(e -> mainWindow.showSearchFoodInPanel());
+        searchFoodTypeExpiredInStorage.addActionListener(e -> {mainWindow.showSearchExpiredFoodInInStorage();
+        });
     }
 }
 
