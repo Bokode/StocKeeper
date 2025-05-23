@@ -22,7 +22,7 @@ public class IngredientAmountDAO
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setInt(1, recipeId);
             preparedStatement.setInt(2, foodId);
-            preparedStatement.setDouble(3, quantity);
+            preparedStatement.setInt(3, quantity);
             preparedStatement.executeUpdate();
         } catch (SQLException e)
         {
