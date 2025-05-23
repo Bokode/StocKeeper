@@ -45,7 +45,7 @@ public class RecipeMaterialDAO {
 
     public List<Material> getMaterialsByRecipe(String recipeLabel) throws AppException {
         List<Material> list = new ArrayList<>();
-        final String sql = "SELECT " + COL_MATERIAL + " FROM recipe_material WHERE " + COL_RECIPE + " = ?";
+        final String sql = "SELECT " + COL_MATERIAL + " FROM recipematerial WHERE " + COL_RECIPE + " = ?";
 
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
