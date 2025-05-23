@@ -3,6 +3,7 @@ package dataAccessPackage;
 import java.sql.*;
 
 import exceptionPackage.*;
+import modelPackage.FoodType;
 
 
 public class FoodTypeDAO {
@@ -33,6 +34,24 @@ public class FoodTypeDAO {
         } catch (SQLException e) { exceptionHandler(e); }
         return null;
     }
+
+    public FoodType getFoodTypeById(int id) throws AppException {
+        final String sql = "SELECT label FROM food_type WHERE id = ?";
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new FoodType(rs.getString("label"));
+                }
+            }
+        } catch (SQLException e) {
+            // Gérer l'exception de manière similaire
+            throw new RecipeOperationException("Erreur lors de la récupération du type d'aliment", e);
+        }
+        return null;
+    }
+
 
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {
