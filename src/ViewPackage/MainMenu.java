@@ -62,6 +62,7 @@ public class MainMenu extends JMenuBar {
         listingRecipe.addActionListener(e -> mainWindow.showRecipeListPanel());
         addFoodIn.addActionListener(e -> mainWindow.showAddFoodInPanel());
         deleteFoodIn.addActionListener(e -> mainWindow.showDeleteFoodInPanel());
+        updateFoodIn.addActionListener(e -> mainWindow.showSearchFoodInPanel());
     }
 }
 

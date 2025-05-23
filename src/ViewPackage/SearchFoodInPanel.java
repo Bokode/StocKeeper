@@ -1,21 +1,23 @@
 package ViewPackage;
 
 import controllerPackage.FoodInController;
+import controllerPackage.RecipeController;
+import modelPackage.FoodIn;
+import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeleteFoodInPanel extends JPanel {
+public class SearchFoodInPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField;
     private JLabel titleLabel, labelLabel;
     private FoodInController foodInController;
-
-    public DeleteFoodInPanel(MainWindow mainWindow) {
+    public SearchFoodInPanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Supprimer un aliment : ");
+        titleLabel = new JLabel("Modifier un aliment : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         TitlePanel.add(titleLabel);
         add(TitlePanel, BorderLayout.NORTH);
@@ -24,7 +26,7 @@ public class DeleteFoodInPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        labelLabel = new JLabel("Nom de l'aliment à supprimer : ");
+        labelLabel = new JLabel("Nom de l'aliment à modifier : ");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -40,14 +42,14 @@ public class DeleteFoodInPanel extends JPanel {
         add(FormPanel, BorderLayout.CENTER);
 
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JButton deleteButton = new JButton("Supprimer");
-        deleteButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton updateButton = new JButton("Modifier");
+        updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton cancelButton = new JButton("Annuler");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
-        ButtonsPanel.add(deleteButton);
+        ButtonsPanel.add(updateButton);
         ButtonsPanel.add(cancelButton);
         ButtonsPanel.add(resetButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
@@ -61,7 +63,7 @@ public class DeleteFoodInPanel extends JPanel {
             labelField.setText("");
         });
 
-        deleteButton.addActionListener(e -> {
+        updateButton.addActionListener(e -> {
             try {
                 String labelToFind = labelField.getText().trim();
                 if (labelToFind.isEmpty()){
@@ -69,11 +71,11 @@ public class DeleteFoodInPanel extends JPanel {
                     return;
                 }
                 foodInController = new FoodInController();
-                foodInController.deleteFoodInByFoodLabel(labelToFind);
-                    System.out.println("Aliment supprimée : " + labelToFind);
-                JOptionPane.showMessageDialog(this, "Aliment supprimée avec succès !", "Aliment supprimée", JOptionPane.INFORMATION_MESSAGE);
+                FoodIn foodIn = foodInController.getFoodIn(labelToFind);
+                labelField.setText("");
+                mainWindow.showUpdateFoodInPanel(new UpdateFoodInPanel(mainWindow, foodIn));
             }
-            catch(Exception exception){
+            catch (Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
