@@ -24,7 +24,7 @@ public class DeleteIngredientPanel extends JPanel {
 
         // Titre
         JLabel titleLabel = new JLabel("Ingrédients de : " + recipe.getLabel(), SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Poppins", Font.PLAIN, 24));
+        titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         add(titleLabel, BorderLayout.NORTH);
 
         ingredientAmountController.getIngredientAmountsByRecipe(recipe.getLabel());

@@ -44,7 +44,7 @@ public class SearchFoodInPanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton updateButton = new JButton("Modifier");
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
