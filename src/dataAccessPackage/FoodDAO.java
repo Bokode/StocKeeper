@@ -1,6 +1,7 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import modelPackage.Food;
 import modelPackage.FoodType;
 
 import java.sql.*;
@@ -9,7 +10,7 @@ public class FoodDAO {
     private static final String TBL        = "food";
     private static final String COL_ID     = "id";
     private static final String COL_LABEL  = "label";
-    private static final String COL_TYPEID = "type_id";
+    private static final String COL_TYPEID = "foodType";
 
     private final FoodTypeDAO typeDAO;
 
@@ -40,6 +41,27 @@ public class FoodDAO {
         } catch (SQLException e) { exceptionHandler(e); }
         return null;
     }
+
+    public Food getFoodByLabel(String label) throws AppException {
+        final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
+        System.out.println("Recherche aliment avec label = " + label);
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, label);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String foodLabel = rs.getString(COL_LABEL);
+                    int typeId = rs.getInt(COL_TYPEID);
+                    FoodType foodType = typeDAO.getFoodTypeById(typeId); // méthode à prévoir dans FoodTypeDAO
+                    return new Food(foodLabel, foodType);
+                }
+            }
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+        return null;
+    }
+
 
     /* ---------- CREATE ---------- */
     public void addFood(String label, FoodType type) throws AppException {
