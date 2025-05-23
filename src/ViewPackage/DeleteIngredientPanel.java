@@ -31,7 +31,7 @@ public class DeleteIngredientPanel extends JPanel {
         // Liste des ingrédients
         listModel = new DefaultListModel<>();
         for (IngredientAmount ingredient : ingredientAmountController.getIngredientAmountsByRecipe(recipe.getLabel())) {
-            listModel.addElement(ingredient.getFood() + " " + ingredient.getQuantity() + " (qqt/g/cl)");
+            listModel.addElement(ingredient.getFood()/* + " " + ingredient.getQuantity() + " (qqt/g/cl)"*/);
         }
 
         ingredientList = new JList<>(listModel);
@@ -45,25 +45,29 @@ public class DeleteIngredientPanel extends JPanel {
 
         JButton deleteButton = new JButton("Supprimer");
         deleteButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        // deleteButton.addActionListener(e -> supprimerIngredient(recipe));
-
         JButton backButton = new JButton("Retour");
         backButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        // backButton.addActionListener(e -> mainWindow.showPreviousPanel());
 
         buttonPanel.add(deleteButton);
         buttonPanel.add(backButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-    }
 
-//    private void supprimerIngredient(Recipe recipe) {
-//        int selectedIndex = ingredientList.getSelectedIndex();
-//
-//        if (selectedIndex != -1) {
-//            String selectedLabel = listModel.getElementAt(selectedIndex);
-//            ingredientController.deleteIngredientByLabelFromRecipe(selectedLabel, recipe);
-//            listModel.remove(selectedIndex);
-//        }
-//    }
+        backButton.addActionListener(e -> {
+            mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe));
+        });
+
+        deleteButton.addActionListener(e -> {
+            int selectedIndex = ingredientList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                try {
+                    ingredientAmountController.deleteIngredientAmount(recipe.getLabel(), listModel.getElementAt(selectedIndex));
+                    listModel.remove(selectedIndex);
+                }
+                catch (Exception exception){
+                    JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
 }

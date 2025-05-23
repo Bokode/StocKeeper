@@ -1,21 +1,26 @@
 package ViewPackage;
 
+import controllerPackage.FoodController;
 import controllerPackage.FoodInController;
+import controllerPackage.RecipeController;
+import modelPackage.*;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
 import java.util.Properties;
 
 public class AddFoodInPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-    private JTextField quantityField, nutriScoreField;
+    private JTextField quantityField, FoodField;
     private JLabel titleLabel, expirationDateLabel, quantityLabel, nutriScoreLabel, purchaseLabel, foodLabel, storageTypeLabel;
     private UtilDateModel expirationModel, purchaseModel;
 
     FoodInController foodInController = new FoodInController();
+    FoodController foodController = new FoodController();
 
     public AddFoodInPanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
@@ -68,9 +73,9 @@ public class AddFoodInPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = row;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        JCheckBox isOpen = new JCheckBox("Paquet ouvert");
-        isOpen.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(isOpen, gbc);
+        JCheckBox isOpenCheckBox = new JCheckBox("Paquet ouvert");
+        isOpenCheckBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(isOpenCheckBox, gbc);
         gbc.gridwidth = 1;
 
         row++;
@@ -81,8 +86,10 @@ public class AddFoodInPanel extends JPanel {
         nutriScoreLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(nutriScoreLabel, gbc);
         gbc.gridx = 1;
-        nutriScoreField = new JTextField(20);
-        FormPanel.add(nutriScoreField, gbc);
+        String[] nutriScore = {"A", "B", "C", "D", "E", "Non défini"};
+        JComboBox<String> nutriScoreComboBox = new JComboBox<>(nutriScore);
+        nutriScoreComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(nutriScoreComboBox, gbc);
 
         row++;
 
@@ -106,11 +113,8 @@ public class AddFoodInPanel extends JPanel {
         foodLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(foodLabel, gbc);
         gbc.gridx = 1;
-        // A revoir
-        String[] aliment = {"Pomme", "Patate", "Pate", "Pizza"};
-        JComboBox<String> alimentComboBox = new JComboBox<>(aliment);
-        alimentComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(alimentComboBox, gbc);
+        FoodField = new JTextField(20);
+        FormPanel.add(FoodField, gbc);
 
         row++;
 
@@ -121,7 +125,6 @@ public class AddFoodInPanel extends JPanel {
         storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(storageTypeLabel, gbc);
         gbc.gridx = 1;
-        // A revoir
         String[] typeStorage = {"Frigo", "Congélateur", "Armoire"};
         JComboBox<String> typeStorageComboBox = new JComboBox<>(typeStorage);
         typeStorageComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -181,6 +184,52 @@ public class AddFoodInPanel extends JPanel {
             }
             expirationModel.setValue(null);
             purchaseModel.setValue(null);
+        });
+
+        addButton.addActionListener(e -> {
+            try {
+                java.util.Date expirationDate = expirationModel.getValue();
+                String quantityString = quantityField.getText().trim();
+                Integer quantity = null;
+                boolean isOpen = isOpenCheckBox.isSelected();
+                java.util.Date purchaseDate = purchaseModel.getValue(); // Facultatif
+                String nutriScoreString = nutriScoreComboBox.getSelectedItem().toString(); // Facultatif
+                Character nutriScoreCharacter = nutriScoreString.charAt(0);
+                String foodString = FoodField.getText().trim();
+                String typeStorageString = typeStorageComboBox.getSelectedItem().toString();
+                if (quantityString.isEmpty() || foodString.isEmpty() || expirationDate == null) {
+                    JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
+                    return;
+                }
+
+                if (nutriScoreCharacter == 'N') {
+                    nutriScoreCharacter = null;
+                }
+
+                try {
+                    quantity = Integer.valueOf(quantityString);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Erreur : La quantité doit être un nombre entier.");
+                    return;
+                }
+
+                Food food = foodController.getFoodByLabel(foodString);
+
+                if (food == null) {
+                    JOptionPane.showMessageDialog(this, "Aliment non trouvé");
+                } else {
+                    StorageType storageType = new StorageType(typeStorageString);
+                    FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
+
+                    foodInController.addFoodIn(newFoodIn);
+
+                    JOptionPane.showMessageDialog(this, "Aliment ajouté", "Ajout aliment", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 }
