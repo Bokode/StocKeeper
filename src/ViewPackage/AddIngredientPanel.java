@@ -54,20 +54,6 @@ public class AddIngredientPanel extends JPanel {
         ingredientAmountField = new JTextField(20);
         FormPanel.add(ingredientAmountField, gbc);
 
-        // Type de mesure
-//        row++;
-//        gbc.gridx = 0;
-//        gbc.gridy = row;
-//        foodTypeLabel = new JLabel("Unité :");
-//        foodTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-//        FormPanel.add(foodTypeLabel, gbc);
-
-//        gbc.gridx = 1;
-//        String[] foodTypes = {"quantité", "centilitres", "grammes"};
-//        JComboBox<String> foodTypeComboBox = new JComboBox<>(foodTypes);
-//        foodTypeComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-//        FormPanel.add(foodTypeComboBox, gbc);
-
         add(FormPanel, BorderLayout.CENTER);
 
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -104,14 +90,14 @@ public class AddIngredientPanel extends JPanel {
             if (cancelPanelName.equals("home")){
                 mainWindow.showHomePanel();
             } else if (cancelPanelName.equals("updateRecipe")) {
-                //
+                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
+                mainWindow.showUpdateRecipePanel(updateRecipePanel);
             }
         });
 
         addButton.addActionListener(e -> {
             String name = labelField.getText().trim();
             String amountStr = ingredientAmountField.getText().trim();
-            // String unit = foodTypeComboBox.getSelectedItem().toString();
 
             if (name.isEmpty() || amountStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Champs manquants", JOptionPane.WARNING_MESSAGE);
@@ -145,6 +131,5 @@ public class AddIngredientPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
-
     }
 }
