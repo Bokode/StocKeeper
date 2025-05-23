@@ -112,4 +112,11 @@ public class MainWindow extends JFrame {
         mainContainer.revalidate();
         mainContainer.repaint();
     }
+  
+    public void showAddMaterialPanel(AddMaterialPanel addMaterialPanel){
+        mainContainer.removeAll();
+        mainContainer.add(addMaterialPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
 }
