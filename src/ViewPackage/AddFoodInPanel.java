@@ -217,7 +217,11 @@ public class AddFoodInPanel extends JPanel {
                 StorageType storageType = new StorageType(typeStorageString);
                 FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
 
+                System.out.println("Jusqu'ici ça va");
+
                 foodInController.addFoodIn(newFoodIn);
+
+                System.out.println("Hourra");
 
                 JOptionPane.showMessageDialog(this, "Aliment ajouté", "Ajout aliment", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {

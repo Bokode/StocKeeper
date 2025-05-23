@@ -36,7 +36,7 @@ public class FoodTypeDAO {
     }
 
     public FoodType getFoodTypeById(int id) throws AppException {
-        final String sql = "SELECT label FROM food_type WHERE id = ?";
+        final String sql = "SELECT label FROM foodtype WHERE id = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);

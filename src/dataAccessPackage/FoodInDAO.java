@@ -12,7 +12,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  Constantes table / colonnes
      * ─────────────────────────── */
-    private static final String TBL_FOOD_IN        = "food_in";
+    private static final String TBL_FOOD_IN        = "foodin";
     private static final String COL_ID             = "id";
     private static final String COL_EXPIRATION     = "expirationDate";
     private static final String COL_QTY            = "quantity";
@@ -46,10 +46,10 @@ public class FoodInDAO implements FoodInDAOInterface {
                    f.label        AS food_label,
                    ft.label       AS foodType_label,
                    st.label       AS storage_label
-              FROM food_in fi
+              FROM foodin fi
               JOIN food f          ON fi.food_id       = f.id
-              JOIN food_type ft    ON f.food_type      = ft.id
-              JOIN storage_type st ON fi.storageType_id = st.id
+              JOIN foodtype ft    ON f.food_type      = ft.id
+              JOIN storagetype st ON fi.storageType_id = st.id
         """;
 
         List<FoodIn> list = new ArrayList<>();
@@ -68,7 +68,7 @@ public class FoodInDAO implements FoodInDAOInterface {
      * ─────────────────────────── */
     public void addFoodIn(FoodIn fi) throws AppException {
         String sql = """
-            INSERT INTO food_in
+            INSERT INTO foodin
                 (expirationDate, quantity, isOpen,
                  nutriScore, purchaseDate, food_id, storageType_id)
              VALUES (?,?,?,?,?,?,?)
@@ -310,9 +310,9 @@ public class FoodInDAO implements FoodInDAOInterface {
         String query = "SELECT fi.Id AS foodIn_id, fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
                 "f.Id AS food_id, f.label AS food_label, " +
                 "ft.Id AS foodType_id, ft.label AS foodType_label " +
-                "FROM food_in fi " +
+                "FROM foodin fi " +
                 "JOIN food f ON fi.food_id = f.Id " +
-                "JOIN food_type ft ON f.foodType = ft.Id";
+                "JOIN foodtype ft ON f.foodType = ft.Id";
 
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -370,13 +370,13 @@ public class FoodInDAO implements FoodInDAOInterface {
                st.label AS storage_label,
                s.label AS season_label,
                a.label AS allergen_label
-        FROM food_in fi
+        FROM foodin fi
         JOIN food f ON fi.food_id = f.Id
-        JOIN food_type ft ON f.foodType = ft.Id
-        JOIN storage_type st ON fi.storageType_id = st.Id
-        LEFT JOIN season_food sf ON f.Id = sf.food
+        JOIN foodtype ft ON f.foodType = ft.Id
+        JOIN storagetype st ON fi.storageType_id = st.Id
+        LEFT JOIN seasonfood sf ON f.Id = sf.food
         LEFT JOIN season s ON sf.season = s.label
-        LEFT JOIN food_allergen fa ON f.Id = fa.food
+        LEFT JOIN foodallergen fa ON f.Id = fa.food
         LEFT JOIN allergen a ON fa.allergen = a.label
         WHERE fi.expirationDate < CURRENT_DATE()
           AND st.label = ?
