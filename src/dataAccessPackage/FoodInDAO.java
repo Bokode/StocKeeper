@@ -48,7 +48,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                    st.label       AS storage_label
               FROM foodin fi
               JOIN food f          ON fi.food_id       = f.id
-              JOIN foodtype ft    ON f.food_type      = ft.id
+              JOIN foodtype ft    ON f.foodType      = ft.id
               JOIN storagetype st ON fi.storageType_id = st.id
         """;
 
