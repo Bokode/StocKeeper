@@ -46,10 +46,10 @@ public class FoodInDAO implements FoodInDAOInterface {
                    f.label        AS food_label,
                    ft.label       AS foodType_label,
                    st.label       AS storage_label
-              FROM food_in fi
+              FROM foodin fi
               JOIN food f          ON fi.food_id       = f.id
-              JOIN food_type ft    ON f.food_type      = ft.id
-              JOIN storage_type st ON fi.storageType_id = st.id
+              JOIN foodtype ft    ON f.foodType      = ft.id
+              JOIN storagetype st ON fi.storageType_id = st.id
         """;
 
         List<FoodIn> list = new ArrayList<>();
