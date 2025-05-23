@@ -125,6 +125,10 @@ public class AddIngredientPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Erreur : L'apport calorique doit être un nombre entier.");
                 return;
             }
+            if (amount < 0){
+                JOptionPane.showMessageDialog(this, "La quantité doit être un nombre positif", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             try {
                 // Ajout et création de l'ingrédient
