@@ -111,4 +111,11 @@ public class MainWindow extends JFrame {
         mainContainer.repaint();
     }
 
+    public void showDeleteMaterialPanel(DeleteMaterialPanel deleteMaterialPanel){
+        mainContainer.removeAll();
+        mainContainer.add(deleteMaterialPanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
 }
