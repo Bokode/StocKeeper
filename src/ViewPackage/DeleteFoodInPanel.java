@@ -70,7 +70,7 @@ public class DeleteFoodInPanel extends JPanel {
                 }
                 foodInController = new FoodInController();
                 foodInController.deleteFoodIn(labelToFind);
-                System.out.println("Recette supprimée : " + labelToFind);
+                    System.out.println("Aliment supprimée : " + labelToFind);
                 JOptionPane.showMessageDialog(this, "Aliment supprimée avec succès !", "Aliment supprimée", JOptionPane.INFORMATION_MESSAGE);
             }
             catch(Exception exception){
