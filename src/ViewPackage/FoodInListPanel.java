@@ -5,6 +5,8 @@ import modelPackage.FoodIn;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class FoodInListPanel extends JPanel
@@ -49,9 +51,12 @@ public class FoodInListPanel extends JPanel
                     FoodIn foodIn = (FoodIn) value;
                     String label = foodIn.getFood().getLabel();
                     int quantity = foodIn.getQuantity();
+                    Date expirationDate = foodIn.getExpirationDate();
+                    Date currentDate = new Date();
+                    int comparison = currentDate.compareTo(expirationDate);
 
                     setText(label + " " + quantity + " (qqt/g/cl)   "+ (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +"   NutriScore : " + foodIn.getNutriScore() +
-                            "  Date de péremption : " + foodIn.getExpirationDate());
+                            "  Péremption : " + (comparison > 0 ? " dans " + comparison + " jours ":"Est périmé ! ") + "(" +  expirationDate + ")");
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));
                 return this;

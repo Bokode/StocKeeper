@@ -314,12 +314,22 @@ public class FoodInDAO implements FoodInDAOInterface {
     public List<FoodInToSearch> getFoodInToSearch() throws AppException {
         List<FoodInToSearch> result = new ArrayList<>();
 
-        String query = "SELECT fi.Id AS foodIn_id, fi.expirationDate, fi.quantity, fi.nutriScore, fi.purchaseDate, fi.isOpen, " +
-                "f.Id AS food_id, f.label AS food_label, " +
-                "ft.Id AS foodType_id, ft.label AS foodType_label " +
-                "FROM foodin fi " +
-                "JOIN food f ON fi.food_id = f.Id " +
-                "JOIN foodtype ft ON f.foodType = ft.Id";
+        String query = """
+           SELECT fi.id AS foodIn_id,
+                  fi.expirationDate,
+                  fi.quantity,
+                  fi.nutriScore,
+                  fi.purchaseDate,
+                  fi.isOpen,
+                  f.id AS food_id,
+                  f.label AS food_label,
+                  ft.id AS foodType_id,
+                  ft.label AS foodType_label
+           FROM FoodIn fi
+           JOIN Food f ON fi.food_id = f.id
+           JOIN FoodType ft ON f.foodType = ft.id
+           """;
+
 
 
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
@@ -330,11 +340,11 @@ public class FoodInDAO implements FoodInDAOInterface {
 
             while (rs.next()) {
                 FoodType foodType = new FoodType(
-                        rs.getString("label")
+                        rs.getString("foodType_label")
                 );
 
                 Food food = new Food(
-                        rs.getString("label"),
+                        rs.getString("food_label"),
                         foodType
                 );
 
@@ -351,7 +361,7 @@ public class FoodInDAO implements FoodInDAOInterface {
                         nutriScore,
                         rs.getDate("purchaseDate"),
                         food,
-                        null // Handle StorageType if needed
+                        null
                 );
 
                 result.add(new FoodInToSearch(foodIn, food, foodType));
