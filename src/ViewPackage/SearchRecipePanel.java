@@ -12,8 +12,6 @@ public class SearchRecipePanel extends JPanel {
     private JTextField labelField;
     private JLabel titleLabel, labelLabel;
     private RecipeController recipeController;
-    private Recipe newRecipe;
-    private UpdateRecipePanel updateRecipePanel;
     public SearchRecipePanel(MainWindow mainWindow){
         setLayout(new BorderLayout());
 
@@ -45,7 +43,7 @@ public class SearchRecipePanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton updateButton = new JButton("Modifier");
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -74,13 +72,7 @@ public class SearchRecipePanel extends JPanel {
                 recipeController = new RecipeController();
                 Recipe recipe = recipeController.getRecipe(labelToFind);
                 labelField.setText("");
-
-                updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
-                mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(updateRecipePanel, BorderLayout.CENTER);
-                mainWindow.getMainContainer().revalidate();
-                mainWindow.getMainContainer().repaint();
-
+                mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe));
             }
             catch (Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -88,3 +80,5 @@ public class SearchRecipePanel extends JPanel {
         });
     }
 }
+
+

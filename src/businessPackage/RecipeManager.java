@@ -1,10 +1,9 @@
 package businessPackage;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 
 import dataAccessPackage.RecipeDAO;
 import exceptionPackage.AppException;
@@ -28,7 +27,7 @@ public class RecipeManager {
         return recipes;
     }
 
-    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+    public void addRecipe(Recipe recipe) throws AppException {
         dao.addRecipe(recipe);
     }
 
@@ -44,12 +43,12 @@ public class RecipeManager {
         dao.updateRecipe(labelToFind, recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
-    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTimeDebut, Integer cookingTimeEnd) throws AppException {
         List<Recipe> recipesToSearch = getAllRecipes();
         List<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
-            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
+            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() >= cookingTimeDebut && r.getTimeToMake() <= cookingTimeEnd) {
                 recipes.add(r);
             }
         });
@@ -61,7 +60,7 @@ public class RecipeManager {
         return dao.recipeWithExpireFood();
     }
 
-    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
-        return dao.recipesOfSeason(date);
+    public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
+        return dao.recipesWithSomeIngredientsInStock();
     }
 }

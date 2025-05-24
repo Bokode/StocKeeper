@@ -13,8 +13,13 @@ public class RecipeListPanel extends JPanel {
     private JPanel ButtonsPanel;
     private JButton detailsButton, backButton;
     private JLabel titleLabel;
+    private RecipeController recipeController;
 
     public RecipeListPanel(MainWindow mainWindow) {
+        this(mainWindow, null); // Appel du constructeur secondaire avec null
+    }
+
+    public RecipeListPanel(MainWindow mainWindow, List<Recipe> customRecipeList) {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
@@ -35,7 +40,7 @@ public class RecipeListPanel extends JPanel {
         recipeJList.setFixedCellWidth(200);
         recipeJList.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        // Custom renderer to only show the label
+        // Affichage du label uniquement
         recipeJList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -43,7 +48,6 @@ public class RecipeListPanel extends JPanel {
                 if (value instanceof Recipe) {
                     setText(((Recipe) value).getLabel());
                 }
-                setFont(new Font("Poppins", Font.PLAIN, 15));
                 return this;
             }
         });
@@ -62,15 +66,22 @@ public class RecipeListPanel extends JPanel {
         ButtonsPanel.add(backButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
-        // Load data
-        loadRecipes();
+        // Controller
+        recipeController = new RecipeController();
+
+        // Charge la liste de recettes (custom ou toutes)
+        if (customRecipeList != null) {
+            loadRecipes(customRecipeList);
+        } else {
+            loadAllRecipes();
+        }
 
         // Listener
         detailsButton.addActionListener(e -> {
             Recipe selectedRecipe = recipeJList.getSelectedValue();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe), BorderLayout.CENTER);
+                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "recipeList"), BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
             } else {
@@ -81,18 +92,21 @@ public class RecipeListPanel extends JPanel {
         backButton.addActionListener(e -> {
             mainWindow.showHomePanel();
         });
-
     }
 
-    public void loadRecipes() {
+    private void loadAllRecipes() {
         try {
-            List<Recipe> recipes = new RecipeController().getAllRecipes();
-            listModel.clear();
-            for (Recipe recipe : recipes) {
-                listModel.addElement(recipe);
-            }
+            List<Recipe> recipes = recipeController.getAllRecipes();
+            loadRecipes(recipes);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erreur de chargement des recettes : " + e.getMessage());
+        }
+    }
+
+    private void loadRecipes(List<Recipe> recipes) {
+        listModel.clear();
+        for (Recipe recipe : recipes) {
+            listModel.addElement(recipe);
         }
     }
 }

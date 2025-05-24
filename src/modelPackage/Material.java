@@ -24,4 +24,6 @@ public class Material {
     public String getMaterialTypeLabel() {
         return materialTypeLabel;
     }
+
+
 }

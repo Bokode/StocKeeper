@@ -39,18 +39,18 @@ public class RecipeController {
         recipeManager.updateRecipe(recipe, labelToFind);
     }
 
-    // Task 1
-    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
-        return recipeManager.showRecipesBasedOnTime(cookingTime);
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTimeDebut, Integer cookingTimeEnd) throws AppException {
+        return recipeManager.showRecipesBasedOnTime(cookingTimeDebut, cookingTimeEnd);
     }
 
-    // Search 1
+
     public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return recipeManager.recipeWithExpiredFood();
     }
 
-    // Search 3
-    public List<SeasonalRecipe> RecipesOfSeason(LocalDate date) throws AppException {
-        return recipeManager.recipesOfSeason(date);
+    public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
+        return recipeManager.recipeWithSomeIngredientsInStock();
     }
+
+
 }

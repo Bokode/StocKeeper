@@ -1,5 +1,6 @@
 package interfacePackage;
 
+import exceptionPackage.AppException;
 import modelPackage.*;
 
 import java.sql.SQLException;
@@ -11,11 +12,11 @@ public interface FoodInDAOInterface
 
     List<FoodIn> getAllFoodIns();
 
-    Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, char nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
+    Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, Character nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate);
 
-    Integer deleteFoodIn(String label);
+    public Integer deleteFoodInByFoodLabel(String foodLabel);
 
-    FoodIn getFoodInByLabel(String label);
+    public FoodIn getFoodInByFoodLabel(String foodLabel);
 
     List<FoodInToSearch> getFoodInToSearch();
 

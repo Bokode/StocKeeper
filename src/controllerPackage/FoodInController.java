@@ -38,8 +38,12 @@ public class FoodInController {
         foodInManager.updateFoodIn(foodIn);
     }
 
+    public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
+        return foodInManager.deleteFoodInByFoodLabel(foodLabel);
+    }
+
     // Task 2
-    public Integer showQuantityLeft(String typeOfFood) throws AppException {
+    public QuantityLeft showQuantityLeft(String typeOfFood) throws AppException {
         return foodInManager.showQuantityLeft(typeOfFood);
     }
 

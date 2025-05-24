@@ -3,31 +3,37 @@ package ViewPackage;
 import controllerPackage.RecipeController;
 import modelPackage.Recipe;
 import modelPackage.RecipeType;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Properties;
 
 public class UpdateRecipePanel extends JPanel {
-        private JPanel FormPanel, ButtonsPanel, TitlePanel;
-        private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
-        private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
-        private RecipeController recipeController;
+    private JPanel FormPanel, ButtonsPanel, TitlePanel;
+    private JTextField labelField, caloricIntakeField, timeToMakeField;
+    private JTextArea descriptionArea;
+    private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel, lastTimeDoneLabel;
+    private UtilDateModel lastTimeDoneModel;
+    private RecipeController recipeController;
+
     public UpdateRecipePanel(MainWindow mainWindow, Recipe recipe) {
         setLayout(new BorderLayout());
 
         String labelToFind = recipe.getLabel();
 
-        // Titre
+        // Titre de Fenêtre
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titleLabel = new JLabel("Modification de la recette : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         TitlePanel.add(titleLabel);
         add(TitlePanel, BorderLayout.NORTH);
 
-        // Formulaire
         FormPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -36,7 +42,7 @@ public class UpdateRecipePanel extends JPanel {
 
         int row = 0;
 
-        // Champ Nom
+        // Nom de la recette
         gbc.gridx = 0; gbc.gridy = row;
         labelLabel = new JLabel("Nom :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -46,18 +52,24 @@ public class UpdateRecipePanel extends JPanel {
         labelField.setText(recipe.getLabel());
         FormPanel.add(labelField, gbc);
 
-        // Champ Description
+        // Description de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         descriptionLabel = new JLabel("Description de la recette : ");
         descriptionLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(descriptionLabel, gbc);
         gbc.gridx = 1;
-        descriptionField = new JTextField(20);
-        descriptionField.setText(recipe.getDescription());
-        FormPanel.add(descriptionField, gbc);
+        descriptionArea = new JTextArea(5, 20);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setFont(new Font("Poppins", Font.PLAIN, 15));
+        descriptionArea.setText(recipe.getDescription());
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        descriptionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        descriptionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        FormPanel.add(descriptionScrollPane, gbc);
 
-        // Champ Apport calorique
+        // Apport calorique de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         caloricInTakeLabel = new JLabel("Apport calorique (facultatif) : ");
@@ -65,13 +77,12 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(caloricInTakeLabel, gbc);
         gbc.gridx = 1;
         caloricIntakeField = new JTextField(20);
-        caloricIntakeField.setText("");
         if (recipe.getCaloricIntake() != null && recipe.getCaloricIntake() != 0) {
             caloricIntakeField.setText(recipe.getCaloricIntake().toString());
         }
         FormPanel.add(caloricIntakeField, gbc);
 
-        // Champ Durée de préparation
+        // Durée de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         timeToMakeLabel = new JLabel("Durée de la recette (facultatif) : ");
@@ -79,30 +90,45 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(timeToMakeLabel, gbc);
         gbc.gridx = 1;
         timeToMakeField = new JTextField(20);
-        timeToMakeField.setText("");
         if (recipe.getTimeToMake() != null && recipe.getTimeToMake() != 0) {
             timeToMakeField.setText(recipe.getTimeToMake().toString());
         }
         FormPanel.add(timeToMakeField, gbc);
 
-        // Checkbox : faite aujourd’hui
+        // Configurer les propriétés de format de date
+        Properties p = new Properties();
+        p.put("text.today", "Aujourd'hui");
+        p.put("text.month", "Mois");
+        p.put("text.year", "Année");
+
+        // Dernière date de réalisation de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        JCheckBox hasBeenDoneToday = new JCheckBox("Recette réalisée aujourd’hui");
-        hasBeenDoneToday.setFont(new Font("Poppins", Font.PLAIN, 15));
-        if (recipe.getLastDayDone() != null) {
-            Date today = new Date(System.currentTimeMillis());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            if (sdf.format(recipe.getLastDayDone()).equals(sdf.format(today))) {
-                hasBeenDoneToday.setSelected(true);
-            }
-        }
-        FormPanel.add(hasBeenDoneToday, gbc);
-        gbc.gridwidth = 1;
+        lastTimeDoneLabel = new JLabel("Date de la dernière réalisation de la recette :");
+        lastTimeDoneLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(lastTimeDoneLabel, gbc);
+        gbc.gridx = 1;
+        lastTimeDoneModel = new UtilDateModel();
+        JDatePanelImpl lastTimeDonePanel = new JDatePanelImpl(lastTimeDoneModel, p);
+        JDatePickerImpl lastTimeDoneDatePicker = new JDatePickerImpl(lastTimeDonePanel, new DateLabelFormatter());
+        FormPanel.add(lastTimeDoneDatePicker, gbc);
 
-        // Checkbox : recette froide
+//        gbc.gridx = 0; gbc.gridy = row;
+//        gbc.gridwidth = 2;
+//        gbc.anchor = GridBagConstraints.CENTER;
+//        JCheckBox hasBeenDoneToday = new JCheckBox("Recette réalisée aujourd’hui");
+//        hasBeenDoneToday.setFont(new Font("Poppins", Font.PLAIN, 15));
+//        if (recipe.getLastDayDone() != null) {
+//            Date today = new Date(System.currentTimeMillis());
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//            if (sdf.format(recipe.getLastDayDone()).equals(sdf.format(today))) {
+//                hasBeenDoneToday.setSelected(true);
+//            }
+//        }
+//        FormPanel.add(hasBeenDoneToday, gbc);
+//        gbc.gridwidth = 1;
+
+        // Si la recette est froide ou non
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.gridwidth = 2;
@@ -112,7 +138,7 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(isColdCheckBox, gbc);
         gbc.gridwidth = 1;
 
-        // ComboBox : type de recette
+        // Type de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -126,26 +152,34 @@ public class UpdateRecipePanel extends JPanel {
         typeRecetteComboBox.setSelectedItem(recipe.getType().getLabel());
         FormPanel.add(typeRecetteComboBox, gbc);
 
-        // Ajout du formulaire au panel
         add(FormPanel, BorderLayout.CENTER);
 
+        // Panel des bouttons
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton updateButton = new JButton("Modifier");
         updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton resetButton = new JButton("Réinitialiser");
-        resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton manageIngredientButton = new JButton("Gérer ingrédients");
+        manageIngredientButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton manageMaterialButton = new JButton("Gérer matériel");
+        manageMaterialButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
         ButtonsPanel.add(updateButton);
+        ButtonsPanel.add(manageIngredientButton);
+        ButtonsPanel.add(manageMaterialButton);
         ButtonsPanel.add(cancelButton);
-        ButtonsPanel.add(resetButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
         cancelButton.addActionListener(e -> {
-            for (Component component : FormPanel.getComponents()){
-                if (component instanceof JTextField){
+            for (Component component : FormPanel.getComponents()) {
+                if (component instanceof JTextField) {
                     ((JTextField) component).setText("");
+                } else if (component instanceof JScrollPane) {
+                    Component view = ((JScrollPane) component).getViewport().getView();
+                    if (view instanceof JTextArea) {
+                        ((JTextArea) view).setText("");
+                    }
                 } else if (component instanceof JCheckBox) {
                     ((JCheckBox) component).setSelected(false);
                 } else if (component instanceof JComboBox) {
@@ -155,29 +189,16 @@ public class UpdateRecipePanel extends JPanel {
             mainWindow.showSearchRecipePanel();
         });
 
-        resetButton.addActionListener(e -> {
-            for (Component component : FormPanel.getComponents()){
-                if (component instanceof JTextField){
-                    ((JTextField) component).setText("");
-                } else if (component instanceof JCheckBox) {
-                    ((JCheckBox) component).setSelected(false);
-                } else if (component instanceof JComboBox) {
-                    ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-            }
-        });
-
         updateButton.addActionListener(e -> {
             try {
                 String label = labelField.getText().trim();
-                String description = descriptionField.getText().trim();
+                String description = descriptionArea.getText().trim();
 
                 if (label.isEmpty() || description.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
                     return;
                 }
 
-                // Champs facultatifs
                 Integer caloricIntake = null;
                 Integer timeToMake = null;
 
@@ -201,28 +222,67 @@ public class UpdateRecipePanel extends JPanel {
                     }
                 }
 
-                Date lastDayDone = null;
-                if (hasBeenDoneToday.isSelected()){
-                    // Variable
-                    LocalDate localDate = LocalDate.now();
-                    // Convert to java.sql.Date
-                    lastDayDone = Date.valueOf(localDate);
+//                Date lastDayDone = null;
+//                if (hasBeenDoneToday.isSelected()) {
+//                    lastDayDone = Date.valueOf(LocalDate.now());
+//                }
+                java.util.Date lastTimeDone = null;
+                if (lastTimeDoneModel.getValue() != null){
+                    lastTimeDone = lastTimeDoneModel.getValue();
                 }
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
-                RecipeType recipeType = new RecipeType(typeString); // ou enum selon ton modèle
+                RecipeType recipeType = new RecipeType(typeString);
 
-                Recipe newRecipe = new Recipe(label, description, caloricIntake, lastDayDone, timeToMake, isCold, recipeType);
+                Recipe newRecipe = new Recipe(label, description, caloricIntake, lastTimeDone, timeToMake, isCold, recipeType);
                 recipeController = new RecipeController();
                 recipeController.updateRecipe(newRecipe, labelToFind);
+
                 JOptionPane.showMessageDialog(this, "Recette modifiée avec succès !", "Recette ajoutée", JOptionPane.INFORMATION_MESSAGE);
-                mainWindow.showHomePanel();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            catch (Exception exception) {
-                JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        });
+
+        manageIngredientButton.addActionListener(eIngredient -> {
+            String[] options = {"Ajouter", "Supprimer"};
+            int choix = JOptionPane.showOptionDialog(
+                    this,
+                    "Souhaittez vous ajouter ou supprimer des aliments ?",
+                    "Choix de l'action",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Pas d'icône personnalisée
+                    options, // Texte des boutons
+                    options[0] // Option par défaut sélectionnée
+            );
+
+            if (choix == 0) {
+                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, recipe, "updateRecipe"));
+            } else if (choix == 1) {
+                mainWindow.showDeleteIngredientPanel(new DeleteIngredientPanel(mainWindow, recipe));
+            }
+        });
+
+        manageMaterialButton.addActionListener(eMaterial -> {
+            String[] opt = {"Ajouter", "Supprimer"};
+            int choice = JOptionPane.showOptionDialog(
+                    this,
+                    "Souhaittez vous ajouter ou supprimer du matériel ?",
+                    "Choix de l'action",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Pas d'icône personnalisée
+                    opt, // Texte des boutons
+                    opt[0] // Option par défaut sélectionnée
+            );
+            if (choice == 0) {
+                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "updateRecipe"));
+            } else if (choice == 1) {
+                mainWindow.showDeleteMaterialPanel(new DeleteMaterialPanel(mainWindow, recipe));
             }
         });
     }
-
 }

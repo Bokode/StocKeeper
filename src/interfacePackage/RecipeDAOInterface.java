@@ -5,7 +5,7 @@ import modelPackage.RecipeType;
 import modelPackage.RecipeWithExpiredFood;
 import modelPackage.SeasonalRecipe;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +23,4 @@ public interface RecipeDAOInterface
     Integer deleteRecipe(String label);
 
     List<RecipeWithExpiredFood> recipeWithExpireFood();
-
-    List<SeasonalRecipe> recipesOfSeason(LocalDate date);
 }

@@ -11,9 +11,9 @@ import java.sql.Date;
 
 public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-        private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
+    private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
     private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
-    RecipeController recipeController;
+    private RecipeController recipeController;
     public AddRecipePanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
@@ -98,7 +98,7 @@ public class AddRecipePanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Ajouter");
         addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -191,10 +191,8 @@ public class AddRecipePanel extends JPanel {
                 recipeController.addRecipe(newRecipe);
                 System.out.println("Recette créée : " + newRecipe);
 
-                JOptionPane.showMessageDialog(this, "Recette ajoutée avec succès !", "Recette ajoutée", JOptionPane.INFORMATION_MESSAGE);
-                // Optionnel : vider les champs ou revenir à l’accueil
-                // mainWindow.showHomePanel();
-
+                JOptionPane.showMessageDialog(this, "Recette crée, vous allez pouvoir maintenant ajouter les aliments", "Recette crée", JOptionPane.INFORMATION_MESSAGE);
+                mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, newRecipe, "addMaterial"));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

@@ -30,28 +30,35 @@ public class FoodInManager {
     }
 
     public FoodIn getFoodIn(String label) throws AppException {
-        return dao.getFoodInByLabel(label);
+        return dao.getFoodInByFoodLabel(label);
     }
 
     public void deleteFoodIn(String label) throws AppException {
-        dao.deleteFoodIn(label);
+        dao.deleteFoodInByFoodLabel(label);
     }
 
     public void updateFoodIn(FoodIn foodIn) throws AppException {
         dao.updateFoodIn(foodIn.getFood(), foodIn.getStorageType(), foodIn.getQuantity(), foodIn.getOpen(), foodIn.getNutriScore(), foodIn.getPurchaseDate(), foodIn.getExpirationDate());
     }
 
-    public Integer showQuantityLeft(String typeOfFood) throws AppException {
+    public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
+        return dao.deleteFoodInByFoodLabel(foodLabel);
+    }
+
+    public QuantityLeft showQuantityLeft(String typeOfFood) throws AppException {
         List<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;
+        Integer numberDifferentType = 0;
 
         for (FoodInToSearch f : foodInToSearch) {
             if (Objects.equals(f.getFoodType().getLabel(), typeOfFood)) {
+                numberDifferentType++;
                 quantityLeft += f.getFoodIn().getQuantity();
             }
         }
 
-        return quantityLeft;
+
+        return (new QuantityLeft(quantityLeft, numberDifferentType));
     }
 
     public List<ExpiredFood> expiredFood(StorageType storageType, FoodType foodType) throws AppException {

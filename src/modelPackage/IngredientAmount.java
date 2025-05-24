@@ -1,37 +1,44 @@
 package modelPackage;
 
+import exceptionPackage.WrongInputException;
+
 public class IngredientAmount {
-    private Food food;
-    private Recipe recipe;
+    private String food;
+    private String recipe;
     private Integer quantity;
 
-    IngredientAmount(Recipe recipe, Food food, Integer quantity) {
+    public IngredientAmount(String recipe, String food, Integer quantity) {
         setRecipe(recipe);
         setFood(food);
         setQuantity(quantity);
     }
 
-    public Recipe getRecipe() {
+    public String getRecipe() {
         return recipe;
     }
 
-    public Food getFood() {
+    public String getFood() {
         return food;
     }
 
-    public Integer getQuantity() {
+    public Integer getQuantity(){
         return quantity;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(String recipe) {
         this.recipe = recipe;
     }
 
-    public void setFood(Food food) {
+    public void setFood(String food) {
         this.food = food;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQuantity(Integer quantity)
+    {
+       if (quantity < 0) {
+            throw new WrongInputException("La quantité doit être un nombre positif");
+        } else {
+            this.quantity = quantity;
+        }
     }
 }

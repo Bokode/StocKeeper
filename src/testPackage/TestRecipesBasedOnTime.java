@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TestRecipesBasedOnTime {
@@ -19,8 +20,14 @@ class TestRecipesBasedOnTime {
     }
 
     @Test
-    public void testShowRecipesBasedOnTime() {
-        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(55);
+    public void testShowRecipesBasedOnTimeNotNull() {
+        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(0, 55);
         assertNotEquals(0, recipesTest.size());
+    }
+
+    @Test
+    public void testShowRecipesBasedOnTimeNull() {
+        List<Recipe> recipesTest = recipeManager.showRecipesBasedOnTime(300, 350);
+        assertEquals(0, recipesTest.size());
     }
 }
