@@ -70,7 +70,7 @@ public class RecipeListPanel extends JPanel {
             Recipe selectedRecipe = recipeJList.getSelectedValue();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe), BorderLayout.CENTER);
+                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "recipeList"), BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
             } else {
