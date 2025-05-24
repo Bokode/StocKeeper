@@ -2,11 +2,13 @@ package ViewPackage;
 
 import javax.swing.*;
 
-public class MainMenu extends JMenuBar {
+public class MainMenu extends JMenuBar
+{
     private JMenu recipeMenu, foodInMenu, searchMenu, homeMenu;
     private JMenuItem addRecipe, deleteRecipe, updateRecipe, listingRecipe, addFoodIn, deleteFoodIn, updateFoodIn, listingFoodIn, searchRecipeFoodInOwnedAndNotExpired, searchFoodTypeExpiredInStorage, searchRecipeWithFoodExpired5DAndWithActualSeason, homeScreen, exitApplication;
     private MainWindow mainWindow;
-    public MainMenu(MainWindow mainWindow){
+    public MainMenu(MainWindow mainWindow)
+    {
         this.mainWindow = mainWindow;
 
         homeMenu = new JMenu("Accueil");
@@ -65,8 +67,11 @@ public class MainMenu extends JMenuBar {
         deleteFoodIn.addActionListener(e -> mainWindow.showDeleteFoodInPanel());
         updateFoodIn.addActionListener(e -> mainWindow.showSearchFoodInPanel());
         searchRecipeWithFoodExpired5DAndWithActualSeason.addActionListener(e -> mainWindow.showRecipeWithExpiredFoodListPanel());
-        searchFoodTypeExpiredInStorage.addActionListener(e -> {mainWindow.showSearchExpiredFoodInInStorage();
-        });
+        searchFoodTypeExpiredInStorage.addActionListener(e -> mainWindow.showSearchExpiredFoodInInStorage());
+            searchRecipeFoodInOwnedAndNotExpired.addActionListener(e -> mainWindow.showPossibleRecipePanel());
+
+
+
     }
 }
 
