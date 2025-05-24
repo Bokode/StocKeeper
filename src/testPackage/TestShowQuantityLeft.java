@@ -2,6 +2,7 @@ package testPackage;
 
 import businessPackage.FoodInManager;
 
+import modelPackage.QuantityLeft;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -16,7 +17,7 @@ class TestShowQuantityLeft {
     
     @Test
     public void testShowQuantityLeft() {
-        Integer quantityTest = foodInManager.showQuantityLeft("Solide");
-        assertNotEquals(0, quantityTest);
+        QuantityLeft quantityTest = foodInManager.showQuantityLeft("Solide");
+        assertNotEquals(0, quantityTest.getQuantity());
     }
 }
