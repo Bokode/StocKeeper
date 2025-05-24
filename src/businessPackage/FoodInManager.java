@@ -25,7 +25,7 @@ public class FoodInManager {
         return foodIns;
     }
 
-    public void addFoodIn(FoodIn foodIn) throws AppException, SQLException {
+    public void addFoodIn(FoodIn foodIn) throws AppException {
         dao.addFoodIn(foodIn);
     }
 

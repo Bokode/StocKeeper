@@ -23,7 +23,7 @@ public class RecipeController {
         return recipeManager.getAllRecipes();
     }
 
-    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+    public void addRecipe(Recipe recipe) throws AppException {
         recipeManager.addRecipe(recipe);
     }
 

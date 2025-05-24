@@ -11,7 +11,6 @@ import java.util.*;
 
 public class RecipeDAO implements RecipeDAOInterface {
 
-    @Override
     public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
@@ -29,7 +28,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         return recipes;
     }
 
-    @Override
     public Recipe getRecipe(String label) throws AppException {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
@@ -48,7 +46,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         return recipe;
     }
 
-    @Override
     public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
                                 boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
@@ -84,7 +81,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
     }
 
-    @Override
     public Integer deleteRecipe(String label) throws AppException {
         String query = "DELETE FROM recipe WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
@@ -207,7 +203,6 @@ public class RecipeDAO implements RecipeDAOInterface {
         }
     }
 
-    @Override
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
         List<RecipeWithExpiredFood> result = new ArrayList<>();
         LocalDate today = LocalDate.now();

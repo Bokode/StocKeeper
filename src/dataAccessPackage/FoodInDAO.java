@@ -39,7 +39,6 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  CRUD : read all
      * ─────────────────────────── */
-    @Override
     public List<FoodIn> getAllFoodIns() throws AppException {
         String sql = """
             SELECT fi.*,
@@ -103,7 +102,6 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  CRUD : update
      * ─────────────────────────── */
-    @Override
     public Integer updateFoodIn(Food food,
                                 StorageType storage,
                                 Integer quantity,
@@ -149,7 +147,6 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  CRUD : delete (par id)
      * ─────────────────────────── */
-    @Override
     public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
         String sql = "DELETE FROM foodin WHERE food_id = ?";
 
@@ -174,7 +171,6 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  CRUD : read unique (par id)
      * ─────────────────────────── */
-    @Override
     public FoodIn getFoodInByFoodLabel(String foodLabel) throws AppException {
         String sql = """
         SELECT fi.*, f.label AS food_label, ft.label AS foodType_label, st.label AS storage_label
