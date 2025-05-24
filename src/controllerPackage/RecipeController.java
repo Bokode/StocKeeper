@@ -39,8 +39,8 @@ public class RecipeController {
         recipeManager.updateRecipe(recipe, labelToFind);
     }
 
-    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
-        return recipeManager.showRecipesBasedOnTime(cookingTime);
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTimeDebut, Integer cookingTimeEnd) throws AppException {
+        return recipeManager.showRecipesBasedOnTime(cookingTimeDebut, cookingTimeEnd);
     }
 
 
