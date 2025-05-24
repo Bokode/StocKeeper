@@ -5,7 +5,7 @@ import javax.swing.*;
 public class MainMenu extends JMenuBar
 {
     private JMenu recipeMenu, foodInMenu, searchMenu, homeMenu, taskMenu;
-    private JMenuItem addRecipe, deleteRecipe, updateRecipe, listingRecipe, addFoodIn, deleteFoodIn, updateFoodIn, listingFoodIn, searchRecipeFoodInOwnedAndNotExpired, searchFoodTypeExpiredInStorage, searchRecipeWithFoodExpired5DAndWithActualSeason, homeScreen, exitApplication, quantityTypeFood;
+    private JMenuItem addRecipe, deleteRecipe, updateRecipe, listingRecipe, addFoodIn, deleteFoodIn, updateFoodIn, listingFoodIn, searchRecipeFoodInOwnedAndNotExpired, searchFoodTypeExpiredInStorage, searchRecipeWithFoodExpired5DAndWithActualSeason, homeScreen, exitApplication, quantityTypeFood, timeToMakeRecipe;
     private MainWindow mainWindow;
     public MainMenu(MainWindow mainWindow)
     {
@@ -59,7 +59,9 @@ public class MainMenu extends JMenuBar
         searchMenu.add(searchRecipeWithFoodExpired5DAndWithActualSeason);
 
         quantityTypeFood = new JMenuItem("Quantité restante d'un type de nourriture");
+        timeToMakeRecipe = new JMenuItem("Recettes faites dans un intervalle de temps choisi");
         taskMenu.add(quantityTypeFood);
+        taskMenu.add(timeToMakeRecipe);
 
         ExitListener exitListener = new ExitListener();
         exitApplication.addActionListener(exitListener);
@@ -76,6 +78,7 @@ public class MainMenu extends JMenuBar
         searchFoodTypeExpiredInStorage.addActionListener(e -> mainWindow.showSearchExpiredFoodInInStorage());
         searchRecipeFoodInOwnedAndNotExpired.addActionListener(e -> mainWindow.showPossibleRecipePanel());
         quantityTypeFood.addActionListener(e -> mainWindow.showQuantityTypeOfFood());
+        timeToMakeRecipe.addActionListener(e -> mainWindow.showSearchRecipeBaseOnTime());
     }
 }
 

@@ -43,12 +43,12 @@ public class RecipeManager {
         dao.updateRecipe(labelToFind, recipe.getLabel(), recipe.getDescription(), recipe.getCaloricIntake(), recipe.getCold(), recipe.getLastDayDone(), recipe.getTimeToMake(), recipe.getType());
     }
 
-    public List<Recipe> showRecipesBasedOnTime(Integer cookingTime) throws AppException {
+    public List<Recipe> showRecipesBasedOnTime(Integer cookingTimeDebut, Integer cookingTimeEnd) throws AppException {
         List<Recipe> recipesToSearch = getAllRecipes();
         List<Recipe> recipes = new ArrayList<>();
 
         recipesToSearch.forEach((r) -> {
-            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() <= cookingTime) {
+            if (r != null && r.getTimeToMake() != null && r.getTimeToMake() >= cookingTimeDebut && r.getTimeToMake() <= cookingTimeEnd) {
                 recipes.add(r);
             }
         });
