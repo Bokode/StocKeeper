@@ -446,10 +446,10 @@ public class RecipeDAO implements RecipeDAOInterface {
     private String getSeasonFromDate(LocalDate date) {
         int month = date.getMonthValue();
 
-        if (month == 12 || month <= 2) return "Winter";
-        else if (month <= 5) return "Spring";
-        else if (month <= 8) return "Summer";
-        else return "Autumn";
+        if (month == 12 || month <= 2) return "hiver";
+        else if (month <= 5) return "printemps";
+        else if (month <= 8) return "été";
+        else return "automne";
     }
 
 
