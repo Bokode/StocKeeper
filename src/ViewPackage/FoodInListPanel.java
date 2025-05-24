@@ -8,6 +8,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FoodInListPanel extends JPanel
 {
@@ -53,10 +54,23 @@ public class FoodInListPanel extends JPanel
                     int quantity = foodIn.getQuantity();
                     Date expirationDate = foodIn.getExpirationDate();
                     Date currentDate = new Date();
-                    int comparison = currentDate.compareTo(expirationDate);
 
-                    setText(label + " " + quantity + " (qqt/g/cl)   "+ (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +"   NutriScore : " + foodIn.getNutriScore() +
-                            "  Péremption : " + (comparison > 0 ? " dans " + comparison + " jours ":"Est périmé ! ") + "(" +  expirationDate + ")");
+                    long diffMillis = expirationDate.getTime() - currentDate.getTime();
+                    long diffDays = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
+
+                    String expirationInfo;
+                    if (diffDays < 0) {
+                        expirationInfo = "Périmé depuis " + Math.abs(diffDays) + " jour(s)";
+                    } else if (diffDays == 0) {
+                        expirationInfo = "Expire aujourd'hui";
+                    } else {
+                        expirationInfo = "Expire dans " + diffDays + " jour(s)";
+                    }
+
+                    String labelHtml = (diffDays < 0) ? "<font color='red'>" + label + "</font>" : label;
+
+                    setText("<html>" + labelHtml + " " + quantity + " (qqt/g/cl) " + (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +
+                            "   NutriScore : " + foodIn.getNutriScore() + "   " + expirationInfo + " (" + expirationDate + ")</html>");
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));
                 return this;

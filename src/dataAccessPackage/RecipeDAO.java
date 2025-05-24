@@ -63,7 +63,12 @@ public class RecipeDAO implements RecipeDAOInterface {
                 stmt.setInt(3, caloricIntake);
             }
             stmt.setBoolean(4, isCold);
-            stmt.setDate(5, new java.sql.Date(lastDateDone.getTime()));
+            if (lastDateDone == null) {
+                stmt.setNull(5, Types.DATE);
+            } else {
+                stmt.setDate(5, new java.sql.Date(lastDateDone.getTime()));
+            }
+
             if (timeToMake == null) {
                 stmt.setNull(6, Types.INTEGER);
             } else {
