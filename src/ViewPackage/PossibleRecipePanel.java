@@ -56,7 +56,7 @@ public class PossibleRecipePanel extends JPanel {
             Recipe selectedRecipe = selected.getRecipe();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe), BorderLayout.CENTER);
+                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "possibleRecipe"), BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
             } else {

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RecipeDetailsPanel extends JPanel {
 
-    public RecipeDetailsPanel(MainWindow mainWindow, Recipe recipe) {
+    public RecipeDetailsPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
@@ -117,7 +117,14 @@ public class RecipeDetailsPanel extends JPanel {
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        backButton.addActionListener(e -> mainWindow.showRecipeListPanel());
+        backButton.addActionListener(e -> {
+            if(cancelPanelName.equals("recipeList")) mainWindow.showRecipeListPanel();
+            else if (cancelPanelName.equals("possibleRecipe")) {
+                mainWindow.showPossibleRecipePanel();
+            } else if (cancelPanelName.equals("recipeWithExpiredFoodList")) {
+                mainWindow.showRecipeWithExpiredFoodListPanel();
+            }
+        });
     }
 
     private JLabel createLabel(String text, Font font) {

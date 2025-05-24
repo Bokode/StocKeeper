@@ -3,7 +3,7 @@ package businessPackage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 
 import dataAccessPackage.RecipeDAO;
 import exceptionPackage.AppException;

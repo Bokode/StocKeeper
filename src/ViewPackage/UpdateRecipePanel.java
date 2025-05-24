@@ -3,18 +3,23 @@ package ViewPackage;
 import controllerPackage.RecipeController;
 import modelPackage.Recipe;
 import modelPackage.RecipeType;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Properties;
 
 public class UpdateRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField, caloricIntakeField, timeToMakeField;
     private JTextArea descriptionArea;
-    private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
+    private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel, lastTimeDoneLabel;
+    private UtilDateModel lastTimeDoneModel;
     private RecipeController recipeController;
 
     public UpdateRecipePanel(MainWindow mainWindow, Recipe recipe) {
@@ -90,22 +95,38 @@ public class UpdateRecipePanel extends JPanel {
         }
         FormPanel.add(timeToMakeField, gbc);
 
+        // Configurer les propriétés de format de date
+        Properties p = new Properties();
+        p.put("text.today", "Aujourd'hui");
+        p.put("text.month", "Mois");
+        p.put("text.year", "Année");
+
         // Dernière date de réalisation de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        JCheckBox hasBeenDoneToday = new JCheckBox("Recette réalisée aujourd’hui");
-        hasBeenDoneToday.setFont(new Font("Poppins", Font.PLAIN, 15));
-        if (recipe.getLastDayDone() != null) {
-            Date today = new Date(System.currentTimeMillis());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            if (sdf.format(recipe.getLastDayDone()).equals(sdf.format(today))) {
-                hasBeenDoneToday.setSelected(true);
-            }
-        }
-        FormPanel.add(hasBeenDoneToday, gbc);
-        gbc.gridwidth = 1;
+        lastTimeDoneLabel = new JLabel("Date de la dernière réalisation de la recette :");
+        lastTimeDoneLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(lastTimeDoneLabel, gbc);
+        gbc.gridx = 1;
+        lastTimeDoneModel = new UtilDateModel();
+        JDatePanelImpl lastTimeDonePanel = new JDatePanelImpl(lastTimeDoneModel, p);
+        JDatePickerImpl lastTimeDoneDatePicker = new JDatePickerImpl(lastTimeDonePanel, new DateLabelFormatter());
+        FormPanel.add(lastTimeDoneDatePicker, gbc);
+
+//        gbc.gridx = 0; gbc.gridy = row;
+//        gbc.gridwidth = 2;
+//        gbc.anchor = GridBagConstraints.CENTER;
+//        JCheckBox hasBeenDoneToday = new JCheckBox("Recette réalisée aujourd’hui");
+//        hasBeenDoneToday.setFont(new Font("Poppins", Font.PLAIN, 15));
+//        if (recipe.getLastDayDone() != null) {
+//            Date today = new Date(System.currentTimeMillis());
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//            if (sdf.format(recipe.getLastDayDone()).equals(sdf.format(today))) {
+//                hasBeenDoneToday.setSelected(true);
+//            }
+//        }
+//        FormPanel.add(hasBeenDoneToday, gbc);
+//        gbc.gridwidth = 1;
 
         // Si la recette est froide ou non
         row++;
@@ -201,16 +222,20 @@ public class UpdateRecipePanel extends JPanel {
                     }
                 }
 
-                Date lastDayDone = null;
-                if (hasBeenDoneToday.isSelected()) {
-                    lastDayDone = Date.valueOf(LocalDate.now());
+//                Date lastDayDone = null;
+//                if (hasBeenDoneToday.isSelected()) {
+//                    lastDayDone = Date.valueOf(LocalDate.now());
+//                }
+                java.util.Date lastTimeDone = null;
+                if (lastTimeDoneModel.getValue() != null){
+                    lastTimeDone = lastTimeDoneModel.getValue();
                 }
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
                 RecipeType recipeType = new RecipeType(typeString);
 
-                Recipe newRecipe = new Recipe(label, description, caloricIntake, lastDayDone, timeToMake, isCold, recipeType);
+                Recipe newRecipe = new Recipe(label, description, caloricIntake, lastTimeDone, timeToMake, isCold, recipeType);
                 recipeController = new RecipeController();
                 recipeController.updateRecipe(newRecipe, labelToFind);
 

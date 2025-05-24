@@ -55,7 +55,7 @@ public class RecipeWithExpiredFoodListPanel extends JPanel {
             Recipe selectedRecipe = selectedRecipeExpiredFood.getRecipe();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe), BorderLayout.CENTER);
+                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "recipeWithExpiredFoodList"), BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
             } else {
