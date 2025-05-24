@@ -51,7 +51,7 @@ public class AddMaterialPanel extends JPanel {
         FormPanel.add(materialTypeLabel, gbc);
 
         gbc.gridx = 1;
-        String[] materialsType = {"Ustensile", "Truc qui chauffe", "Récipient"};
+        String[] materialsType = {"Ustensile", "Cuisson", "Récipient", "Machine"};
         JComboBox<String> materialTypeComboBox = new JComboBox<>(materialsType);
         materialTypeComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(materialTypeComboBox, gbc);

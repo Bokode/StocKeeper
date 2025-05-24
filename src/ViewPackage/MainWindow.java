@@ -16,6 +16,7 @@ public class MainWindow extends JFrame {
     private FoodInListPanel foodInListPanel;
     private DeleteFoodInPanel deleteFoodInPanel;
     private SearchFoodInPanel searchFoodInPanel;
+    private RecipeWithExpiredFoodListPanel recipeWithExpiredFoodListPanel;
     private SearchExpiredFoodInInStoragePanel searchExpiredFoodInInStoragePanel;
     private MainMenu mainMenu;
     public MainWindow() {
@@ -37,6 +38,7 @@ public class MainWindow extends JFrame {
         addFoodInPanel = new AddFoodInPanel(this);
         deleteFoodInPanel = new DeleteFoodInPanel(this);
         searchFoodInPanel = new SearchFoodInPanel(this);
+        recipeWithExpiredFoodListPanel = new RecipeWithExpiredFoodListPanel(this);
         searchExpiredFoodInInStoragePanel = new SearchExpiredFoodInInStoragePanel(this);
         mainContainer = this.getContentPane();
         mainContainer.setLayout(new BorderLayout());
@@ -164,6 +166,15 @@ public class MainWindow extends JFrame {
     public void showExpiredFoodInInStorage(ExpiredFoodInInStoragePanel expiredFoodInInStoragePanel) {
         mainContainer.removeAll();
         mainContainer.add(expiredFoodInInStoragePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showRecipeWithExpiredFoodListPanel() {
+        mainContainer.removeAll();
+
+        recipeWithExpiredFoodListPanel.loadRecipes();
+        mainContainer.add(recipeWithExpiredFoodListPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
     }

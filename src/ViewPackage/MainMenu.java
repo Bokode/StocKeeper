@@ -46,9 +46,9 @@ public class MainMenu extends JMenuBar {
         foodInMenu.add(updateFoodIn);
         foodInMenu.add(listingFoodIn);
 
-        searchRecipeFoodInOwnedAndNotExpired = new JMenuItem("Recette avec nourriture possédée et non périmée"); // Recherche 1
-        searchFoodTypeExpiredInStorage = new JMenuItem("Un type de nourriture dans un certain type de stockage qui est périmé"); // Recherche 2
-        searchRecipeWithFoodExpired5DAndWithActualSeason = new JMenuItem("Recette avec nourriture possédée périmé dans 5j avec un aliment de la saison actuelle"); // Recherche 3
+        searchRecipeFoodInOwnedAndNotExpired = new JMenuItem("Recette avec nourriture possédée et non périmée");
+        searchFoodTypeExpiredInStorage = new JMenuItem("Un type de nourriture dans un certain type de stockage qui est périmé");
+        searchRecipeWithFoodExpired5DAndWithActualSeason = new JMenuItem("Recette avec nourriture possédée périmé dans 5j");
         searchMenu.add(searchRecipeFoodInOwnedAndNotExpired);
         searchMenu.add(searchFoodTypeExpiredInStorage);
         searchMenu.add(searchRecipeWithFoodExpired5DAndWithActualSeason);
@@ -64,6 +64,7 @@ public class MainMenu extends JMenuBar {
         listingFoodIn.addActionListener(e -> mainWindow.showFoodInListPanel());
         deleteFoodIn.addActionListener(e -> mainWindow.showDeleteFoodInPanel());
         updateFoodIn.addActionListener(e -> mainWindow.showSearchFoodInPanel());
+        searchRecipeWithFoodExpired5DAndWithActualSeason.addActionListener(e -> mainWindow.showRecipeWithExpiredFoodListPanel());
         searchFoodTypeExpiredInStorage.addActionListener(e -> {mainWindow.showSearchExpiredFoodInInStorage();
         });
     }

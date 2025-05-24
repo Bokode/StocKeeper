@@ -205,7 +205,8 @@ public class RecipeDAO implements RecipeDAOInterface {
     @Override
     public List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException {
         List<RecipeWithExpiredFood> result = new ArrayList<>();
-        LocalDate date = LocalDate.now();
+        LocalDate today = LocalDate.now();
+        LocalDate threshold = today.plusDays(5);
         FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         String sql = """
@@ -216,94 +217,78 @@ public class RecipeDAO implements RecipeDAOInterface {
                r.lastDateDone,
                r.timeToMake,
                r.isCold,
-               m.label AS material_label,
-               tm.label AS material_type_label,
                f.id AS food_id,
                f.label AS food_label,
                ft.label AS food_type_label,
                fi.expirationDate
         FROM Recipe r
-        JOIN Ingredient_Amount ia ON ia.recipe = r.id
+        JOIN IngredientAmount ia ON ia.recipe = r.id
         JOIN Food f ON f.id = ia.food
-        JOIN Food_Type ft ON f.foodType = ft.id
-        LEFT JOIN Food_In fi ON fi.food_id = f.id
-        JOIN Recipe_Material rm ON rm.recipe = r.id
-        JOIN Material m ON m.id = rm.material
-        JOIN Type_Material tm ON tm.id = m.type_id
+        JOIN FoodType ft ON f.foodType = ft.id
+        JOIN FoodIn fi ON fi.food_id = f.id
     """;
 
         try (Connection conn = dbAccess.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            try (ResultSet rs = ps.executeQuery()) {
+            Map<Integer, RecipeWithExpiredFood> map = new HashMap<>();
+            Map<Integer, Set<Integer>> recipeToRequiredFoods = new HashMap<>();
+            Map<Integer, Set<Integer>> recipeToAvailableFoods = new HashMap<>();
+            Map<Integer, Boolean> recipeHasExpiringSoon = new HashMap<>();
 
-                Map<Integer, RecipeWithExpiredFood> map = new HashMap<>();
-                Map<Integer, Set<Integer>> recipeToFoodsInStock = new HashMap<>();
-                Map<Integer, Set<Integer>> recipeToRequiredFoods = new HashMap<>();
-                Map<Integer, Boolean> recipeHasExpiringToday = new HashMap<>();
+            while (rs.next()) {
+                int recipeId = rs.getInt("recipe_id");
+                int foodId = rs.getInt("food_id");
+                LocalDate expiration = rs.getDate("expirationDate") != null
+                        ? rs.getDate("expirationDate").toLocalDate()
+                        : null;
 
-                while (rs.next()) {
-                    int recipeId = rs.getInt("recipe_id");
-                    int foodId = rs.getInt("food_id");
-
-                    LocalDate expiration = rs.getDate("expirationDate") != null ?
-                            rs.getDate("expirationDate").toLocalDate() : null;
-
-                    // Création ou récupération de la structure
-                    RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
-                        Recipe recipe = null;
-                        try {
-                            recipe = new Recipe(
-                                    rs.getString("recipe_label"),
-                                    rs.getString("description"),
-                                    rs.getInt("caloricIntake"),
-                                    rs.getDate("lastDateDone"),
-                                    rs.getInt("timeToMake"),
-                                    rs.getBoolean("isCold"),
-                                    null
-                            );
-                        } catch (SQLException e) {
-                            exceptionHandler(e);
-                        }
-                        return new RecipeWithExpiredFood(recipe);
-                    });
-
-                    // Ajout du matériel
-                    Material material = new Material(rs.getString("material_label"), rs.getString("material_type_label"));
-                    rwef.addMaterial(material);
-
-                    // Suivi des aliments nécessaires
-                    recipeToRequiredFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
-
-                    // Vérifie si l'aliment est en stock, non périmé
-                    if (expiration != null) {
-                        if (!expiration.isBefore(date)) {
-                            recipeToFoodsInStock.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
-                            // Vérifie s’il expire aujourd’hui
-                            if (expiration.isEqual(date)) {
-                                recipeHasExpiringToday.put(recipeId, true);
-                            }
-                            // Ajouter l’aliment à l’objet
-                            FoodType ft = new FoodType(rs.getString("food_type_label"));
-                            Food food = new Food(rs.getString("food_label"), ft);
-                            rwef.addFood(food);
-                        }
+                // Construction ou récupération de l'objet
+                RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
+                    try {
+                        return new RecipeWithExpiredFood(new Recipe(
+                                rs.getString("recipe_label"),
+                                rs.getString("description"),
+                                rs.getInt("caloricIntake"),
+                                rs.getDate("lastDateDone"),
+                                rs.getInt("timeToMake"),
+                                rs.getBoolean("isCold"),
+                                new RecipeType(rs.getString("food_type_label"))
+                        ));
+                    } catch (SQLException e) {
+                        exceptionHandler(e);
+                        return null;
                     }
+                });
+
+                // Suivi des aliments nécessaires
+                recipeToRequiredFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
+
+                // Vérifie si l'aliment est en stock et périme bientôt
+                if (expiration != null &&
+                        ( !expiration.isBefore(today) && !expiration.isAfter(threshold))) {
+
+                    recipeToAvailableFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
+                    recipeHasExpiringSoon.put(recipeId, true);
+
+                    FoodType ft = new FoodType(rs.getString("food_type_label"));
+                    Food food = new Food(rs.getString("food_label"), ft);
+                    rwef.addFood(food);
                 }
+            }
 
-                // Filtrage : on garde les recettes qui respectent les règles
-                for (var entry : map.entrySet()) {
-                    int recipeId = entry.getKey();
-                    Set<Integer> inStock = recipeToFoodsInStock.getOrDefault(recipeId, Set.of());
-                    Set<Integer> required = recipeToRequiredFoods.get(recipeId);
-                    boolean hasExpiring = recipeHasExpiringToday.getOrDefault(recipeId, false);
+            // Filtrage final
+            for (var entry : map.entrySet()) {
+                int recipeId = entry.getKey();
+                Set<Integer> required = recipeToRequiredFoods.getOrDefault(recipeId, Set.of());
+                Set<Integer> available = recipeToAvailableFoods.getOrDefault(recipeId, Set.of());
+                boolean hasExpiring = recipeHasExpiringSoon.getOrDefault(recipeId, false);
 
-                    // Autoriser une seule absence d’ingrédient
-                    if ((inStock.size() == required.size() || inStock.size() == required.size() - 1) && hasExpiring) {
-                        result.add(entry.getValue());
-                    }
+                if (hasExpiring &&
+                        (available.size() == required.size() || available.size() == required.size() - 1)) {
+                    result.add(entry.getValue());
                 }
-
             }
 
         } catch (SQLException e) {
