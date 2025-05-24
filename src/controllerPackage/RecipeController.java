@@ -53,5 +53,9 @@ public class RecipeController {
         return recipeManager.recipesOfSeason(date);
     }
 
+    public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
+        return recipeManager.recipeWithSomeIngredientsInStock();
+    }
+
 
 }

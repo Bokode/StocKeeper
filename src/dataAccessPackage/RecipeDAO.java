@@ -298,6 +298,80 @@ public class RecipeDAO implements RecipeDAOInterface {
         return result;
     }
 
+
+    public List<RecipeWithExpiredFood> recipesWithSomeIngredientsInStock() throws AppException {
+        List<RecipeWithExpiredFood> result = new ArrayList<>();
+        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+
+        String sql = """
+        SELECT r.id AS recipe_id,
+               r.label AS recipe_label,
+               r.description,
+               r.caloricIntake,
+               r.lastDateDone,
+               r.timeToMake,
+               r.isCold,
+               f.id AS food_id,
+               f.label AS food_label,
+               ft.label AS food_type_label
+        FROM Recipe r
+        JOIN IngredientAmount ia ON ia.recipe = r.id
+        JOIN Food f ON f.id = ia.food
+        JOIN FoodType ft ON f.foodType = ft.id
+        JOIN FoodIn fi ON fi.food_id = f.id
+    """;
+
+        try (Connection conn = dbAccess.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            Map<Integer, RecipeWithExpiredFood> map = new HashMap<>();
+            Set<Integer> seenFoodPerRecipe = new HashSet<>();
+
+            while (rs.next()) {
+                int recipeId = rs.getInt("recipe_id");
+                int foodId = rs.getInt("food_id");
+
+                // Évite les doublons d'aliment dans une recette
+                int compositeKey = Objects.hash(recipeId, foodId);
+                if (seenFoodPerRecipe.contains(compositeKey)) continue;
+                seenFoodPerRecipe.add(compositeKey);
+
+                // Crée ou récupère l'objet recette enrichie
+                RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
+                    try {
+                        return new RecipeWithExpiredFood(new Recipe(
+                                rs.getString("recipe_label"),
+                                rs.getString("description"),
+                                rs.getInt("caloricIntake"),
+                                rs.getDate("lastDateDone"),
+                                rs.getInt("timeToMake"),
+                                rs.getBoolean("isCold"),
+                                new RecipeType(rs.getString("food_type_label")) // ou un type si tu veux l'afficher
+                        ));
+                    } catch (SQLException e) {
+                        exceptionHandler(e);
+                        return null;
+                    }
+                });
+
+                // Ajouter l'aliment en stock à la recette
+                FoodType ft = new FoodType(rs.getString("food_type_label"));
+                Food food = new Food(rs.getString("food_label"), ft);
+                rwef.addFood(food);
+            }
+
+            result.addAll(map.values());
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        return result;
+    }
+
+
+
     @Override
     public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
         List<SeasonalRecipe> results = new ArrayList<>();
