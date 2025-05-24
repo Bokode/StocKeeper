@@ -16,7 +16,7 @@ class TestShowQuantityLeft {
     
     @Test
     public void testShowQuantityLeft() {
-        Integer quantityTest = foodInManager.showQuantityLeft("Légumes");
+        Integer quantityTest = foodInManager.showQuantityLeft("Solide");
         assertNotEquals(0, quantityTest);
     }
 }
