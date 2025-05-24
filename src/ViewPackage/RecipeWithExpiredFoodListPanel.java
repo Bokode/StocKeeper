@@ -23,7 +23,7 @@ public class RecipeWithExpiredFoodListPanel extends JPanel {
 
         // Titre
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Recettes avec ingrédients périmés");
+        titleLabel = new JLabel("Recettes avec ingrédients bientôt périmés");
         titleLabel.setFont(new Font("Poppins", Font.BOLD, 24));
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);
@@ -97,7 +97,7 @@ public class RecipeWithExpiredFoodListPanel extends JPanel {
                     if (i < foods.size() - 1) foodList.append(", ");
                 }
 
-                setText("<html><b>" + label + "</b><br><i>Ingrédients périmés :</i> " + foodList + "</html>");
+                setText("<html><b>" + label + "</b><br><i>Ingrédients bientôt périmé :</i> " + foodList + "</html>");
             }
             return this;
         }
