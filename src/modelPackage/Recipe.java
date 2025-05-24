@@ -2,7 +2,7 @@ package modelPackage;
 
 import exceptionPackage.WrongInputException;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
