@@ -19,6 +19,7 @@ public class MainWindow extends JFrame {
     private RecipeWithExpiredFoodListPanel recipeWithExpiredFoodListPanel;
     private SearchExpiredFoodInInStoragePanel searchExpiredFoodInInStoragePanel;
     private PossibleRecipePanel possibleRecipePanel;
+    private QuantityTypeOfFoodPanel quantityTypeOfFoodPanel;
     private MainMenu mainMenu;
     public MainWindow() {
         super("StocKeeper");
@@ -42,6 +43,7 @@ public class MainWindow extends JFrame {
         recipeWithExpiredFoodListPanel = new RecipeWithExpiredFoodListPanel(this);
         searchExpiredFoodInInStoragePanel = new SearchExpiredFoodInInStoragePanel(this);
         possibleRecipePanel = new PossibleRecipePanel(this);
+        quantityTypeOfFoodPanel = new QuantityTypeOfFoodPanel(this);
         mainContainer = this.getContentPane();
         mainContainer.setLayout(new BorderLayout());
         mainContainer.add(homePanel,BorderLayout.CENTER);
@@ -184,6 +186,13 @@ public class MainWindow extends JFrame {
         mainContainer.removeAll();
         possibleRecipePanel.loadPossibleRecipes();
         mainContainer.add(possibleRecipePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    public void showQuantityTypeOfFood() {
+        mainContainer.removeAll();
+        mainContainer.add(quantityTypeOfFoodPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
     }
