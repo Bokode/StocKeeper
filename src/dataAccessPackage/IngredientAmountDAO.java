@@ -2,7 +2,6 @@ package dataAccessPackage;
 
 import exceptionPackage.*;
 import modelPackage.IngredientAmount;
-import dataAccessPackage.*;
 
 import java.sql.*;
 import java.util.ArrayList;

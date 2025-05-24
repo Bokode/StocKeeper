@@ -9,10 +9,8 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 import java.util.Properties;
 
 public class UpdateFoodInPanel extends JPanel {

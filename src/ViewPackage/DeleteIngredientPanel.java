@@ -3,12 +3,9 @@ package ViewPackage;
 import controllerPackage.IngredientAmountController;
 import modelPackage.IngredientAmount;
 import modelPackage.Recipe;
-import modelPackage.Food;
-import controllerPackage.IngredientAmountController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class DeleteIngredientPanel extends JPanel {
 
