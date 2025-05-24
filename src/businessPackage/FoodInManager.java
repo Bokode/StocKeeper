@@ -45,17 +45,20 @@ public class FoodInManager {
         return dao.deleteFoodInByFoodLabel(foodLabel);
     }
 
-    public Integer showQuantityLeft(String typeOfFood) throws AppException {
+    public QuantityLeft showQuantityLeft(String typeOfFood) throws AppException {
         List<FoodInToSearch> foodInToSearch = dao.getFoodInToSearch();
         Integer quantityLeft = 0;
+        Integer numberDifferentType = 0;
 
         for (FoodInToSearch f : foodInToSearch) {
             if (Objects.equals(f.getFoodType().getLabel(), typeOfFood)) {
+                numberDifferentType++;
                 quantityLeft += f.getFoodIn().getQuantity();
             }
         }
 
-        return quantityLeft;
+
+        return (new QuantityLeft(quantityLeft, numberDifferentType));
     }
 
     public List<ExpiredFood> expiredFood(StorageType storageType, FoodType foodType) throws AppException {
