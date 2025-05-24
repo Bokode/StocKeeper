@@ -23,6 +23,4 @@ public interface RecipeDAOInterface
     Integer deleteRecipe(String label);
 
     List<RecipeWithExpiredFood> recipeWithExpireFood();
-
-    List<SeasonalRecipe> recipesOfSeason(LocalDate date);
 }

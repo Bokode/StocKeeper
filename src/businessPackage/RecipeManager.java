@@ -60,9 +60,6 @@ public class RecipeManager {
         return dao.recipeWithExpireFood();
     }
 
-    public List<SeasonalRecipe> recipesOfSeason(LocalDate date) throws AppException {
-        return dao.recipesOfSeason(date);
-    }
     public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
         return dao.recipesWithSomeIngredientsInStock();
     }

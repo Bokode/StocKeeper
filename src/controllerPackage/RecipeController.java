@@ -48,11 +48,6 @@ public class RecipeController {
         return recipeManager.recipeWithExpiredFood();
     }
 
-    // Search 3
-    public List<SeasonalRecipe> RecipesOfSeason(LocalDate date) throws AppException {
-        return recipeManager.recipesOfSeason(date);
-    }
-
     public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
         return recipeManager.recipeWithSomeIngredientsInStock();
     }
