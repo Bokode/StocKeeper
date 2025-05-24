@@ -1,6 +1,5 @@
 package ViewPackage;
 
-import controllerPackage.IngredientAmountController;
 import controllerPackage.MaterialController;
 import controllerPackage.RecipeMaterialController;
 import modelPackage.Recipe;

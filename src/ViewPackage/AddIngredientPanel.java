@@ -1,7 +1,6 @@
 package ViewPackage;
 
 import controllerPackage.IngredientAmountController;
-import modelPackage.IngredientAmount;
 import modelPackage.Recipe;
 
 import javax.swing.*;

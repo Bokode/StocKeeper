@@ -2,7 +2,6 @@ package ViewPackage;
 
 import controllerPackage.RecipeController;
 import modelPackage.Recipe;
-import modelPackage.RecipeType;
 
 import javax.swing.*;
 import java.awt.*;

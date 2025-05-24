@@ -9,7 +9,6 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
 import java.util.Properties;
 
 public class AddFoodInPanel extends JPanel {

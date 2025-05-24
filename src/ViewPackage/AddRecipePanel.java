@@ -1,7 +1,6 @@
 package ViewPackage;
 
 import controllerPackage.RecipeController;
-import modelPackage.FoodType;
 import modelPackage.Recipe;
 import modelPackage.RecipeType;
 
