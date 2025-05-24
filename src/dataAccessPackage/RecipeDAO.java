@@ -5,7 +5,7 @@ import interfacePackage.RecipeDAOInterface;
 import modelPackage.*;
 
 import java.sql.*;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -63,7 +63,7 @@ public class RecipeDAO implements RecipeDAOInterface {
                 stmt.setInt(3, caloricIntake);
             }
             stmt.setBoolean(4, isCold);
-            stmt.setDate(5, lastDateDone);
+            stmt.setDate(5, new java.sql.Date(lastDateDone.getTime()));
             if (timeToMake == null) {
                 stmt.setNull(6, Types.INTEGER);
             } else {
