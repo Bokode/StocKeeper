@@ -1,9 +1,11 @@
 package ViewPackage;
 
 import controllerPackage.FoodInController;
+import modelPackage.QuantityLeft;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class QuantityTypeOfFoodPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
@@ -35,7 +37,7 @@ public class QuantityTypeOfFoodPanel extends JPanel {
         foodTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(foodTypeLabel, gbc);
         gbc.gridx = 1;
-        String[] typeFood = {"Solide", "Liquide"};
+        String[] typeFood = {"Solide", "Liquide", "Quantité"};
         JComboBox<String> typeFoodComboBox = new JComboBox<>(typeFood);
         typeFoodComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(typeFoodComboBox, gbc);
@@ -58,8 +60,24 @@ public class QuantityTypeOfFoodPanel extends JPanel {
 
         searchButton.addActionListener(e -> {
             try {
-                Integer quantityLeft =  foodInController.showQuantityLeft(typeFoodComboBox.getSelectedItem().toString());
-                JOptionPane.showMessageDialog(this, "Quantité restante : " +  quantityLeft + "(qqt/g/cl)", "Quantité restante", JOptionPane.INFORMATION_MESSAGE);
+                String type = typeFoodComboBox.getSelectedItem().toString();
+                QuantityLeft quantityLeft =  foodInController.showQuantityLeft(type);
+
+                int quantity = quantityLeft.getQuantity();
+                int numberTypes = quantityLeft.getNumberDifferentType();
+                String unit;
+
+                if (Objects.equals(type, "Solide")) {
+                    unit = (quantity == 1) ? "gramme" : "grammes";
+                } else if (Objects.equals(type, "Liquide")) {
+                    unit = (quantity == 1) ? "centilitre" : "centilitres";
+                } else {
+                    unit = (quantity == 1 || quantity == 0) ? "quantité" : "quantités";
+                }
+
+                String aliments = (numberTypes == 1 || numberTypes == 0) ? "aliment" : "aliments";
+
+                JOptionPane.showMessageDialog(this, "Quantité restante : " + quantity + " " + unit + " parmi " + numberTypes + " " + aliments,"Quantité restante", JOptionPane.INFORMATION_MESSAGE);
             }
             catch(Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
