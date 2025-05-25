@@ -284,8 +284,7 @@ public class RecipeDAO implements RecipeDAOInterface {
                 Set<Integer> available = recipeToAvailableFoods.getOrDefault(recipeId, Set.of());
                 boolean hasExpiring = recipeHasExpiringSoon.getOrDefault(recipeId, false);
 
-                if (hasExpiring &&
-                        (available.size() == required.size() || available.size() == required.size() - 1)) {
+                if (hasExpiring) {
                     result.add(entry.getValue());
                 }
             }
