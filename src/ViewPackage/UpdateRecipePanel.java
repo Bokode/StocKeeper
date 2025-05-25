@@ -9,9 +9,6 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Properties;
 
 public class UpdateRecipePanel extends JPanel {
@@ -22,7 +19,7 @@ public class UpdateRecipePanel extends JPanel {
     private UtilDateModel lastTimeDoneModel;
     private RecipeController recipeController;
 
-    public UpdateRecipePanel(MainWindow mainWindow, Recipe recipe) {
+    public UpdateRecipePanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout());
 
         String labelToFind = recipe.getLabel();
@@ -44,7 +41,7 @@ public class UpdateRecipePanel extends JPanel {
 
         // Nom de la recette
         gbc.gridx = 0; gbc.gridy = row;
-        labelLabel = new JLabel("Nom :");
+        labelLabel = new JLabel("Nom* :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
         gbc.gridx = 1;
@@ -55,7 +52,7 @@ public class UpdateRecipePanel extends JPanel {
         // Description de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        descriptionLabel = new JLabel("Description de la recette : ");
+        descriptionLabel = new JLabel("Description de la recette* : ");
         descriptionLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(descriptionLabel, gbc);
         gbc.gridx = 1;
@@ -72,7 +69,7 @@ public class UpdateRecipePanel extends JPanel {
         // Apport calorique de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        caloricInTakeLabel = new JLabel("Apport calorique (facultatif) : ");
+        caloricInTakeLabel = new JLabel("Apport calorique (kcal) : ");
         caloricInTakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(caloricInTakeLabel, gbc);
         gbc.gridx = 1;
@@ -85,7 +82,7 @@ public class UpdateRecipePanel extends JPanel {
         // Durée de la recette
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        timeToMakeLabel = new JLabel("Durée de la recette (facultatif) : ");
+        timeToMakeLabel = new JLabel("Durée de la recette (kcal) : ");
         timeToMakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(timeToMakeLabel, gbc);
         gbc.gridx = 1;
@@ -113,21 +110,6 @@ public class UpdateRecipePanel extends JPanel {
         JDatePickerImpl lastTimeDoneDatePicker = new JDatePickerImpl(lastTimeDonePanel, new DateLabelFormatter());
         FormPanel.add(lastTimeDoneDatePicker, gbc);
 
-//        gbc.gridx = 0; gbc.gridy = row;
-//        gbc.gridwidth = 2;
-//        gbc.anchor = GridBagConstraints.CENTER;
-//        JCheckBox hasBeenDoneToday = new JCheckBox("Recette réalisée aujourd’hui");
-//        hasBeenDoneToday.setFont(new Font("Poppins", Font.PLAIN, 15));
-//        if (recipe.getLastDayDone() != null) {
-//            Date today = new Date(System.currentTimeMillis());
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-//            if (sdf.format(recipe.getLastDayDone()).equals(sdf.format(today))) {
-//                hasBeenDoneToday.setSelected(true);
-//            }
-//        }
-//        FormPanel.add(hasBeenDoneToday, gbc);
-//        gbc.gridwidth = 1;
-
         // Si la recette est froide ou non
         row++;
         gbc.gridx = 0; gbc.gridy = row;
@@ -142,7 +124,7 @@ public class UpdateRecipePanel extends JPanel {
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        recipeTypeLabel = new JLabel("Type de recette : ");
+        recipeTypeLabel = new JLabel("Type de recette* : ");
         recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(recipeTypeLabel, gbc);
         gbc.gridx = 1;
@@ -186,7 +168,11 @@ public class UpdateRecipePanel extends JPanel {
                     ((JComboBox<?>) component).setSelectedIndex(0);
                 }
             }
-            mainWindow.showSearchRecipePanel();
+            if(cancelPanelName.equals("searchRecipe")){
+                mainWindow.showSearchRecipePanel();
+            } else if (cancelPanelName.equals("recipeList")) {
+                mainWindow.showRecipeListPanel();
+            }
         });
 
         updateButton.addActionListener(e -> {
@@ -222,10 +208,6 @@ public class UpdateRecipePanel extends JPanel {
                     }
                 }
 
-//                Date lastDayDone = null;
-//                if (hasBeenDoneToday.isSelected()) {
-//                    lastDayDone = Date.valueOf(LocalDate.now());
-//                }
                 java.util.Date lastTimeDone = null;
                 if (lastTimeDoneModel.getValue() != null){
                     lastTimeDone = lastTimeDoneModel.getValue();

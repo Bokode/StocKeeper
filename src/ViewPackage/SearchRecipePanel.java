@@ -2,7 +2,6 @@ package ViewPackage;
 
 import controllerPackage.RecipeController;
 import modelPackage.Recipe;
-import modelPackage.RecipeType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +71,7 @@ public class SearchRecipePanel extends JPanel {
                 recipeController = new RecipeController();
                 Recipe recipe = recipeController.getRecipe(labelToFind);
                 labelField.setText("");
-                mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe));
+                mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe, "searchRecipe"));
             }
             catch (Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);

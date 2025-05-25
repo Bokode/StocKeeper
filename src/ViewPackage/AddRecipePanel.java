@@ -1,7 +1,6 @@
 package ViewPackage;
 
 import controllerPackage.RecipeController;
-import modelPackage.FoodType;
 import modelPackage.Recipe;
 import modelPackage.RecipeType;
 
@@ -32,7 +31,7 @@ public class AddRecipePanel extends JPanel {
         int row = 0;
 
         gbc.gridx = 0; gbc.gridy = row;
-        labelLabel = new JLabel("Nom :");
+        labelLabel = new JLabel("Nom* :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
         gbc.gridx = 1;
@@ -41,7 +40,7 @@ public class AddRecipePanel extends JPanel {
 
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        descriptionLabel = new JLabel("Description de la recette : ");
+        descriptionLabel = new JLabel("Description de la recette* : ");
         descriptionLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(descriptionLabel, gbc);
         gbc.gridx = 1;
@@ -56,7 +55,7 @@ public class AddRecipePanel extends JPanel {
 
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        caloricInTakeLabel = new JLabel("Apport calorique (facultatif) : ");
+        caloricInTakeLabel = new JLabel("Apport calorique (kcal): ");
         caloricInTakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(caloricInTakeLabel, gbc);
         gbc.gridx = 1;
@@ -65,7 +64,7 @@ public class AddRecipePanel extends JPanel {
 
         row++;
         gbc.gridx = 0; gbc.gridy = row;
-        timeToMakeLabel = new JLabel("Durée de la recette (facultatif) : ");
+        timeToMakeLabel = new JLabel("Durée de la recette (minutes) : ");
         timeToMakeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(timeToMakeLabel, gbc);
         gbc.gridx = 1;
@@ -84,7 +83,7 @@ public class AddRecipePanel extends JPanel {
         row++;
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        recipeTypeLabel = new JLabel("Type de recette : ");
+        recipeTypeLabel = new JLabel("Type de recette* : ");
         recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(recipeTypeLabel, gbc);
         gbc.gridx = 1;
@@ -181,7 +180,7 @@ public class AddRecipePanel extends JPanel {
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
-                RecipeType recipeType = new RecipeType(typeString); // ou enum selon ton modèle
+                RecipeType recipeType = new RecipeType(typeString);
 
                 Date lastDayDone = null;
 

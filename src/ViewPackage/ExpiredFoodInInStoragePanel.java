@@ -44,7 +44,7 @@ public class ExpiredFoodInInStoragePanel extends JPanel {
 
         JButton backButton = new JButton("Retour");
         backButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        backButton.addActionListener(e -> mainWindow.showHomePanel());
+        backButton.addActionListener(e -> mainWindow.showSearchExpiredFoodInInStorage());
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.add(backButton);

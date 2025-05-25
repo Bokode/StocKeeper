@@ -1,18 +1,16 @@
 package businessPackage;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 
 import dataAccessPackage.RecipeDAO;
 import exceptionPackage.AppException;
+import interfacePackage.RecipeDAOInterface;
 import modelPackage.Recipe;
 import modelPackage.RecipeWithExpiredFood;
-import modelPackage.SeasonalRecipe;
 
 public class RecipeManager {
-    private RecipeDAO dao;
+    private RecipeDAOInterface dao;
 
     public RecipeManager() {
         setDao(new RecipeDAO());

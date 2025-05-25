@@ -9,10 +9,8 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 import java.util.Properties;
 
 public class UpdateFoodInPanel extends JPanel {
@@ -52,7 +50,7 @@ public class UpdateFoodInPanel extends JPanel {
 
         // Expiration Date
         gbc.gridx = 0; gbc.gridy = row;
-        expirationDateLabel = new JLabel("Date d'expiration :");
+        expirationDateLabel = new JLabel("Date d'expiration* :");
         expirationDateLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(expirationDateLabel, gbc);
         gbc.gridx = 1;
@@ -71,7 +69,7 @@ public class UpdateFoodInPanel extends JPanel {
 
         // Quantity
         gbc.gridx = 0; gbc.gridy = row;
-        quantityLabel = new JLabel("Quantité : ");
+        quantityLabel = new JLabel("Quantité* (qtt/g/cl) : ");
         quantityLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(quantityLabel, gbc);
         gbc.gridx = 1;
@@ -129,7 +127,7 @@ public class UpdateFoodInPanel extends JPanel {
         // StorageType
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        storageTypeLabel = new JLabel("Type de stockage : ");
+        storageTypeLabel = new JLabel("Type de stockage* : ");
         storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(storageTypeLabel, gbc);
         gbc.gridx = 1;
@@ -170,7 +168,7 @@ public class UpdateFoodInPanel extends JPanel {
             }
             expirationModel.setValue(null);
             purchaseModel.setValue(null);
-            mainWindow.showSearchFoodInPanel();
+            mainWindow.showFoodInListPanel();
         });
 
         updateButton.addActionListener(e -> {
@@ -208,7 +206,7 @@ public class UpdateFoodInPanel extends JPanel {
                     FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
                     foodInController.updateFoodIn(newFoodIn);
                     JOptionPane.showMessageDialog(this, "Aliment modifié", "Aliment modifié", JOptionPane.INFORMATION_MESSAGE);
-                    mainWindow.showHomePanel();
+                    mainWindow.showFoodInListPanel();
                 }
 
             } catch (Exception ex) {

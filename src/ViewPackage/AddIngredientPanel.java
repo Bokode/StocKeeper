@@ -1,21 +1,25 @@
 package ViewPackage;
 
+import controllerPackage.FoodController;
 import controllerPackage.IngredientAmountController;
-import modelPackage.IngredientAmount;
+import modelPackage.Food;
 import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class AddIngredientPanel extends JPanel {
 
     private JPanel FormPanel, ButtonsPanel;
     private JLabel titleLabel, labelLabel, ingredientAmountLabel;
-    private JTextField labelField, ingredientAmountField;
+    private JTextField ingredientAmountField;
     private IngredientAmountController ingredientAmountController;
+    private FoodController foodController;
 
     public AddIngredientPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout());
+        foodController = new FoodController();
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titleLabel = new JLabel("Ajouter un ingrédient : ");
@@ -34,19 +38,23 @@ public class AddIngredientPanel extends JPanel {
         // Nom
         gbc.gridx = 0;
         gbc.gridy = row;
-        labelLabel = new JLabel("Nom :");
+        labelLabel = new JLabel("Nom* :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
 
         gbc.gridx = 1;
-        labelField = new JTextField(20);
-        FormPanel.add(labelField, gbc);
+        List<Food> foodList = foodController.getAllFoods();
+        String[] foodLabels = foodList.stream().map(Food::getLabel).toArray(String[]::new);
+        JComboBox<String> foodComboBox = new JComboBox<>(foodLabels);
+        foodComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(foodComboBox, gbc);
 
         // Quantité
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        ingredientAmountLabel = new JLabel("Quantité (qqt/g/cl) :");
+        ingredientAmountLabel = new JLabel("Quantité (qtt/g/cl) :");
+
         ingredientAmountLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(ingredientAmountLabel, gbc);
 
@@ -91,16 +99,16 @@ public class AddIngredientPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Vous allez pouvoir maintenant renseigner le matériel nécessaire pour la recette");
                 mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "home"));
             } else if (cancelPanelName.equals("updateRecipe")) {
-                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
+                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe, "recipeList");
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
             }
         });
 
         addButton.addActionListener(e -> {
-            String name = labelField.getText().trim();
+            String name = foodComboBox.getSelectedItem().toString();
             String amountStr = ingredientAmountField.getText().trim();
 
-            if (name.isEmpty() || amountStr.isEmpty()) {
+            if (amountStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Champs manquants", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -125,9 +133,8 @@ public class AddIngredientPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Ingrédient ajouté avec succès !", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
                 // Réinitialisation des champs pour un ajout en série
-                labelField.setText("");
+                foodComboBox.setSelectedItem(0);
                 ingredientAmountField.setText("");
-                labelField.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

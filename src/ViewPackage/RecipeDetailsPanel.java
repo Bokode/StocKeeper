@@ -71,7 +71,7 @@ public class RecipeDetailsPanel extends JPanel {
         if (ingredients != null && !ingredients.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (IngredientAmount ing : ingredients) {
-                sb.append("- ").append(ing.getFood()).append(" : ").append(ing.getQuantity()).append(" (qqt/g/cl)\n");
+                sb.append("- ").append(ing.getFood()).append(" : ").append(ing.getQuantity()).append(" (qtt/g/cl)\n");
             }
             ingredientsArea.setText(sb.toString());
         } else {

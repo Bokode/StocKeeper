@@ -1,12 +1,15 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.FoodDAOInterface;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FoodDAO {
+public class FoodDAO implements FoodDAOInterface {
     private static final String TBL        = "food";
     private static final String COL_ID     = "id";
     private static final String COL_LABEL  = "label";
@@ -18,6 +21,29 @@ public class FoodDAO {
     public FoodDAO(FoodTypeDAO t) { this.typeDAO = t; }
 
     /* ---------- READ ---------- */
+    public List<Food> getAllFoods() throws AppException {
+        List<Food> foodList = new ArrayList<>();
+        final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL;
+
+        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                String label = rs.getString(COL_LABEL);
+                int typeId = rs.getInt(COL_TYPEID);
+                FoodType foodType = typeDAO.getFoodTypeById(typeId);
+                foodList.add(new Food(label, foodType));
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+
+        return foodList;
+    }
+
+
     public int getFoodIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
@@ -44,7 +70,6 @@ public class FoodDAO {
 
     public Food getFoodByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
-        System.out.println("Recherche aliment avec label = " + label);
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);

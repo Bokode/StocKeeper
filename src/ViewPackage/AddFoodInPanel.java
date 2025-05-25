@@ -9,7 +9,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
+import java.util.List;
 import java.util.Properties;
 
 public class AddFoodInPanel extends JPanel {
@@ -46,7 +46,7 @@ public class AddFoodInPanel extends JPanel {
 
         // Expiration Date
         gbc.gridx = 0; gbc.gridy = row;
-        expirationDateLabel = new JLabel("Date d'expiration :");
+        expirationDateLabel = new JLabel("Date d'expiration* :");
         expirationDateLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(expirationDateLabel, gbc);
         gbc.gridx = 1;
@@ -59,7 +59,7 @@ public class AddFoodInPanel extends JPanel {
 
         // Quantity
         gbc.gridx = 0; gbc.gridy = row;
-        quantityLabel = new JLabel("Quantité : ");
+        quantityLabel = new JLabel("Quantité* (qtt/g/cl) : ");
         quantityLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(quantityLabel, gbc);
         gbc.gridx = 1;
@@ -108,19 +108,22 @@ public class AddFoodInPanel extends JPanel {
         // Food
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        foodLabel = new JLabel("Aliment : ");
+        foodLabel = new JLabel("Aliment* : ");
         foodLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(foodLabel, gbc);
         gbc.gridx = 1;
-        FoodField = new JTextField(20);
-        FormPanel.add(FoodField, gbc);
+        List<Food> foodList = foodController.getAllFoods();
+        String[] foodLabels = foodList.stream().map(Food::getLabel).toArray(String[]::new);
+        JComboBox<String> foodComboBox = new JComboBox<>(foodLabels);
+        foodComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(foodComboBox, gbc);
 
         row++;
 
         // StorageType
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        storageTypeLabel = new JLabel("Type de stockage : ");
+        storageTypeLabel = new JLabel("Type de stockage* : ");
         storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(storageTypeLabel, gbc);
         gbc.gridx = 1;
@@ -134,7 +137,7 @@ public class AddFoodInPanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Ajouter");
         addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -152,8 +155,7 @@ public class AddFoodInPanel extends JPanel {
                     ((JCheckBox) component).setSelected(false);
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-                else if (component instanceof JScrollPane) {
+                } else if (component instanceof JScrollPane) {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
@@ -173,8 +175,7 @@ public class AddFoodInPanel extends JPanel {
                     ((JCheckBox) component).setSelected(false);
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-                else if (component instanceof JScrollPane) {
+                } else if (component instanceof JScrollPane) {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
@@ -194,9 +195,9 @@ public class AddFoodInPanel extends JPanel {
                 java.util.Date purchaseDate = purchaseModel.getValue(); // Facultatif
                 String nutriScoreString = nutriScoreComboBox.getSelectedItem().toString(); // Facultatif
                 Character nutriScoreCharacter = nutriScoreString.charAt(0);
-                String foodString = FoodField.getText().trim();
-                String typeStorageString = typeStorageComboBox.getSelectedItem().toString();
-                if (quantityString.isEmpty() || foodString.isEmpty() || expirationDate == null) {
+                String foodString = (String) foodComboBox.getSelectedItem();;
+                String typeStorageString = (String) typeStorageComboBox.getSelectedItem();
+                if (quantityString.isEmpty() || expirationDate == null) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
                     return;
                 }

@@ -3,10 +3,11 @@ package dataAccessPackage;
 import java.sql.*;
 
 import exceptionPackage.*;
+import interfacePackage.FoodTypeDAOInterface;
 import modelPackage.FoodType;
 
 
-public class FoodTypeDAO {
+public class FoodTypeDAO implements FoodTypeDAOInterface {
 
     private static final String COL_ID    = "id";
     private static final String COL_LABEL = "label";
@@ -46,7 +47,6 @@ public class FoodTypeDAO {
                 }
             }
         } catch (SQLException e) {
-            // Gérer l'exception de manière similaire
             throw new RecipeOperationException("Erreur lors de la récupération du type d'aliment", e);
         }
         return null;

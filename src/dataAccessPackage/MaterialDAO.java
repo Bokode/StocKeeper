@@ -1,10 +1,11 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.MaterialDAOInterface;
 import modelPackage.Material;
 import java.sql.*;
 
-public class MaterialDAO {
+public class MaterialDAO implements MaterialDAOInterface {
 
     /* ────────── Constantes de colonnes ────────── */
     private static final String COL_ID    = "id";

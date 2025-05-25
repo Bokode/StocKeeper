@@ -7,7 +7,6 @@ import modelPackage.RecipeWithExpiredFood;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class RecipeWithExpiredFoodListPanel extends JPanel {
@@ -51,6 +50,10 @@ public class RecipeWithExpiredFoodListPanel extends JPanel {
         
         add(buttonPanel, BorderLayout.SOUTH);
         showRecipeButton.addActionListener(e -> {
+            if (recipeList.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une recette.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             RecipeWithExpiredFood selectedRecipeExpiredFood = recipeList.getSelectedValue();
             Recipe selectedRecipe = selectedRecipeExpiredFood.getRecipe();
             if (selectedRecipe != null) {

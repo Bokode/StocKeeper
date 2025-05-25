@@ -2,9 +2,10 @@ package businessPackage;
 
 import dataAccessPackage.FoodTypeDAO;
 import exceptionPackage.AppException;
+import interfacePackage.FoodTypeDAOInterface;
 
 public class FoodTypeManager {
-    private FoodTypeDAO dao;
+    private FoodTypeDAOInterface dao;
 
     public FoodTypeManager() {
         setDao(new FoodTypeDAO());

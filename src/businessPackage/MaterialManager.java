@@ -2,10 +2,11 @@ package businessPackage;
 
 import dataAccessPackage.MaterialDAO;
 import exceptionPackage.AppException;
+import interfacePackage.MaterialDAOInterface;
 import modelPackage.Material;
 
 public class MaterialManager {
-    private MaterialDAO dao;
+    private MaterialDAOInterface dao;
 
     public MaterialManager() {
         setDao(new MaterialDAO());

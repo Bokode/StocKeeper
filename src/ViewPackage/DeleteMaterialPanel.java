@@ -60,7 +60,7 @@ public class DeleteMaterialPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Action retour
-        backButton.addActionListener(e -> mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe)));
+        backButton.addActionListener(e -> mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe, "recipeList")));
 
         // Action suppression
         deleteButton.addActionListener(e -> {
