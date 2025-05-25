@@ -168,7 +168,7 @@ public class UpdateFoodInPanel extends JPanel {
             }
             expirationModel.setValue(null);
             purchaseModel.setValue(null);
-            mainWindow.showSearchFoodInPanel();
+            mainWindow.showHomePanel();
         });
 
         updateButton.addActionListener(e -> {
