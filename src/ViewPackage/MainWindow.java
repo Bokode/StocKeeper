@@ -85,6 +85,7 @@ public class MainWindow extends JFrame {
 
     public void showRecipeListPanel() {
         mainContainer.removeAll();
+        recipeListPanel.loadAllRecipes();
         mainContainer.add(recipeListPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
         mainContainer.repaint();
@@ -176,7 +177,6 @@ public class MainWindow extends JFrame {
 
     public void showRecipeWithExpiredFoodListPanel() {
         mainContainer.removeAll();
-
         recipeWithExpiredFoodListPanel.loadRecipes();
         mainContainer.add(recipeWithExpiredFoodListPanel, BorderLayout.CENTER);
         mainContainer.revalidate();
