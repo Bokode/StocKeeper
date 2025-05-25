@@ -2,6 +2,7 @@ package ViewPackage;
 
 import controllerPackage.FoodInController;
 import modelPackage.FoodIn;
+import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,10 @@ public class FoodInListPanel extends JPanel
 {
     private JList<FoodIn> foodInJList;
     private DefaultListModel<FoodIn> listModel;
-    private JPanel ButtonsPanel;
-    private JButton detailsButton, backButton;
+    private JPanel buttonsPanel;
+    private JButton backButton, deleteButton, updateButton;
     private JLabel titleLabel;
+    private FoodInController foodInController;
 
     public FoodInListPanel(MainWindow mainWindow)
     {
@@ -81,9 +83,43 @@ public class FoodInListPanel extends JPanel
         scrollPane.setBorder(BorderFactory.createTitledBorder("Aliments disponibles"));
         add(scrollPane, BorderLayout.CENTER);
 
+        // Button Panel
+        buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        deleteButton = new JButton("Supprimer");
+        deleteButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        updateButton = new JButton("Modifier");
+        updateButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        backButton = new JButton("Retour");
+        backButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        buttonsPanel.add(deleteButton);
+        buttonsPanel.add(updateButton);
+        buttonsPanel.add(backButton);
+        add(buttonsPanel, BorderLayout.SOUTH);
 
+        backButton.addActionListener(e -> {
+            mainWindow.showHomePanel();
+        });
 
+        updateButton.addActionListener(e -> {
+            FoodIn selectedFoodIn = foodInJList.getSelectedValue();
+            if (selectedFoodIn != null) {
+                mainWindow.showUpdateFoodInPanel(new UpdateFoodInPanel(mainWindow, selectedFoodIn));
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un aliment", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
+        deleteButton.addActionListener(e -> {
+            FoodIn selectedFoodIn = foodInJList.getSelectedValue();
+            if (selectedFoodIn != null) {
+                foodInController = new FoodInController();
+                foodInController.deleteFoodInByFoodLabel(selectedFoodIn.getFood().getLabel());
+                JOptionPane.showMessageDialog(this, "Aliment supprimé avec succès !", "Aliment supprimé", JOptionPane.INFORMATION_MESSAGE);
+                loadFoodIns();
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un aliment.",  "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
     public void loadFoodIns()
     {
