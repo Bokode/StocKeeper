@@ -52,6 +52,10 @@ public class PossibleRecipePanel extends JPanel {
 
         // Action Afficher la recette
         showRecipeButton.addActionListener(e -> {
+            if (recipeList.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une recette.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             RecipeWithExpiredFood selected = recipeList.getSelectedValue();
             Recipe selectedRecipe = selected.getRecipe();
             if (selectedRecipe != null) {

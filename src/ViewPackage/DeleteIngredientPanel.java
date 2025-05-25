@@ -51,7 +51,7 @@ public class DeleteIngredientPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
 
         backButton.addActionListener(e -> {
-            mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe));
+            mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe, "recipeList"));
         });
 
         deleteButton.addActionListener(e -> {
