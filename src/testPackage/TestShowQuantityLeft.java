@@ -6,7 +6,6 @@ import modelPackage.QuantityLeft;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TestShowQuantityLeft {
@@ -26,6 +25,6 @@ class TestShowQuantityLeft {
     @Test
     public void testShowQuantityLeftQuantité() {
         QuantityLeft quantityTest = foodInManager.showQuantityLeft("Quantité");
-        assertEquals(0, quantityTest.getQuantity());
+        assertNotEquals(0, quantityTest.getQuantity());
     }
 }

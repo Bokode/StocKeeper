@@ -137,7 +137,7 @@ public class AddFoodInPanel extends JPanel {
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Ajouter");
         addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        JButton cancelButton = new JButton("Annuler");
+        JButton cancelButton = new JButton("Retour");
         cancelButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -155,13 +155,10 @@ public class AddFoodInPanel extends JPanel {
                     ((JCheckBox) component).setSelected(false);
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-                else if (component instanceof JScrollPane) {
+                } else if (component instanceof JScrollPane) {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
-                    } else if (component instanceof JComboBox combo && combo == foodComboBox) {
-                        combo.setSelectedIndex(0);
                     }
                 }
             }
@@ -178,13 +175,10 @@ public class AddFoodInPanel extends JPanel {
                     ((JCheckBox) component).setSelected(false);
                 } else if (component instanceof JComboBox) {
                     ((JComboBox<?>) component).setSelectedIndex(0);
-                }
-                else if (component instanceof JScrollPane) {
+                } else if (component instanceof JScrollPane) {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
-                    } else if (component instanceof JComboBox combo && combo == foodComboBox) {
-                        combo.setSelectedIndex(0);
                     }
                 }
             }
@@ -201,9 +195,9 @@ public class AddFoodInPanel extends JPanel {
                 java.util.Date purchaseDate = purchaseModel.getValue(); // Facultatif
                 String nutriScoreString = nutriScoreComboBox.getSelectedItem().toString(); // Facultatif
                 Character nutriScoreCharacter = nutriScoreString.charAt(0);
-                String foodString = foodComboBox.getSelectedItem().toString();;
-                String typeStorageString = typeStorageComboBox.getSelectedItem().toString();
-                if (quantityString.isEmpty() || foodString.isEmpty() || expirationDate == null) {
+                String foodString = (String) foodComboBox.getSelectedItem();;
+                String typeStorageString = (String) typeStorageComboBox.getSelectedItem();
+                if (quantityString.isEmpty() || expirationDate == null) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");
                     return;
                 }

@@ -5,7 +5,8 @@ import modelPackage.*;
 
 import java.util.List;
 
-public interface FoodInDAOInterface {
+public interface FoodInDAOInterface
+{
     void addFoodIn(FoodIn foodIn) throws AppException;
 
     List<FoodIn> getAllFoodIns() throws AppException;
