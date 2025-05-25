@@ -94,7 +94,7 @@ public class RecipeListPanel extends JPanel {
         });
     }
 
-    private void loadAllRecipes() {
+    public void loadAllRecipes() {
         try {
             List<Recipe> recipes = recipeController.getAllRecipes();
             loadRecipes(recipes);

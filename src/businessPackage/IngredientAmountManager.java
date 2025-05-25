@@ -2,12 +2,13 @@ package businessPackage;
 
 import dataAccessPackage.IngredientAmountDAO;
 import exceptionPackage.AppException;
+import interfacePackage.IngredientAmountDAOInterface;
 import modelPackage.IngredientAmount;
 
 import java.util.ArrayList;
 
 public class IngredientAmountManager {
-    private IngredientAmountDAO dao;
+    private IngredientAmountDAOInterface dao;
 
     public IngredientAmountManager() {
         setDao(new IngredientAmountDAO());

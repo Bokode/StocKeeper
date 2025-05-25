@@ -1,6 +1,5 @@
 package businessPackage;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +24,7 @@ public class FoodInManager {
         return foodIns;
     }
 
-    public void addFoodIn(FoodIn foodIn) throws AppException, SQLException {
+    public void addFoodIn(FoodIn foodIn) throws AppException {
         dao.addFoodIn(foodIn);
     }
 

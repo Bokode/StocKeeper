@@ -7,7 +7,6 @@ import modelPackage.RecipeWithExpiredFood;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class RecipeWithExpiredFoodListPanel extends JPanel {

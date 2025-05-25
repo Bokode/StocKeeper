@@ -9,7 +9,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
+import java.util.List;
 import java.util.Properties;
 
 public class AddFoodInPanel extends JPanel {
@@ -112,8 +112,11 @@ public class AddFoodInPanel extends JPanel {
         foodLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(foodLabel, gbc);
         gbc.gridx = 1;
-        FoodField = new JTextField(20);
-        FormPanel.add(FoodField, gbc);
+        List<Food> foodList = foodController.getAllFoods();
+        String[] foodLabels = foodList.stream().map(Food::getLabel).toArray(String[]::new);
+        JComboBox<String> foodComboBox = new JComboBox<>(foodLabels);
+        foodComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(foodComboBox, gbc);
 
         row++;
 
@@ -157,6 +160,8 @@ public class AddFoodInPanel extends JPanel {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
+                    } else if (component instanceof JComboBox combo && combo == foodComboBox) {
+                        combo.setSelectedIndex(0);
                     }
                 }
             }
@@ -178,6 +183,8 @@ public class AddFoodInPanel extends JPanel {
                     Component view = ((JScrollPane) component).getViewport().getView();
                     if (view instanceof JTextArea) {
                         ((JTextArea) view).setText("");
+                    } else if (component instanceof JComboBox combo && combo == foodComboBox) {
+                        combo.setSelectedIndex(0);
                     }
                 }
             }
@@ -194,7 +201,7 @@ public class AddFoodInPanel extends JPanel {
                 java.util.Date purchaseDate = purchaseModel.getValue(); // Facultatif
                 String nutriScoreString = nutriScoreComboBox.getSelectedItem().toString(); // Facultatif
                 Character nutriScoreCharacter = nutriScoreString.charAt(0);
-                String foodString = FoodField.getText().trim();
+                String foodString = foodComboBox.getSelectedItem().toString();;
                 String typeStorageString = typeStorageComboBox.getSelectedItem().toString();
                 if (quantityString.isEmpty() || foodString.isEmpty() || expirationDate == null) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs obligatoires.");

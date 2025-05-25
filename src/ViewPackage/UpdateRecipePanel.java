@@ -9,9 +9,6 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Properties;
 
 public class UpdateRecipePanel extends JPanel {

@@ -1,7 +1,5 @@
 package controllerPackage;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 import businessPackage.RecipeManager;
@@ -23,7 +21,7 @@ public class RecipeController {
         return recipeManager.getAllRecipes();
     }
 
-    public void addRecipe(Recipe recipe) throws AppException, SQLException {
+    public void addRecipe(Recipe recipe) throws AppException {
         recipeManager.addRecipe(recipe);
     }
 
@@ -46,11 +44,6 @@ public class RecipeController {
 
     public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return recipeManager.recipeWithExpiredFood();
-    }
-
-    // Search 3
-    public List<SeasonalRecipe> RecipesOfSeason(LocalDate date) throws AppException {
-        return recipeManager.recipesOfSeason(date);
     }
 
     public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
