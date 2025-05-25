@@ -1,13 +1,14 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.RecipeMaterialDAOInterface;
 import modelPackage.Material;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeMaterialDAO {
+public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
 
     /* ───────────────── Constantes de colonnes ───────────────── */
     private static final String COL_RECIPE   = "recipe";

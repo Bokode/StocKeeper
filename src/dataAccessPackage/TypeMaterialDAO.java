@@ -1,10 +1,12 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.TypeMaterialDAOInterface;
+
 import java.sql.*;
 
 
-public class TypeMaterialDAO {
+public class TypeMaterialDAO implements TypeMaterialDAOInterface {
 
     private static final String COL_ID    = "id";
     private static final String COL_LABEL = "label";

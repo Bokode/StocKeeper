@@ -2,12 +2,13 @@ package businessPackage;
 
 import dataAccessPackage.RecipeMaterialDAO;
 import exceptionPackage.AppException;
+import interfacePackage.RecipeMaterialDAOInterface;
 import modelPackage.Material;
 
 import java.util.List;
 
 public class RecipeMaterialManager {
-    private RecipeMaterialDAO dao;
+    private RecipeMaterialDAOInterface dao;
 
     public RecipeMaterialManager() {
         setDao(new RecipeMaterialDAO());

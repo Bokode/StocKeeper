@@ -21,4 +21,6 @@ public interface RecipeDAOInterface
     Integer deleteRecipe(String label) throws AppException;
 
     List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException;
+
+    List<RecipeWithExpiredFood> recipesWithSomeIngredientsInStock() throws AppException;
 }

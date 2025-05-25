@@ -2,13 +2,14 @@ package businessPackage;
 
 import dataAccessPackage.FoodDAO;
 import exceptionPackage.AppException;
+import interfacePackage.FoodDAOInterface;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
 import java.util.List;
 
 public class FoodManager {
-    private FoodDAO dao;
+    private FoodDAOInterface dao;
 
     public FoodManager() {
         setDao(new FoodDAO());

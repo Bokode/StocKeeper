@@ -1,6 +1,7 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.FoodDAOInterface;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
@@ -8,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodDAO {
+public class FoodDAO implements FoodDAOInterface {
     private static final String TBL        = "food";
     private static final String COL_ID     = "id";
     private static final String COL_LABEL  = "label";

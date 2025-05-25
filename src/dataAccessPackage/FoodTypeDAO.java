@@ -3,10 +3,11 @@ package dataAccessPackage;
 import java.sql.*;
 
 import exceptionPackage.*;
+import interfacePackage.FoodTypeDAOInterface;
 import modelPackage.FoodType;
 
 
-public class FoodTypeDAO {
+public class FoodTypeDAO implements FoodTypeDAOInterface {
 
     private static final String COL_ID    = "id";
     private static final String COL_LABEL = "label";
