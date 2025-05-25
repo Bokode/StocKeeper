@@ -168,7 +168,7 @@ public class UpdateFoodInPanel extends JPanel {
             }
             expirationModel.setValue(null);
             purchaseModel.setValue(null);
-            mainWindow.showHomePanel();
+            mainWindow.showFoodInListPanel();
         });
 
         updateButton.addActionListener(e -> {
@@ -206,7 +206,7 @@ public class UpdateFoodInPanel extends JPanel {
                     FoodIn newFoodIn = new FoodIn(expirationDate, quantity, isOpen, nutriScoreCharacter, purchaseDate, food, storageType);
                     foodInController.updateFoodIn(newFoodIn);
                     JOptionPane.showMessageDialog(this, "Aliment modifié", "Aliment modifié", JOptionPane.INFORMATION_MESSAGE);
-                    mainWindow.showHomePanel();
+                    mainWindow.showFoodInListPanel();
                 }
 
             } catch (Exception ex) {
