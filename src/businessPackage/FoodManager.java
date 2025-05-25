@@ -5,6 +5,8 @@ import exceptionPackage.AppException;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
+import java.util.List;
+
 public class FoodManager {
     private FoodDAO dao;
 
@@ -14,6 +16,10 @@ public class FoodManager {
 
     private void setDao(FoodDAO newDao) {
         dao = newDao;
+    }
+
+    public List<Food> getAllFoods() throws AppException {
+        return dao.getAllFoods();
     }
 
     public int getFoodIdByLabel(String label) throws AppException {
