@@ -78,6 +78,10 @@ public class RecipeListPanel extends JPanel {
 
         // Listener
         detailsButton.addActionListener(e -> {
+            if (recipeJList.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une recette.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             Recipe selectedRecipe = recipeJList.getSelectedValue();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();

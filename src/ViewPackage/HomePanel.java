@@ -11,7 +11,7 @@ public class HomePanel extends JPanel {
 
     public HomePanel() {
         line1Label = new JLabel("StocKeeper");
-        line2Label = new JLabel("Bienvenue sur StocKeeper, vous pouvez choisir une des options ci-dessous.");
+        line2Label = new JLabel("Bienvenue sur StocKeeper, vous pouvez choisir une des options dans le menu ci-dessus.");
         line1Label.setFont(new Font("Poppins", Font.BOLD, 40));
         line2Label.setFont(new Font("Poppins", Font.PLAIN , 20));
 
