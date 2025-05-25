@@ -2,11 +2,14 @@ package businessPackage;
 
 import dataAccessPackage.FoodDAO;
 import exceptionPackage.AppException;
+import interfacePackage.FoodDAOInterface;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
+import java.util.List;
+
 public class FoodManager {
-    private FoodDAO dao;
+    private FoodDAOInterface dao;
 
     public FoodManager() {
         setDao(new FoodDAO());
@@ -14,6 +17,10 @@ public class FoodManager {
 
     private void setDao(FoodDAO newDao) {
         dao = newDao;
+    }
+
+    public List<Food> getAllFoods() throws AppException {
+        return dao.getAllFoods();
     }
 
     public int getFoodIdByLabel(String label) throws AppException {

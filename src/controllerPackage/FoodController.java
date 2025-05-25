@@ -5,6 +5,8 @@ import exceptionPackage.AppException;
 import modelPackage.Food;
 import modelPackage.FoodType;
 
+import java.util.List;
+
 public class FoodController {
     private FoodManager foodManager;
 
@@ -14,6 +16,10 @@ public class FoodController {
 
     public void setFoodManager(FoodManager foodManager) {
         this.foodManager = foodManager;
+    }
+
+    public List<Food> getAllFoods() throws AppException {
+        return foodManager.getAllFoods();
     }
 
     public int getFoodIdByLabel(String label) throws AppException {

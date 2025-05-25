@@ -5,11 +5,12 @@ import java.util.List;
 
 import dataAccessPackage.RecipeDAO;
 import exceptionPackage.AppException;
+import interfacePackage.RecipeDAOInterface;
 import modelPackage.Recipe;
 import modelPackage.RecipeWithExpiredFood;
 
 public class RecipeManager {
-    private RecipeDAO dao;
+    private RecipeDAOInterface dao;
 
     public RecipeManager() {
         setDao(new RecipeDAO());

@@ -1,12 +1,13 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.IngredientAmountDAOInterface;
 import modelPackage.IngredientAmount;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class IngredientAmountDAO
+public class IngredientAmountDAO implements IngredientAmountDAOInterface
 {
 
     public void addIngredientAmount(String recipe, String food, Integer quantity) throws AppException
