@@ -68,7 +68,7 @@ public class FoodInListPanel extends JPanel
 
                     String labelHtml = (diffDays < 0) ? "<font color='red'>" + label + "</font>" : label;
 
-                    setText("<html>" + labelHtml + " " + quantity + " (qqt/g/cl) " + (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +
+                    setText("<html>" + labelHtml + " " + quantity + " (qtt/g/cl) " + (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +
                             "   NutriScore : " + foodIn.getNutriScore() + "   " + expirationInfo + " (" + expirationDate + ")</html>");
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));

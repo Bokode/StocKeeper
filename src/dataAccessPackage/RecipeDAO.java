@@ -157,8 +157,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         return -1;
     }
 
-    // transforme un ResultSet en objet Recipe
-
+    // Transforme un ResultSet en objet Recipe
     private Recipe mapResultSetToRecipe(ResultSet rs) throws AppException {
         try
         {

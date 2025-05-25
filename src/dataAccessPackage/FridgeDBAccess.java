@@ -1,5 +1,9 @@
 package dataAccessPackage;
 
+import exceptionPackage.AppException;
+import exceptionPackage.AuthenticationFailureException;
+import exceptionPackage.DataBaseUnavailableException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,13 +16,16 @@ public class FridgeDBAccess {
     private static FridgeDBAccess instance;
 
 
-    private FridgeDBAccess()
+    private FridgeDBAccess() throws AppException
     {
         try {
             this.getConnection();
-            System.out.println("Connected to database successfully!");
         } catch (SQLException exception) {
-            System.err.println("Connection failed: " + exception.getMessage());
+            switch (exception.getSQLState()) {
+                case "08S01" -> throw new DataBaseUnavailableException("Base de données indisponible.", exception);
+                case "28000" -> throw new AuthenticationFailureException("Authentification refusée.", exception);
+                default -> throw new AppException("Erreur de connexion à la base de données.", exception);
+            }
         }
     }
 

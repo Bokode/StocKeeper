@@ -69,8 +69,8 @@ public class DeleteRecipePanel extends JPanel {
                 }
                 recipeController = new RecipeController();
                 recipeController.deleteRecipe(labelToFind);
-                System.out.println("Recette supprimée : " + labelToFind);
                 JOptionPane.showMessageDialog(this, "Recette supprimée avec succès !", "Recette supprimée", JOptionPane.INFORMATION_MESSAGE);
+                labelField.setText("");
             }
             catch(Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);

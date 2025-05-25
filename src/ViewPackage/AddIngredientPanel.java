@@ -33,7 +33,7 @@ public class AddIngredientPanel extends JPanel {
         // Nom
         gbc.gridx = 0;
         gbc.gridy = row;
-        labelLabel = new JLabel("Nom :");
+        labelLabel = new JLabel("Nom* :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
 
@@ -45,7 +45,7 @@ public class AddIngredientPanel extends JPanel {
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        ingredientAmountLabel = new JLabel("Quantité (qqt/g/cl) :");
+        ingredientAmountLabel = new JLabel("Quantité* (qtt/g/cl) :");
         ingredientAmountLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(ingredientAmountLabel, gbc);
 
@@ -90,7 +90,7 @@ public class AddIngredientPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Vous allez pouvoir maintenant renseigner le matériel nécessaire pour la recette");
                 mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "home"));
             } else if (cancelPanelName.equals("updateRecipe")) {
-                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
+                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe, "recipeList");
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
             }
         });

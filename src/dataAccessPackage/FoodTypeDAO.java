@@ -47,7 +47,6 @@ public class FoodTypeDAO implements FoodTypeDAOInterface {
                 }
             }
         } catch (SQLException e) {
-            // Gérer l'exception de manière similaire
             throw new RecipeOperationException("Erreur lors de la récupération du type d'aliment", e);
         }
         return null;

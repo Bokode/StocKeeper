@@ -70,7 +70,6 @@ public class FoodDAO implements FoodDAOInterface {
 
     public Food getFoodByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
-        System.out.println("Recherche aliment avec label = " + label);
         try (Connection c = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);

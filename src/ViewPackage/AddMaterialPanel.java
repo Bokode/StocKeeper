@@ -33,7 +33,7 @@ public class AddMaterialPanel extends JPanel {
         // Nom du matériel
         gbc.gridx = 0;
         gbc.gridy = row;
-        labelLabel = new JLabel("Nom du matériel à ajouter :");
+        labelLabel = new JLabel("Nom du matériel à ajouter* :");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(labelLabel, gbc);
 
@@ -45,7 +45,7 @@ public class AddMaterialPanel extends JPanel {
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
-        materialTypeLabel = new JLabel("Type de matériel :");
+        materialTypeLabel = new JLabel("Type de matériel* :");
         materialTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(materialTypeLabel, gbc);
 
@@ -92,7 +92,7 @@ public class AddMaterialPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Toutes les informations ont bien été renseignées !");
                 mainWindow.showHomePanel();
             } else if (cancelPanelName.equals("updateRecipe")) {
-                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe);
+                UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe, "recipeList");
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
             }
         });

@@ -50,7 +50,7 @@ public class UpdateFoodInPanel extends JPanel {
 
         // Expiration Date
         gbc.gridx = 0; gbc.gridy = row;
-        expirationDateLabel = new JLabel("Date d'expiration :");
+        expirationDateLabel = new JLabel("Date d'expiration* :");
         expirationDateLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(expirationDateLabel, gbc);
         gbc.gridx = 1;
@@ -69,7 +69,7 @@ public class UpdateFoodInPanel extends JPanel {
 
         // Quantity
         gbc.gridx = 0; gbc.gridy = row;
-        quantityLabel = new JLabel("Quantité : ");
+        quantityLabel = new JLabel("Quantité* (qtt/g/cl) : ");
         quantityLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(quantityLabel, gbc);
         gbc.gridx = 1;
@@ -127,7 +127,7 @@ public class UpdateFoodInPanel extends JPanel {
         // StorageType
         gbc.gridx = 0; gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
-        storageTypeLabel = new JLabel("Type de stockage : ");
+        storageTypeLabel = new JLabel("Type de stockage* : ");
         storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(storageTypeLabel, gbc);
         gbc.gridx = 1;
