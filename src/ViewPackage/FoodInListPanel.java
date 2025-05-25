@@ -13,8 +13,8 @@ public class FoodInListPanel extends JPanel
 {
     private JList<FoodIn> foodInJList;
     private DefaultListModel<FoodIn> listModel;
-    private JPanel ButtonsPanel;
-    private JButton detailsButton, backButton;
+    private JPanel buttonsPanel;
+    private JButton backButton;
     private JLabel titleLabel;
 
     public FoodInListPanel(MainWindow mainWindow)
@@ -68,7 +68,7 @@ public class FoodInListPanel extends JPanel
 
                     String labelHtml = (diffDays < 0) ? "<font color='red'>" + label + "</font>" : label;
 
-                    setText("<html>" + labelHtml + " " + quantity + " (qqt/g/cl) " + (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +
+                    setText("<html>" + labelHtml + " " + quantity + " (qtt/g/cl) " + (foodIn.getOpen() ? " (Ouvert)" : " (Fermé)") +
                             "   NutriScore : " + foodIn.getNutriScore() + "   " + expirationInfo + " (" + expirationDate + ")</html>");
                 }
                 setFont(new Font("Poppins", Font.PLAIN, 15));
@@ -81,9 +81,16 @@ public class FoodInListPanel extends JPanel
         scrollPane.setBorder(BorderFactory.createTitledBorder("Aliments disponibles"));
         add(scrollPane, BorderLayout.CENTER);
 
+        // Button Panel
+        buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        backButton = new JButton("Retour");
+        backButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        buttonsPanel.add(backButton);
+        add(buttonsPanel, BorderLayout.SOUTH);
 
-
-
+        backButton.addActionListener(e -> {
+            mainWindow.showHomePanel();
+        });
     }
     public void loadFoodIns()
     {
