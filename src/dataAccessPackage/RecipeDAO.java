@@ -280,8 +280,6 @@ public class RecipeDAO implements RecipeDAOInterface {
             // Filtrage final
             for (var entry : map.entrySet()) {
                 int recipeId = entry.getKey();
-                Set<Integer> required = recipeToRequiredFoods.getOrDefault(recipeId, Set.of());
-                Set<Integer> available = recipeToAvailableFoods.getOrDefault(recipeId, Set.of());
                 boolean hasExpiring = recipeHasExpiringSoon.getOrDefault(recipeId, false);
 
                 if (hasExpiring) {
