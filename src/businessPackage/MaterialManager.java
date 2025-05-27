@@ -3,7 +3,6 @@ package businessPackage;
 import dataAccessPackage.MaterialDAO;
 import exceptionPackage.AppException;
 import interfacePackage.MaterialDAOInterface;
-import modelPackage.Material;
 
 public class MaterialManager {
     private MaterialDAOInterface dao;

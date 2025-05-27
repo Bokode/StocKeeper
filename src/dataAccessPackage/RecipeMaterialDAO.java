@@ -108,16 +108,4 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
             default       -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }
-
-    /* ────────────────────── Getters ────────────────────────── */
-    public RecipeDAO getRecipeDAO() {
-        return recipeDAO;
-    }
-    public MaterialDAO getMaterialDAO() {
-        return materialDAO;
-    }
-    public TypeMaterialDAO getTypeDAO() {
-        return typeDAO;
-    }
-
 }

@@ -14,7 +14,6 @@ public class RecipeDAO implements RecipeDAOInterface {
     public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -328,7 +327,6 @@ public class RecipeDAO implements RecipeDAOInterface {
                 int recipeId = rs.getInt("recipe_id");
                 int foodId = rs.getInt("food_id");
 
-                // Évite les doublons d'aliment dans une recette
                 int compositeKey = Objects.hash(recipeId, foodId);
                 if (seenFoodPerRecipe.contains(compositeKey)) continue;
                 seenFoodPerRecipe.add(compositeKey);

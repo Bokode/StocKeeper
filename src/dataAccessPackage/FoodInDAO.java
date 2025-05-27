@@ -12,28 +12,22 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  Constantes table / colonnes
      * ─────────────────────────── */
-    private static final String TBL_FOOD_IN        = "foodin";
-    private static final String COL_ID             = "id";
     private static final String COL_EXPIRATION     = "expirationDate";
     private static final String COL_QTY            = "quantity";
     private static final String COL_IS_OPEN        = "isOpen";
     private static final String COL_NUTRI          = "nutriScore";
     private static final String COL_PURCHASE       = "purchaseDate";
-    private static final String COL_FOOD_ID        = "food_id";
-    private static final String COL_STORAGE_ID     = "storageType_id";
 
     /* ───────────────────────────
      *  DAO dépendants injectables
      * ─────────────────────────── */
     private final FoodDAO        foodDAO;
-    private final FoodTypeDAO    foodTypeDAO;
 
     public FoodInDAO() {
-        this(new FoodDAO(), new FoodTypeDAO());
+        this(new FoodDAO());
     }
-    public FoodInDAO(FoodDAO foodDAO, FoodTypeDAO foodTypeDAO) {
-        this.foodDAO     = foodDAO;
-        this.foodTypeDAO = foodTypeDAO;
+    public FoodInDAO(FoodDAO foodDAO) {
+        this.foodDAO = foodDAO;
     }
 
     /* ───────────────────────────
@@ -406,7 +400,6 @@ public class FoodInDAO implements FoodInDAOInterface {
                 Map<String, ExpiredFood> map = new HashMap<>();
 
                 while (rs.next()) {
-                    // Clé unique pour éviter les doublons
                     String foodKey = rs.getString("food_label") + "_" + rs.getDate("expirationDate");
 
                     ExpiredFood expiredFood;
