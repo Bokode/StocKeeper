@@ -14,7 +14,6 @@ public class RecipeDAO implements RecipeDAOInterface {
     public List<Recipe> getAllRecipes() throws AppException {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
 
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -46,8 +45,8 @@ public class RecipeDAO implements RecipeDAOInterface {
         return recipe;
     }
 
-    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
-                                boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+    public void updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
+                             boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -74,14 +73,13 @@ public class RecipeDAO implements RecipeDAOInterface {
             stmt.setInt(7, getOrInsertRecipeType(conn, type));
             stmt.setString(8, labelToFind);
 
-            return stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             exceptionHandler(e);
-            return 0;
         }
     }
 
-    public Integer deleteRecipe(String label) throws AppException {
+    public void deleteRecipe(String label) throws AppException {
         String query = "DELETE FROM recipe WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -93,7 +91,6 @@ public class RecipeDAO implements RecipeDAOInterface {
             exceptionHandler(e);
 
         }
-        return 0;
     }
 
     public void addRecipe(Recipe recipe) throws AppException {
@@ -243,7 +240,6 @@ public class RecipeDAO implements RecipeDAOInterface {
                         ? rs.getDate("expirationDate").toLocalDate()
                         : null;
 
-                // Construction ou récupération de l'objet
                 RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
                     try {
                         return new RecipeWithExpiredFood(new Recipe(
@@ -261,13 +257,9 @@ public class RecipeDAO implements RecipeDAOInterface {
                     }
                 });
 
-                // Suivi des aliments nécessaires
                 recipeToRequiredFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
 
-                // Vérifie si l'aliment est en stock et périme bientôt
-                if (expiration != null &&
-                        ( !expiration.isBefore(today) && !expiration.isAfter(threshold))) {
-
+                if (expiration != null && (!expiration.isBefore(today) && !expiration.isAfter(threshold))) {
                     recipeToAvailableFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
                     recipeHasExpiringSoon.put(recipeId, true);
 
@@ -277,15 +269,11 @@ public class RecipeDAO implements RecipeDAOInterface {
                 }
             }
 
-            // Filtrage final
             for (var entry : map.entrySet()) {
                 int recipeId = entry.getKey();
-                Set<Integer> required = recipeToRequiredFoods.getOrDefault(recipeId, Set.of());
-                Set<Integer> available = recipeToAvailableFoods.getOrDefault(recipeId, Set.of());
                 boolean hasExpiring = recipeHasExpiringSoon.getOrDefault(recipeId, false);
 
-                if (hasExpiring &&
-                        (available.size() == required.size() || available.size() == required.size() - 1)) {
+                if (hasExpiring) {
                     result.add(entry.getValue());
                 }
             }
@@ -331,12 +319,10 @@ public class RecipeDAO implements RecipeDAOInterface {
                 int recipeId = rs.getInt("recipe_id");
                 int foodId = rs.getInt("food_id");
 
-                // Évite les doublons d'aliment dans une recette
                 int compositeKey = Objects.hash(recipeId, foodId);
                 if (seenFoodPerRecipe.contains(compositeKey)) continue;
                 seenFoodPerRecipe.add(compositeKey);
 
-                // Crée ou récupère l'objet recette enrichie
                 RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
                     try {
                         return new RecipeWithExpiredFood(new Recipe(
@@ -354,12 +340,10 @@ public class RecipeDAO implements RecipeDAOInterface {
                     }
                 });
 
-                // Ajouter l'aliment en stock à la recette
                 FoodType ft = new FoodType(rs.getString("food_type_label"));
                 Food food = new Food(rs.getString("food_label"), ft);
                 rwef.addFood(food);
             }
-
             result.addAll(map.values());
 
         } catch (SQLException e) {
