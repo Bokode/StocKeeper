@@ -192,7 +192,6 @@ public class AddRecipePanel extends JPanel {
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
-                String dietString = dietTypesComboBox.getSelectedItem().toString();
                 RecipeType recipeType = new RecipeType(typeString);
 
                 Date lastDayDone = null;
@@ -201,7 +200,6 @@ public class AddRecipePanel extends JPanel {
 
                 recipeController = new RecipeController();
                 recipeController.addRecipe(newRecipe);
-                System.out.println("Recette créée : " + newRecipe);
 
                 JOptionPane.showMessageDialog(this, "Recette crée, vous allez pouvoir maintenant ajouter les aliments", "Recette crée", JOptionPane.INFORMATION_MESSAGE);
                 mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, newRecipe, "addMaterial"));
