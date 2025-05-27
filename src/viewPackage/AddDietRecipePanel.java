@@ -8,6 +8,7 @@ import modelPackage.Recipe;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddDietRecipePanel extends JPanel {
     private JLabel titleLabel, dietLabel;
@@ -38,7 +39,13 @@ public class AddDietRecipePanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Liste des régimes
+        // Liste des régimes disponibles (exclure déjà liés)
+        List<Diet> allDiets = dietController.getAllDiets();
+        List<String> existingDietLabels = dietRecipeController.getDietsByRecipe(recipe.getLabel());
+        List<Diet> availableDiets = allDiets.stream()
+                .filter(diet -> !existingDietLabels.contains(diet.getLabel()))
+                .collect(Collectors.toList());
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         dietLabel = new JLabel("Sélectionnez les régimes :");
@@ -46,12 +53,30 @@ public class AddDietRecipePanel extends JPanel {
         formPanel.add(dietLabel, gbc);
 
         gbc.gridx = 1;
-        List<Diet> diets = diet.getAllDiets();
-        dietList = new JList<>(diets.toArray(new Diet[0]));
+        DefaultListModel<Diet> dietModel = new DefaultListModel<>();
+        for (Diet d : availableDiets) {
+            dietModel.addElement(d);
+        }
+
+        dietList = new JList<>(dietModel);
         dietList.setVisibleRowCount(6);
         dietList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         dietList.setFont(new Font("Poppins", Font.PLAIN, 14));
+
+        // Affichage label au lieu de toString()
+        dietList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Diet) {
+                    setText(((Diet) value).getLabel());
+                }
+                return this;
+            }
+        });
+
         JScrollPane dietScrollPane = new JScrollPane(dietList);
+        dietScrollPane.setPreferredSize(new Dimension(300, 150)); // Taille fixe de la liste
         formPanel.add(dietScrollPane, gbc);
 
         add(formPanel, BorderLayout.CENTER);
@@ -69,16 +94,17 @@ public class AddDietRecipePanel extends JPanel {
         // Action "Ajouter"
         addButton.addActionListener(e -> {
             List<Diet> selectedDiets = dietList.getSelectedValuesList();
-            if (selectedDiets.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Veuillez sélectionner au moins un régime.", "Erreur", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
             try {
                 for (Diet diet : selectedDiets) {
                     dietRecipeController.addDietToRecipe(diet.getLabel(), recipe.getLabel());
                 }
-                JOptionPane.showMessageDialog(this, "Régimes ajoutés avec succès à la recette !");
+
+                // Mise à jour de la liste (retrait des régimes déjà sélectionnés)
+                for (Diet diet : selectedDiets) {
+                    dietModel.removeElement(diet);
+                }
+
+                JOptionPane.showMessageDialog(this, "Votre recette a bien été crée et peut être modifiée à tout moment !");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
@@ -90,8 +116,6 @@ public class AddDietRecipePanel extends JPanel {
                 mainWindow.showHomePanel();
             } else if (previousPanelName.equals("updateRecipe")) {
                 mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe, "recipeList"));
-            } else if (previousPanelName.equals("addRecipe")) {
-                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "home"));
             }
         });
     }

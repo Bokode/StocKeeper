@@ -89,7 +89,7 @@ public class AddMaterialPanel extends JPanel {
             }
             if (cancelPanelName.equals("addDiet")){
                 JOptionPane.showMessageDialog(this, "Vous allez pouvoir maintenant choisir les régimes de votre recette");
-                // mainWindow.showAddDietRecipePanel(new ...)
+                mainWindow.showAddDietRecipePanel(new AddDietRecipePanel(mainWindow, recipe, "home"));
             } else if (cancelPanelName.equals("updateRecipe")) {
                 UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe, "recipeList");
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
