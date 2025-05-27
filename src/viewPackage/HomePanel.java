@@ -17,7 +17,7 @@ public class HomePanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-// Centre les éléments verticalement
+        // Centre les éléments verticalement
         this.add(Box.createVerticalGlue());
         line1Label.setAlignmentX(Component.CENTER_ALIGNMENT);
         line2Label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -28,12 +28,5 @@ public class HomePanel extends JPanel {
 
         breathingThread = new BreathingThread(line1Label);
         breathingThread.start();
-    }
-
-    // Optionnel : à appeler si tu veux stopper l'effet (ex: lors d’un changement de panel)
-    public void stopBreathingEffect() {
-        if (breathingThread != null) {
-            breathingThread.stopBreathing();
-        }
     }
 }
