@@ -10,8 +10,7 @@ import java.awt.*;
 public class AddMaterialPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel;
     private JLabel titleLabel, labelLabel, materialTypeLabel;
-    private JTextField labelField, materialField;
-    private MaterialController materialController;
+    private JTextField labelField;
     private RecipeMaterialController recipeMaterialController;
     public AddMaterialPanel(MainWindow mainWindow, Recipe recipe, String cancelPanelName) {
         setLayout(new BorderLayout());

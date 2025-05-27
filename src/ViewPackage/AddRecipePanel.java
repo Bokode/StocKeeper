@@ -10,7 +10,7 @@ import java.sql.Date;
 
 public class AddRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-    private JTextField labelField, descriptionField, caloricIntakeField, timeToMakeField;
+    private JTextField labelField, caloricIntakeField, timeToMakeField;
     private JLabel titleLabel, labelLabel, descriptionLabel, caloricInTakeLabel, timeToMakeLabel, recipeTypeLabel;
     private RecipeController recipeController;
     public AddRecipePanel(MainWindow mainWindow) {

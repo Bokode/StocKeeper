@@ -2,7 +2,6 @@ package ViewPackage;
 
 import controllerPackage.FoodInController;
 import modelPackage.FoodIn;
-import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;

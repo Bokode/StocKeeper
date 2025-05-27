@@ -1,6 +1,5 @@
 package ViewPackage;
 
-import controllerPackage.FoodController;
 import controllerPackage.FoodInController;
 import modelPackage.Food;
 import modelPackage.FoodIn;
@@ -16,16 +15,13 @@ import java.util.Properties;
 public class UpdateFoodInPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField quantityField, FoodField;
-    private JLabel titleLabel, expirationDateLabel, quantityLabel, nutriScoreLabel, purchaseLabel, foodLabel, storageTypeLabel;
+    private JLabel titleLabel, expirationDateLabel, quantityLabel, nutriScoreLabel, purchaseLabel, storageTypeLabel;
     private UtilDateModel expirationModel, purchaseModel;
 
     FoodInController foodInController = new FoodInController();
-    FoodController foodController = new FoodController();
 
     public UpdateFoodInPanel(MainWindow mainWindow, FoodIn foodIn) {
         setLayout(new BorderLayout());
-
-        String labelToFind = foodIn.getFood().getLabel();
 
         // Titre de Fenêtre
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

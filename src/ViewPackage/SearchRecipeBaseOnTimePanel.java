@@ -11,7 +11,6 @@ public class SearchRecipeBaseOnTimePanel extends JPanel {
     private JPanel TitlePanel, FormPanel, BouttonsPanel;
     private JLabel titleLabel, cookingTimeDebutLabel, cookingTimeEndLabel;
     private JTextField cookingTimeDebutField, cookingTimeEndField;
-    private RecipeController recipeController;
     public SearchRecipeBaseOnTimePanel(MainWindow mainWindow){
         setLayout(new BorderLayout());
 
