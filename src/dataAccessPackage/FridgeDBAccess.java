@@ -10,9 +10,9 @@ import java.sql.SQLException;
  
 public class FridgeDBAccess {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/food_recipes?serverTimezone=UTC"; // Remplacer test par le nom de la DB
-    private static final String USER = "root";
-    private static final String PASSWORD = ""; // Remplacer par ton vrai mot de passe
+    private static final String URL = "jdbc:mysql://localhost:3306/food_recipes?serverTimezone=UTC";
+    private static final String USER = "user"; // Remplacer par ton utilisateur
+    private static final String PASSWORD = "password"; // Remplacer par ton vrai mot de passe
     private static FridgeDBAccess instance;
 
 
