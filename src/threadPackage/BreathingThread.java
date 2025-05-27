@@ -36,8 +36,4 @@ public class BreathingThread extends Thread {
             }
         }
     }
-
-    public void stopBreathing() {
-        running = false;
-    }
 }

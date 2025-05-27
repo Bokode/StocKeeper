@@ -30,10 +30,4 @@ public class HomePanel extends JPanel {
         breathingThread.start();
     }
 
-    // Optionnel : à appeler si tu veux stopper l'effet (ex: lors d’un changement de panel)
-    public void stopBreathingEffect() {
-        if (breathingThread != null) {
-            breathingThread.stopBreathing();
-        }
-    }
 }
