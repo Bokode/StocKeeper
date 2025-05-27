@@ -42,7 +42,7 @@ public class DietRecipeDAO implements DietRecipeDAOInterface {
         List<String> diets = new ArrayList<>();
         final String sql = "SELECT " + COL_DIET + " FROM dietrecipe WHERE " + COL_RECIPE + " = ?";
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, recipeDAO.getRecipeIdByLabel(recipeLabel));
@@ -65,7 +65,7 @@ public class DietRecipeDAO implements DietRecipeDAOInterface {
     /* ────────────── Méthode utilitaire ───────────── */
 
     private void executeUpdate(String sql, String dietLabel, String recipeLabel) throws AppException {
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, dietDAO.getDietIdByLabel(dietLabel));

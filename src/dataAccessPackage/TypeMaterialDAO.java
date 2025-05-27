@@ -14,7 +14,7 @@ public class TypeMaterialDAO implements TypeMaterialDAOInterface {
     /* ---------- CRUD principal ---------- */
     public int getIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM typematerial WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);
             try (ResultSet rs = ps.executeQuery()) {
@@ -26,7 +26,7 @@ public class TypeMaterialDAO implements TypeMaterialDAOInterface {
 
     public String getLabelById(int id) throws AppException {
         final String sql = "SELECT " + COL_LABEL + " FROM typematerial WHERE " + COL_ID + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {

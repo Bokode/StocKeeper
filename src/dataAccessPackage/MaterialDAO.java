@@ -27,7 +27,7 @@ public class MaterialDAO implements MaterialDAOInterface {
 
     public void addMaterial(String label, String typeLabel) throws AppException {
         final String sql = "INSERT INTO material (" + COL_LABEL + ", " + COL_TYPE + ") VALUES (?, ?)";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, label);
@@ -39,7 +39,7 @@ public class MaterialDAO implements MaterialDAOInterface {
 
     public int getMaterialIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM material WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, label);
@@ -52,7 +52,7 @@ public class MaterialDAO implements MaterialDAOInterface {
 
     public String getMaterialLabelById(int id) throws AppException {
         final String sql = "SELECT " + COL_LABEL + " FROM material WHERE " + COL_ID + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, id);

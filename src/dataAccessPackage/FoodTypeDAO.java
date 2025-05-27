@@ -10,7 +10,7 @@ import modelPackage.FoodType;
 public class FoodTypeDAO implements FoodTypeDAOInterface {
     public FoodType getFoodTypeById(int id) throws AppException {
         final String sql = "SELECT label FROM foodtype WHERE id = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {

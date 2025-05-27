@@ -13,7 +13,7 @@ public class DietDAO implements DietDAOInterface {
         List<Diet> dietList = new ArrayList<>();
         final String sql = "SELECT label FROM Diet";
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -28,6 +28,52 @@ public class DietDAO implements DietDAOInterface {
         }
 
         return dietList;
+    }
+
+
+    public void addDiet(String label) throws AppException {
+        final String sql = "INSERT INTO " + TABLE + " (" + COL_LABEL + ") VALUES (?)";
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setString(1, label);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+    }
+
+    public int getDietIdByLabel(String label) throws AppException {
+        final String sql = "SELECT " + COL_ID + " FROM " + TABLE + " WHERE " + COL_LABEL + " = ?";
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setString(1, label);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(COL_ID);
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+        return -1;
+    }
+
+    public String getDietLabelById(int id) throws AppException {
+        final String sql = "SELECT " + COL_LABEL + " FROM " + TABLE + " WHERE " + COL_ID + " = ?";
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString(COL_LABEL);
+            }
+
+        } catch (SQLException e) {
+            exceptionHandler(e);
+        }
+        return null;
     }
 
     private void exceptionHandler(SQLException e) throws AppException {
