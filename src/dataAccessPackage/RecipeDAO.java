@@ -15,7 +15,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         List<Recipe> recipes = new ArrayList<>();
         String query = "SELECT * FROM recipe";
 
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -31,7 +31,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         String query = "SELECT * FROM recipe WHERE label = ?";
         Recipe recipe = null;
 
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -48,7 +48,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     public void updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
                              boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, label);
@@ -81,7 +81,7 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     public void deleteRecipe(String label) throws AppException {
         String query = "DELETE FROM recipe WHERE label = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
             if (stmt.executeUpdate() == 0) {
@@ -94,7 +94,7 @@ public class RecipeDAO implements RecipeDAOInterface {
     }
 
     public void addRecipe(Recipe recipe) throws AppException {
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection()) {
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection()) {
             conn.setAutoCommit(false);
             int recipeTypeId = getOrInsertRecipeType(conn, recipe.getType());
 
@@ -120,7 +120,7 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     public int getRecipeIdByLabel(String label) throws AppException {
         String query = "SELECT id FROM recipe WHERE label = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, label);
             ResultSet rs = stmt.executeQuery();
@@ -203,7 +203,7 @@ public class RecipeDAO implements RecipeDAOInterface {
         List<RecipeWithExpiredFood> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
         LocalDate threshold = today.plusDays(5);
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        StocKeeperDBAccess dbAccess = StocKeeperDBAccess.getInstance();
 
         String sql = """
         SELECT r.id AS recipe_id,
@@ -288,7 +288,7 @@ public class RecipeDAO implements RecipeDAOInterface {
 
     public List<RecipeWithExpiredFood> recipesWithSomeIngredientsInStock() throws AppException {
         List<RecipeWithExpiredFood> result = new ArrayList<>();
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        StocKeeperDBAccess dbAccess = StocKeeperDBAccess.getInstance();
 
         String sql = """
         SELECT r.id AS recipe_id,

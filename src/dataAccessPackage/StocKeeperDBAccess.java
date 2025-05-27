@@ -8,15 +8,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
  
-public class FridgeDBAccess {
+public class StocKeeperDBAccess
+{
 
     private static final String URL = "jdbc:mysql://localhost:3306/food_recipes?serverTimezone=UTC"; // Remplacer test par le nom de la DB
     private static final String USER = "root";
-    private static final String PASSWORD = "lolilol5"; // Remplacer par ton vrai mot de passe
-    private static FridgeDBAccess instance;
+    private static final String PASSWORD = "20JGRL9q9"; // Remplacer par ton vrai mot de passe
+    private static StocKeeperDBAccess instance;
 
 
-    private FridgeDBAccess() throws AppException
+    private StocKeeperDBAccess() throws AppException
     {
         try {
             this.getConnection();
@@ -29,10 +30,10 @@ public class FridgeDBAccess {
         }
     }
 
-    public static synchronized FridgeDBAccess getInstance()
+    public static synchronized StocKeeperDBAccess getInstance()
     {
         if (instance == null) {
-            instance = new FridgeDBAccess();
+            instance = new StocKeeperDBAccess();
         }
         return instance;
     }

@@ -47,7 +47,7 @@ public class FoodInDAO implements FoodInDAOInterface {
         """;
 
         List<FoodIn> list = new ArrayList<>();
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -68,7 +68,7 @@ public class FoodInDAO implements FoodInDAOInterface {
              VALUES (?,?,?,?,?,?,?)
         """;
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection()) {
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection()) {
 
             int typeId     = getOrInsertFoodType(c, fi.getFood().getFoodType());
             int foodId     = getOrInsertFood(c, fi.getFood(), typeId);
@@ -112,7 +112,7 @@ public class FoodInDAO implements FoodInDAOInterface {
              WHERE food_id = ?
         """;
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             int typeId   = getOrInsertFoodType(c, food.getFoodType());
@@ -146,7 +146,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     public Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException {
         String sql = "DELETE FROM foodin WHERE food_id = ?";
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             // Obtenir l'id de la food via son label
@@ -178,7 +178,7 @@ public class FoodInDAO implements FoodInDAOInterface {
          LIMIT 1
     """;
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, foodLabel);
@@ -324,7 +324,7 @@ public class FoodInDAO implements FoodInDAOInterface {
 
 
 
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        StocKeeperDBAccess dbAccess = StocKeeperDBAccess.getInstance();
 
         try (Connection conn = dbAccess.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -370,7 +370,7 @@ public class FoodInDAO implements FoodInDAOInterface {
     public List<ExpiredFood> expiredFood(StorageType storageType, FoodType foodType) throws AppException {
         List<ExpiredFood> result = new ArrayList<>();
 
-        FridgeDBAccess dbAccess = FridgeDBAccess.getInstance();
+        StocKeeperDBAccess dbAccess = StocKeeperDBAccess.getInstance();
 
         String query = """
         SELECT fi.expirationDate, fi.quantity, fi.isOpen, fi.nutriScore, fi.purchaseDate,

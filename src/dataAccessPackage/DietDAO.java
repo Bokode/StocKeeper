@@ -18,7 +18,7 @@ public class DietDAO implements DietDAOInterface {
         List<Diet> dietList = new ArrayList<>();
         final String sql = "SELECT label FROM Diet";
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -38,7 +38,7 @@ public class DietDAO implements DietDAOInterface {
 
     public void addDiet(String label) throws AppException {
         final String sql = "INSERT INTO " + TABLE + " (" + COL_LABEL + ") VALUES (?)";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, label);
@@ -51,7 +51,7 @@ public class DietDAO implements DietDAOInterface {
 
     public int getDietIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM " + TABLE + " WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, label);
@@ -67,7 +67,7 @@ public class DietDAO implements DietDAOInterface {
 
     public String getDietLabelById(int id) throws AppException {
         final String sql = "SELECT " + COL_LABEL + " FROM " + TABLE + " WHERE " + COL_ID + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, id);

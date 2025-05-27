@@ -25,7 +25,7 @@ public class FoodDAO implements FoodDAOInterface {
         List<Food> foodList = new ArrayList<>();
         final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL;
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -46,7 +46,7 @@ public class FoodDAO implements FoodDAOInterface {
 
     public int getFoodIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);
             try (ResultSet rs = ps.executeQuery()) {
@@ -58,7 +58,7 @@ public class FoodDAO implements FoodDAOInterface {
 
     public String getFoodLabelById(int id) throws AppException {
         final String sql = "SELECT " + COL_LABEL + " FROM " + TBL + " WHERE " + COL_ID + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -70,7 +70,7 @@ public class FoodDAO implements FoodDAOInterface {
 
     public Food getFoodByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_LABEL + ", " + COL_TYPEID + " FROM " + TBL + " WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, label);
             try (ResultSet rs = ps.executeQuery()) {

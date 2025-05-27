@@ -48,7 +48,7 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
         List<Material> list = new ArrayList<>();
         final String sql = "SELECT " + COL_MATERIAL + " FROM recipematerial WHERE " + COL_RECIPE + " = ?";
 
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, recipeDAO.getRecipeIdByLabel(recipeLabel));
@@ -71,7 +71,7 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
     /* ─────────────────── Helpers internes ───────────────────── */
 
     private void executeUpdate(String sql, String recipeLabel, String materialLabel) throws AppException {
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, recipeDAO.getRecipeIdByLabel(recipeLabel));
@@ -86,7 +86,7 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
 
     private int getTypeIdByMaterialId(int matId) throws AppException {
         final String sql = "SELECT type_id FROM material WHERE id = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
+        try (Connection c = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, matId);
             try (ResultSet rs = ps.executeQuery()) {

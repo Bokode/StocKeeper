@@ -13,7 +13,7 @@ public class IngredientAmountDAO implements IngredientAmountDAOInterface
     public void addIngredientAmount(String recipe, String food, Integer quantity) throws AppException
     {
         String query = "INSERT INTO ingredientamount (recipe, food, quantity) VALUES (?, ?, ?)";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection())
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection())
         {
             RecipeDAO recipeDAO = new RecipeDAO();
             FoodDAO foodDAO = new FoodDAO();
@@ -33,7 +33,7 @@ public class IngredientAmountDAO implements IngredientAmountDAOInterface
     public void deleteIngredientAmount(String recipe, String food) throws AppException
     {
         String query = "DELETE FROM ingredientamount WHERE recipe = ? AND food = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection())
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection())
         {
             RecipeDAO recipeDAO = new RecipeDAO();
             FoodDAO foodDAO = new FoodDAO();
@@ -53,7 +53,7 @@ public class IngredientAmountDAO implements IngredientAmountDAOInterface
     {
         ArrayList<IngredientAmount> ingredientAmounts = new ArrayList<>();
         String query = "SELECT * FROM ingredientamount WHERE recipe = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection();
+        try (Connection conn = StocKeeperDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query))
         {
             int recipeId = new RecipeDAO().getRecipeIdByLabel(recipe);
