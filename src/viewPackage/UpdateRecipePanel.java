@@ -106,6 +106,12 @@ public class UpdateRecipePanel extends JPanel {
         FormPanel.add(lastTimeDoneLabel, gbc);
         gbc.gridx = 1;
         lastTimeDoneModel = new UtilDateModel();
+        if (recipe.getLastDayDone() != null) {
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.setTime(recipe.getLastDayDone());
+            lastTimeDoneModel.setDate(cal.get(java.util.Calendar.YEAR), cal.get(java.util.Calendar.MONTH), cal.get(java.util.Calendar.DAY_OF_MONTH));
+            lastTimeDoneModel.setSelected(true);
+        }
         JDatePanelImpl lastTimeDonePanel = new JDatePanelImpl(lastTimeDoneModel, p);
         JDatePickerImpl lastTimeDoneDatePicker = new JDatePickerImpl(lastTimeDonePanel, new DateLabelFormatter());
         FormPanel.add(lastTimeDoneDatePicker, gbc);
