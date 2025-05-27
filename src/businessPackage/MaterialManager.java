@@ -20,19 +20,7 @@ public class MaterialManager {
         dao.addMaterial(label, typeLabel);
     }
 
-    public void deleteMaterial(String label) throws AppException {
-        dao.deleteMaterial(label);
-    }
-
     public int getMaterialIdByLabel(String label) throws AppException {
         return dao.getMaterialIdByLabel(label);
-    }
-
-    public String getMaterialLabelById(int id) throws AppException {
-        return dao.getMaterialLabelById(id);
-    }
-
-    public void addMaterial(Material mat) throws AppException {
-        dao.addMaterial(mat);
     }
 }
