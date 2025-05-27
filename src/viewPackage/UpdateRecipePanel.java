@@ -140,18 +140,6 @@ public class UpdateRecipePanel extends JPanel {
         typeRecetteComboBox.setSelectedItem(recipe.getType().getLabel());
         FormPanel.add(typeRecetteComboBox, gbc);
 
-        row++;
-        gbc.gridx = 0; gbc.gridy = row;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        recipeTypeLabel = new JLabel("Type de régime* : ");
-        recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(recipeTypeLabel, gbc);
-        gbc.gridx = 1;
-        String[] dietTypes = {"omnivore", "végétarien", "végan", "halal"};
-        JComboBox<String> dietTypesComboBox = new JComboBox<>(dietTypes);
-        dietTypesComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(dietTypesComboBox, gbc);
-
         add(FormPanel, BorderLayout.CENTER);
 
         // Panel des bouttons
@@ -164,10 +152,13 @@ public class UpdateRecipePanel extends JPanel {
         manageIngredientButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         JButton manageMaterialButton = new JButton("Gérer matériel");
         manageMaterialButton.setFont(new Font("Poppins", Font.PLAIN, 15));
+        JButton manageDietRecipeButton = new JButton("Gérer régimes");
+        manageDietRecipeButton.setFont(new Font("Poppins", Font.PLAIN, 15));
 
         ButtonsPanel.add(updateButton);
         ButtonsPanel.add(manageIngredientButton);
         ButtonsPanel.add(manageMaterialButton);
+        ButtonsPanel.add(manageDietRecipeButton);
         ButtonsPanel.add(cancelButton);
         add(ButtonsPanel, BorderLayout.SOUTH);
 
@@ -233,7 +224,6 @@ public class UpdateRecipePanel extends JPanel {
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
-                String dietString = dietTypesComboBox.getSelectedItem().toString();
                 RecipeType recipeType = new RecipeType(typeString);
 
                 Recipe newRecipe = new Recipe(label, description, caloricIntake, lastTimeDone, timeToMake, isCold, recipeType);
@@ -283,6 +273,25 @@ public class UpdateRecipePanel extends JPanel {
                 mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "updateRecipe"));
             } else if (choice == 1) {
                 mainWindow.showDeleteMaterialPanel(new DeleteMaterialPanel(mainWindow, recipe));
+            }
+        });
+
+        manageDietRecipeButton.addActionListener(eDiet -> {
+            String[] addOrDel = {"Ajouter", "Supprimer"};
+            int choice = JOptionPane.showOptionDialog(
+                    this,
+                    "Souhaittez vous ajouter ou supprimer du matériel ?",
+                    "Choix de l'action",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Pas d'icône personnalisée
+                    addOrDel, // Texte des boutons
+                    addOrDel[0] // Option par défaut sélectionnée
+            );
+            if (choice == 0) {
+                mainWindow.showAddDietRecipePanel(new AddDietRecipePanel(mainWindow, recipe, "updateRecipe"));
+            } else if (choice == 1) {
+                mainWindow.showDeleteDietRecipePanel(new DeleteDietRecipePanel(mainWindow, recipe));
             }
         });
     }
