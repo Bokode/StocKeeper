@@ -1,4 +1,4 @@
-package ViewPackage;
+package viewPackage;
 
 import controllerPackage.RecipeController;
 import modelPackage.Recipe;

@@ -1,26 +1,24 @@
-package ViewPackage;
+package viewPackage;
 
 import controllerPackage.FoodInController;
-import modelPackage.ExpiredFood;
-import modelPackage.FoodType;
-import modelPackage.StorageType;
+import modelPackage.QuantityLeft;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.util.Objects;
 
-public class SearchExpiredFoodInInStoragePanel extends JPanel {
+public class QuantityTypeOfFoodPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
-    private JLabel titleLabel, storageTypeLabel, foodTypeLabel;
+    private JLabel titleLabel, foodTypeLabel;
     private FoodInController foodInController;
 
-    public SearchExpiredFoodInInStoragePanel(MainWindow mainWindow) {
-        setLayout(new BorderLayout());
+    public QuantityTypeOfFoodPanel(MainWindow mainWindow) {
+        setLayout(new BorderLayout(10, 10));
 
         foodInController = new FoodInController();
 
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Rechercher les aliments périmés: ");
+        titleLabel = new JLabel("Rechercher quantité restante d'un certain type: ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         TitlePanel.add(titleLabel);
         add(TitlePanel, BorderLayout.NORTH);
@@ -31,20 +29,6 @@ public class SearchExpiredFoodInInStoragePanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int row = 0;
-
-        // StorageType
-        gbc.gridx = 0; gbc.gridy = row;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        storageTypeLabel = new JLabel("Type de stockage : ");
-        storageTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(storageTypeLabel, gbc);
-        gbc.gridx = 1;
-        String[] typeStorage = {"Frigo", "Congélateur", "Armoire"};
-        JComboBox<String> typeStorageComboBox = new JComboBox<>(typeStorage);
-        typeStorageComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(typeStorageComboBox, gbc);
-
-        row++;
 
         // FoodType
         gbc.gridx = 0; gbc.gridy = row;
@@ -76,10 +60,24 @@ public class SearchExpiredFoodInInStoragePanel extends JPanel {
 
         searchButton.addActionListener(e -> {
             try {
-                StorageType storageType = new StorageType(typeStorageComboBox.getSelectedItem().toString());
-                FoodType foodType = new FoodType(typeFoodComboBox.getSelectedItem().toString());
-                List<ExpiredFood> expiredFoods = foodInController.foodExpired(storageType, foodType);
-                mainWindow.showExpiredFoodInInStorage(new ExpiredFoodInInStoragePanel(mainWindow, expiredFoods));
+                String type = typeFoodComboBox.getSelectedItem().toString();
+                QuantityLeft quantityLeft =  foodInController.showQuantityLeft(type);
+
+                int quantity = quantityLeft.getQuantity();
+                int numberTypes = quantityLeft.getNumberDifferentType();
+                String unit;
+
+                if (Objects.equals(type, "Solide")) {
+                    unit = (quantity == 1) ? "gramme" : "grammes";
+                } else if (Objects.equals(type, "Liquide")) {
+                    unit = (quantity == 1) ? "centilitre" : "centilitres";
+                } else {
+                    unit = (quantity == 1 || quantity == 0) ? "quantité" : "quantités";
+                }
+
+                String aliments = (numberTypes == 1 || numberTypes == 0) ? "aliment" : "aliments";
+
+                JOptionPane.showMessageDialog(this, "Quantité restante : " + quantity + " " + unit + " parmi " + numberTypes + " " + aliments,"Quantité restante", JOptionPane.INFORMATION_MESSAGE);
             }
             catch(Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);

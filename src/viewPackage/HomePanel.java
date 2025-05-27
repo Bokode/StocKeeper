@@ -1,6 +1,6 @@
-package ViewPackage;
+package viewPackage;
 
-import ThreadPackage.BreathingThread;
+import threadPackage.BreathingThread;
 
 import javax.swing.*;
 import java.awt.*;

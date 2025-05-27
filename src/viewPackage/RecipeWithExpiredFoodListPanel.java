@@ -1,4 +1,4 @@
-package ViewPackage;
+package viewPackage;
 
 import controllerPackage.RecipeController;
 import modelPackage.Food;
@@ -9,20 +9,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class PossibleRecipePanel extends JPanel {
+public class RecipeWithExpiredFoodListPanel extends JPanel {
 
     private JList<RecipeWithExpiredFood> recipeList;
     private DefaultListModel<RecipeWithExpiredFood> listModel;
     private JButton backButton, showRecipeButton;
     private JLabel titleLabel;
 
-    public PossibleRecipePanel(MainWindow mainWindow) {
+    public RecipeWithExpiredFoodListPanel(MainWindow mainWindow) {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         // Titre
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Recettes possibles avec mes ingrédients");
+        titleLabel = new JLabel("Recettes avec ingrédients bientôt périmés");
         titleLabel.setFont(new Font("Poppins", Font.BOLD, 24));
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);
@@ -32,10 +32,10 @@ public class PossibleRecipePanel extends JPanel {
         recipeList = new JList<>(listModel);
         recipeList.setFont(new Font("Poppins", Font.PLAIN, 14));
         recipeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        recipeList.setCellRenderer(new PossibleRecipeRenderer());
+        recipeList.setCellRenderer(new RecipeWithExpiredFoodRenderer());
 
         JScrollPane scrollPane = new JScrollPane(recipeList);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Recettes disponibles"));
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Recettes concernées"));
         add(scrollPane, BorderLayout.CENTER);
 
         // Boutons
@@ -47,33 +47,31 @@ public class PossibleRecipePanel extends JPanel {
 
         buttonPanel.add(showRecipeButton);
         buttonPanel.add(backButton);
-
+        
         add(buttonPanel, BorderLayout.SOUTH);
-
-        // Action Afficher la recette
         showRecipeButton.addActionListener(e -> {
             if (recipeList.getSelectedIndex() == -1) {
                 JOptionPane.showMessageDialog(this, "Veuillez sélectionner une recette.", "Erreur", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            RecipeWithExpiredFood selected = recipeList.getSelectedValue();
-            Recipe selectedRecipe = selected.getRecipe();
+            RecipeWithExpiredFood selectedRecipeExpiredFood = recipeList.getSelectedValue();
+            Recipe selectedRecipe = selectedRecipeExpiredFood.getRecipe();
             if (selectedRecipe != null) {
                 mainWindow.getMainContainer().removeAll();
-                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "possibleRecipe"), BorderLayout.CENTER);
+                mainWindow.getMainContainer().add(new RecipeDetailsPanel(mainWindow, selectedRecipe, "recipeWithExpiredFoodList"), BorderLayout.CENTER);
                 mainWindow.getMainContainer().revalidate();
                 mainWindow.getMainContainer().repaint();
             } else {
                 JOptionPane.showMessageDialog(this, "Veuillez sélectionner une recette.", "Erreur", JOptionPane.WARNING_MESSAGE);
             }
         });
-
         backButton.addActionListener(e -> mainWindow.showHomePanel());
+
     }
 
-    public void loadPossibleRecipes() {
+    public void loadRecipes() {
         try {
-            List<RecipeWithExpiredFood> recipes = new RecipeController().recipeWithSomeIngredientsInStock();
+            List<RecipeWithExpiredFood> recipes = new RecipeController().recipeWithExpiredFood();
             listModel.clear();
             for (RecipeWithExpiredFood recipe : recipes) {
                 listModel.addElement(recipe);
@@ -84,8 +82,9 @@ public class PossibleRecipePanel extends JPanel {
         }
     }
 
+
     // Renderer interne
-    private static class PossibleRecipeRenderer extends DefaultListCellRenderer {
+    private static class RecipeWithExpiredFoodRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -101,7 +100,7 @@ public class PossibleRecipePanel extends JPanel {
                     if (i < foods.size() - 1) foodList.append(", ");
                 }
 
-                setText("<html><b>" + label + "</b><br><i>Ingrédients que vous possédez :</i> " + foodList + "</html>");
+                setText("<html><b>" + label + "</b><br><i>Ingrédients bientôt périmé :</i> " + foodList + "</html>");
             }
             return this;
         }

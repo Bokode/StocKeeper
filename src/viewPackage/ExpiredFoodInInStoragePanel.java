@@ -1,4 +1,4 @@
-package ViewPackage;
+package viewPackage;
 
 import modelPackage.Allergen;
 import modelPackage.ExpiredFood;

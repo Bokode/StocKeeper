@@ -1,4 +1,4 @@
-package ViewPackage;
+package viewPackage;
 
 public class Main {
     public static void main() {

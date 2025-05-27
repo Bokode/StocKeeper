@@ -1,21 +1,21 @@
-package ViewPackage;
+package viewPackage;
 
-import controllerPackage.FoodInController;
-import modelPackage.FoodIn;
+import controllerPackage.RecipeController;
+import modelPackage.Recipe;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SearchFoodInPanel extends JPanel {
+public class SearchRecipePanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField;
     private JLabel titleLabel, labelLabel;
-    private FoodInController foodInController;
-    public SearchFoodInPanel(MainWindow mainWindow) {
+    private RecipeController recipeController;
+    public SearchRecipePanel(MainWindow mainWindow){
         setLayout(new BorderLayout());
 
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Modifier un aliment : ");
+        titleLabel = new JLabel("Modifier une recette : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         TitlePanel.add(titleLabel);
         add(TitlePanel, BorderLayout.NORTH);
@@ -24,7 +24,7 @@ public class SearchFoodInPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        labelLabel = new JLabel("Nom de l'aliment à modifier : ");
+        labelLabel = new JLabel("Nom de la recette à modifier : ");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -68,10 +68,10 @@ public class SearchFoodInPanel extends JPanel {
                     JOptionPane.showMessageDialog(this, "Veuillez rentrer quelque chose.", "Erreur", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                foodInController = new FoodInController();
-                FoodIn foodIn = foodInController.getFoodIn(labelToFind);
+                recipeController = new RecipeController();
+                Recipe recipe = recipeController.getRecipe(labelToFind);
                 labelField.setText("");
-                mainWindow.showUpdateFoodInPanel(new UpdateFoodInPanel(mainWindow, foodIn));
+                mainWindow.showUpdateRecipePanel(new UpdateRecipePanel(mainWindow, recipe, "searchRecipe"));
             }
             catch (Exception exception){
                 JOptionPane.showMessageDialog(this, "Une erreur est survenue : " + exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -79,3 +79,5 @@ public class SearchFoodInPanel extends JPanel {
         });
     }
 }
+
+

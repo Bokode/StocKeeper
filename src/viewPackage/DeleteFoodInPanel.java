@@ -1,20 +1,21 @@
-package ViewPackage;
+package viewPackage;
 
-import controllerPackage.RecipeController;
+import controllerPackage.FoodInController;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeleteRecipePanel extends JPanel {
+public class DeleteFoodInPanel extends JPanel {
     private JPanel FormPanel, ButtonsPanel, TitlePanel;
     private JTextField labelField;
     private JLabel titleLabel, labelLabel;
-    private RecipeController recipeController;
-    public DeleteRecipePanel(MainWindow mainWindow){
+    private FoodInController foodInController;
+
+    public DeleteFoodInPanel(MainWindow mainWindow) {
         setLayout(new BorderLayout());
 
         TitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        titleLabel = new JLabel("Supprimer une recette : ");
+        titleLabel = new JLabel("Supprimer un aliment : ");
         titleLabel.setFont(new Font("Poppins", Font.PLAIN, 30));
         TitlePanel.add(titleLabel);
         add(TitlePanel, BorderLayout.NORTH);
@@ -23,7 +24,7 @@ public class DeleteRecipePanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        labelLabel = new JLabel("Nom de la recette à supprimer : ");
+        labelLabel = new JLabel("Nom de l'aliment à supprimer : ");
         labelLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -67,9 +68,10 @@ public class DeleteRecipePanel extends JPanel {
                     JOptionPane.showMessageDialog(this, "Veuillez rentrer quelque chose.", "Erreur", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                recipeController = new RecipeController();
-                recipeController.deleteRecipe(labelToFind);
-                JOptionPane.showMessageDialog(this, "Recette supprimée avec succès !", "Recette supprimée", JOptionPane.INFORMATION_MESSAGE);
+                foodInController = new FoodInController();
+                foodInController.deleteFoodInByFoodLabel(labelToFind);
+                System.out.println("Aliment supprimé : " + labelToFind);
+                JOptionPane.showMessageDialog(this, "Aliment supprimée avec succès !", "Aliment supprimée", JOptionPane.INFORMATION_MESSAGE);
                 labelField.setText("");
             }
             catch(Exception exception){

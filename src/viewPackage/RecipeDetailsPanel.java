@@ -1,4 +1,4 @@
-package ViewPackage;
+package viewPackage;
 
 import controllerPackage.IngredientAmountController;
 import controllerPackage.RecipeMaterialController;
