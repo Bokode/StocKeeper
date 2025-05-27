@@ -140,6 +140,18 @@ public class UpdateRecipePanel extends JPanel {
         typeRecetteComboBox.setSelectedItem(recipe.getType().getLabel());
         FormPanel.add(typeRecetteComboBox, gbc);
 
+        row++;
+        gbc.gridx = 0; gbc.gridy = row;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        recipeTypeLabel = new JLabel("Type de régime* : ");
+        recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(recipeTypeLabel, gbc);
+        gbc.gridx = 1;
+        String[] dietTypes = {"omnivore", "végétarien", "végan", "halal"};
+        JComboBox<String> dietTypesComboBox = new JComboBox<>(dietTypes);
+        dietTypesComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
+        FormPanel.add(dietTypesComboBox, gbc);
+
         add(FormPanel, BorderLayout.CENTER);
 
         // Panel des bouttons
@@ -221,6 +233,7 @@ public class UpdateRecipePanel extends JPanel {
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
+                String dietString = dietTypesComboBox.getSelectedItem().toString();
                 RecipeType recipeType = new RecipeType(typeString);
 
                 Recipe newRecipe = new Recipe(label, description, caloricIntake, lastTimeDone, timeToMake, isCold, recipeType);
