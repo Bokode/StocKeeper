@@ -3,6 +3,7 @@ package interfacePackage;
 import exceptionPackage.AppException;
 import modelPackage.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface FoodInDAOInterface
@@ -11,7 +12,7 @@ public interface FoodInDAOInterface
 
     List<FoodIn> getAllFoodIns() throws AppException;
 
-    Integer updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, Character nutriScore, java.util.Date purchaseDate, java.util.Date expirationDate) throws AppException;
+    void updateFoodIn(Food food, StorageType storageType, Integer quantity, boolean isOpen, Character nutriScore, Date purchaseDate, Date expirationDate) throws AppException;
 
     Integer deleteFoodInByFoodLabel(String foodLabel) throws AppException;
 

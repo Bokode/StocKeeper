@@ -30,10 +30,6 @@ public class FoodInController {
         return foodInManager.getFoodIn(label);
     }
 
-    public void deleteFoodIn(String label) throws AppException {
-        foodInManager.deleteFoodIn(label);
-    }
-
     public void updateFoodIn(FoodIn foodIn) throws AppException {
         foodInManager.updateFoodIn(foodIn);
     }

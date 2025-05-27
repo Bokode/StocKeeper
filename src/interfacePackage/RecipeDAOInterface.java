@@ -16,9 +16,9 @@ public interface RecipeDAOInterface
 
     Recipe getRecipe(String label) throws AppException;
 
-    Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException;
+    void updateRecipe(String labelToFind, String label, String description, Integer caloricIntake, boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException;
 
-    Integer deleteRecipe(String label) throws AppException;
+    void deleteRecipe(String label) throws AppException;
 
     List<RecipeWithExpiredFood> recipeWithExpireFood() throws AppException;
 

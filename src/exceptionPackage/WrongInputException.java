@@ -6,9 +6,4 @@ public class WrongInputException extends AppException
     {
         super(message);
     }
-
-    public WrongInputException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
 }
