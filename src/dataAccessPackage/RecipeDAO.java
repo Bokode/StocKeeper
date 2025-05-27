@@ -240,7 +240,6 @@ public class RecipeDAO implements RecipeDAOInterface {
                         ? rs.getDate("expirationDate").toLocalDate()
                         : null;
 
-                // Construction ou récupération de l'objet
                 RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
                     try {
                         return new RecipeWithExpiredFood(new Recipe(
@@ -258,13 +257,9 @@ public class RecipeDAO implements RecipeDAOInterface {
                     }
                 });
 
-                // Suivi des aliments nécessaires
                 recipeToRequiredFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
 
-                // Vérifie si l'aliment est en stock et périme bientôt
-                if (expiration != null &&
-                        ( !expiration.isBefore(today) && !expiration.isAfter(threshold))) {
-
+                if (expiration != null && (!expiration.isBefore(today) && !expiration.isAfter(threshold))) {
                     recipeToAvailableFoods.computeIfAbsent(recipeId, k -> new HashSet<>()).add(foodId);
                     recipeHasExpiringSoon.put(recipeId, true);
 
@@ -274,7 +269,6 @@ public class RecipeDAO implements RecipeDAOInterface {
                 }
             }
 
-            // Filtrage final
             for (var entry : map.entrySet()) {
                 int recipeId = entry.getKey();
                 boolean hasExpiring = recipeHasExpiringSoon.getOrDefault(recipeId, false);
@@ -329,7 +323,6 @@ public class RecipeDAO implements RecipeDAOInterface {
                 if (seenFoodPerRecipe.contains(compositeKey)) continue;
                 seenFoodPerRecipe.add(compositeKey);
 
-                // Crée ou récupère l'objet recette enrichie
                 RecipeWithExpiredFood rwef = map.computeIfAbsent(recipeId, id -> {
                     try {
                         return new RecipeWithExpiredFood(new Recipe(
@@ -347,12 +340,10 @@ public class RecipeDAO implements RecipeDAOInterface {
                     }
                 });
 
-                // Ajouter l'aliment en stock à la recette
                 FoodType ft = new FoodType(rs.getString("food_type_label"));
                 Food food = new Food(rs.getString("food_label"), ft);
                 rwef.addFood(food);
             }
-
             result.addAll(map.values());
 
         } catch (SQLException e) {
