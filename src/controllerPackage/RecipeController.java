@@ -41,7 +41,6 @@ public class RecipeController {
         return recipeManager.showRecipesBasedOnTime(cookingTimeDebut, cookingTimeEnd);
     }
 
-
     public List<RecipeWithExpiredFood> recipeWithExpiredFood() throws AppException {
         return recipeManager.recipeWithExpiredFood();
     }
@@ -49,6 +48,4 @@ public class RecipeController {
     public List<RecipeWithExpiredFood> recipeWithSomeIngredientsInStock() throws AppException {
         return recipeManager.recipeWithSomeIngredientsInStock();
     }
-
-
 }

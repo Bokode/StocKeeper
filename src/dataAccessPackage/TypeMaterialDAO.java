@@ -12,27 +12,6 @@ public class TypeMaterialDAO implements TypeMaterialDAOInterface {
     private static final String COL_LABEL = "label";
 
     /* ---------- CRUD principal ---------- */
-
-    public void addTypeMaterial(String label) throws AppException
-    {
-        final String sql = "INSERT INTO typematerial (" + COL_LABEL + ") VALUES (?)";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, label);
-            ps.executeUpdate();
-        } catch (SQLException e) { exceptionHandler(e); }
-    }
-
-    public void deleteTypeMaterial(String label) throws AppException
-    {
-        final String sql = "DELETE FROM typematerial WHERE " + COL_LABEL + " = ?";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, label);
-            ps.executeUpdate();
-        } catch (SQLException e) { exceptionHandler(e); }
-    }
-
     public int getIdByLabel(String label) throws AppException {
         final String sql = "SELECT " + COL_ID + " FROM typematerial WHERE " + COL_LABEL + " = ?";
         try (Connection c = FridgeDBAccess.getInstance().getConnection();

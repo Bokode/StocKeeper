@@ -87,18 +87,6 @@ public class FoodDAO implements FoodDAOInterface {
         return null;
     }
 
-
-    /* ---------- CREATE ---------- */
-    public void addFood(String label, FoodType type) throws AppException {
-        final String sql = "INSERT INTO " + TBL + " (" + COL_LABEL + ", " + COL_TYPEID + ") VALUES (?, ?)";
-        try (Connection c = FridgeDBAccess.getInstance().getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, label);
-            ps.setInt(2, typeDAO.getIdByLabel(type.getLabel()));
-            ps.executeUpdate();
-        } catch (SQLException e) { exceptionHandler(e); }
-    }
-
     /* ---------- ERRORS ---------- */
     private void exceptionHandler(SQLException e) throws AppException {
         switch (e.getSQLState()) {

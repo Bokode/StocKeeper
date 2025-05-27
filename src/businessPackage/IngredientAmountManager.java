@@ -26,10 +26,6 @@ public class IngredientAmountManager {
         dao.deleteIngredientAmount(recipe, food);
     }
 
-    public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException {
-        dao.updateIngredientAmount(recipe, food, quantity);
-    }
-
     public ArrayList<IngredientAmount> getIngredientAmountsByRecipe(String recipe) throws AppException {
         return dao.getIngredientAmountsByRecipe(recipe);
     }

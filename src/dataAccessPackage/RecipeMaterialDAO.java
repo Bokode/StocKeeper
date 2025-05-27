@@ -59,7 +59,7 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
                     String matLbl  = materialDAO.getMaterialLabelById(matId);
                     int typeId     = getTypeIdByMaterialId(matId);
                     String typeLbl = typeDAO.getLabelById(typeId);
-                    list.add(new Material(matLbl, typeLbl));
+                    list.add(new Material(matLbl));
                 }
             }
         } catch (SQLException e) {
@@ -108,16 +108,4 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
             default       -> throw new RecipeOperationException("Erreur SQL " + e.getSQLState(), e);
         }
     }
-
-    /* ────────────────────── Getters ────────────────────────── */
-    public RecipeDAO getRecipeDAO() {
-        return recipeDAO;
-    }
-    public MaterialDAO getMaterialDAO() {
-        return materialDAO;
-    }
-    public TypeMaterialDAO getTypeDAO() {
-        return typeDAO;
-    }
-
 }

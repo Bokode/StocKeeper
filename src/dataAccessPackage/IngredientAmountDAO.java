@@ -49,26 +49,6 @@ public class IngredientAmountDAO implements IngredientAmountDAOInterface
         }
     }
 
-    public void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException
-    {
-        String query = "UPDATE ingredientamount SET quantity = ? WHERE recipe = ? AND food = ?";
-        try (Connection conn = FridgeDBAccess.getInstance().getConnection())
-        {
-            RecipeDAO recipeDAO = new RecipeDAO();
-            FoodDAO foodDAO = new FoodDAO();
-            int recipeId = recipeDAO.getRecipeIdByLabel(recipe);
-            int foodId = foodDAO.getFoodIdByLabel(food);
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, quantity);
-            preparedStatement.setInt(2, recipeId);
-            preparedStatement.setInt(3, foodId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e)
-        {
-            exceptionHandler(e);
-        }
-    }
-
     public ArrayList<IngredientAmount> getIngredientAmountsByRecipe(String recipe) throws AppException
     {
         ArrayList<IngredientAmount> ingredientAmounts = new ArrayList<>();

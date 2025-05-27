@@ -10,7 +10,5 @@ public interface IngredientAmountDAOInterface {
 
     void deleteIngredientAmount(String recipe, String food) throws AppException;
 
-    void updateIngredientAmount(String recipe, String food, Integer quantity) throws AppException;
-
     ArrayList<IngredientAmount> getIngredientAmountsByRecipe(String recipe) throws AppException;
 }
