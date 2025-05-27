@@ -53,7 +53,7 @@ public class SearchExpiredFoodInInStoragePanel extends JPanel {
         foodTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(foodTypeLabel, gbc);
         gbc.gridx = 1;
-        String[] typeFood = {"Solide", "Liquide"};
+        String[] typeFood = {"Solide", "Liquide", "Quantité"};
         JComboBox<String> typeFoodComboBox = new JComboBox<>(typeFood);
         typeFoodComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(typeFoodComboBox, gbc);
