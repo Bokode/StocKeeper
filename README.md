@@ -17,7 +17,7 @@ StocKeeper is a Java-based application designed to help users manage their daily
 ## Technologies Used
 - **Programming Language:** Java
 - **Database:** MySQL (or another database for storing food and recipe data)
-- **GUI Framework:** Swing (if applicable)
+- **GUI Framework:** Swing
 
 ## Usage
 - Start the application
