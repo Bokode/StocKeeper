@@ -45,8 +45,8 @@ public class RecipeDAO implements RecipeDAOInterface {
         return recipe;
     }
 
-    public Integer updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
-                                boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
+    public void updateRecipe(String labelToFind, String label, String description, Integer caloricIntake,
+                             boolean isCold, Date lastDateDone, Integer timeToMake, RecipeType type) throws AppException {
         String query = "UPDATE recipe SET label = ?, description = ?, caloricIntake = ?, isCold = ?, lastDateDone = ?, timeToMake = ?, type = ? WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -73,14 +73,13 @@ public class RecipeDAO implements RecipeDAOInterface {
             stmt.setInt(7, getOrInsertRecipeType(conn, type));
             stmt.setString(8, labelToFind);
 
-            return stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             exceptionHandler(e);
-            return 0;
         }
     }
 
-    public Integer deleteRecipe(String label) throws AppException {
+    public void deleteRecipe(String label) throws AppException {
         String query = "DELETE FROM recipe WHERE label = ?";
         try (Connection conn = FridgeDBAccess.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -92,7 +91,6 @@ public class RecipeDAO implements RecipeDAOInterface {
             exceptionHandler(e);
 
         }
-        return 0;
     }
 
     public void addRecipe(Recipe recipe) throws AppException {

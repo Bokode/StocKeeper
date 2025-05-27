@@ -6,6 +6,7 @@ import modelPackage.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class FoodInDAO implements FoodInDAOInterface {
 
@@ -96,13 +97,13 @@ public class FoodInDAO implements FoodInDAOInterface {
     /* ───────────────────────────
      *  CRUD : update
      * ─────────────────────────── */
-    public Integer updateFoodIn(Food food,
-                                StorageType storage,
-                                Integer quantity,
-                                boolean isOpen,
-                                Character nutri,
-                                java.util.Date purchase,
-                                java.util.Date expiration) throws AppException {
+    public void updateFoodIn(Food food,
+                             StorageType storage,
+                             Integer quantity,
+                             boolean isOpen,
+                             Character nutri,
+                             Date purchase,
+                             Date expiration) throws AppException {
 
         String sql = """
             UPDATE foodin
@@ -133,9 +134,10 @@ public class FoodInDAO implements FoodInDAOInterface {
             ps.setInt    (6, storageId);
             ps.setInt    (7, foodId);
 
-            return ps.executeUpdate();
+            ps.executeUpdate();
 
-        } catch (SQLException e) { exceptionHandler(e); return 0; }
+        } catch (SQLException e) { exceptionHandler(e);
+        }
     }
 
     /* ───────────────────────────

@@ -59,7 +59,7 @@ public class RecipeMaterialDAO implements RecipeMaterialDAOInterface {
                     String matLbl  = materialDAO.getMaterialLabelById(matId);
                     int typeId     = getTypeIdByMaterialId(matId);
                     String typeLbl = typeDAO.getLabelById(typeId);
-                    list.add(new Material(matLbl, typeLbl));
+                    list.add(new Material(matLbl));
                 }
             }
         } catch (SQLException e) {
