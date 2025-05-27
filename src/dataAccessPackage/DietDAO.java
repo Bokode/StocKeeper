@@ -1,9 +1,11 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.DietDAOInterface;
+
 import java.sql.*;
 
-public class DietDAO {
+public class DietDAO implements DietDAOInterface {
 
     private static final String COL_ID    = "id";
     private static final String COL_LABEL = "label";

@@ -1,11 +1,13 @@
 package dataAccessPackage;
 
 import exceptionPackage.*;
+import interfacePackage.DietRecipeDAOInterface;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DietRecipeDAO {
+public class DietRecipeDAO implements DietRecipeDAOInterface {
 
     /* ─────────── Constantes de colonnes ─────────── */
     private static final String COL_DIET   = "diet";
