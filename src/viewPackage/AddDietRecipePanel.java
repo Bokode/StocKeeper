@@ -85,7 +85,7 @@ public class AddDietRecipePanel extends JPanel {
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         addButton = new JButton("Ajouter");
         addButton.setFont(new Font("Poppins", Font.PLAIN, 15));
-        backButton = new JButton("Retour");
+        backButton = new JButton("Fin d'ajout");
         backButton.setFont(new Font("Poppins", Font.PLAIN, 15));
         buttonPanel.add(addButton);
         buttonPanel.add(backButton);
@@ -94,6 +94,10 @@ public class AddDietRecipePanel extends JPanel {
         // Action "Ajouter"
         addButton.addActionListener(e -> {
             List<Diet> selectedDiets = dietList.getSelectedValuesList();
+            if (selectedDiets.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucun régime sélectionné. Rien à ajouter.", "Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             try {
                 for (Diet diet : selectedDiets) {
                     dietRecipeController.addDietToRecipe(diet.getLabel(), recipe.getLabel());
@@ -104,7 +108,8 @@ public class AddDietRecipePanel extends JPanel {
                     dietModel.removeElement(diet);
                 }
 
-                JOptionPane.showMessageDialog(this, "Votre recette a bien été crée et peut être modifiée à tout moment !");
+                JOptionPane.showMessageDialog(this, "Le régime a bien été ajouté");
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

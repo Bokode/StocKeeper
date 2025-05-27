@@ -92,18 +92,6 @@ public class AddRecipePanel extends JPanel {
         typeRecetteComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
         FormPanel.add(typeRecetteComboBox, gbc);
 
-        row++;
-        gbc.gridx = 0; gbc.gridy = row;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        recipeTypeLabel = new JLabel("Type de régime* : ");
-        recipeTypeLabel.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(recipeTypeLabel, gbc);
-        gbc.gridx = 1;
-        String[] dietTypes = {"omnivore", "végétarien", "végan", "halal"};
-        JComboBox<String> dietTypesComboBox = new JComboBox<>(dietTypes);
-        dietTypesComboBox.setFont(new Font("Poppins", Font.PLAIN, 15));
-        FormPanel.add(dietTypesComboBox, gbc);
-
         add(FormPanel, BorderLayout.CENTER);
 
         ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -192,7 +180,6 @@ public class AddRecipePanel extends JPanel {
 
                 boolean isCold = isColdCheckBox.isSelected();
                 String typeString = typeRecetteComboBox.getSelectedItem().toString();
-                String dietString = dietTypesComboBox.getSelectedItem().toString();
                 RecipeType recipeType = new RecipeType(typeString);
 
                 Date lastDayDone = null;
@@ -201,7 +188,6 @@ public class AddRecipePanel extends JPanel {
 
                 recipeController = new RecipeController();
                 recipeController.addRecipe(newRecipe);
-                System.out.println("Recette créée : " + newRecipe);
 
                 JOptionPane.showMessageDialog(this, "Recette crée, vous allez pouvoir maintenant ajouter les aliments", "Recette crée", JOptionPane.INFORMATION_MESSAGE);
                 mainWindow.showAddIngredientPanel(new AddIngredientPanel(mainWindow, newRecipe, "addMaterial"));

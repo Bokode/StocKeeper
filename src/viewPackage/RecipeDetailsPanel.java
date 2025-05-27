@@ -1,5 +1,6 @@
 package viewPackage;
 
+import controllerPackage.DietRecipeController;
 import controllerPackage.IngredientAmountController;
 import controllerPackage.RecipeMaterialController;
 import modelPackage.IngredientAmount;
@@ -37,6 +38,9 @@ public class RecipeDetailsPanel extends JPanel {
         infoPanel.add(createLabel("Temps de préparation : " +
                 (recipe.getTimeToMake() != null ? recipe.getTimeToMake() + " minutes" : "Non renseigné"), contentFont));
         infoPanel.add(createLabel("Type : " + recipe.getType().getLabel(), contentFont));
+        List<String> diets = new DietRecipeController().getDietsByRecipe(recipe.getLabel());
+        String dietsText = diets.isEmpty() ? "/" : String.join(", ", diets);
+        infoPanel.add(createLabel("Régimes : " + dietsText, contentFont));
         infoPanel.add(createLabel("Recette froide : " + (Boolean.TRUE.equals(recipe.getCold()) ? "Oui" : "Non"), contentFont));
         infoPanel.add(createLabel("Dernière réalisation : " +
                 (recipe.getLastDayDone() != null ? recipe.getLastDayDone().toString() : "Jamais"), contentFont));

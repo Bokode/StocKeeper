@@ -211,4 +211,11 @@ public class MainWindow extends JFrame {
         mainContainer.revalidate();
         mainContainer.repaint();
     }
+
+    public void showDeleteDietRecipePanel(DeleteDietRecipePanel deleteDietRecipePanel){
+        mainContainer.removeAll();
+        mainContainer.add(deleteDietRecipePanel, BorderLayout.CENTER);
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
 }
