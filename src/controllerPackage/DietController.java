@@ -20,16 +20,4 @@ public class DietController {
     public List<Diet> getAllDiets() throws AppException {
         return dietManager.getAllDiets();
     }
-
-    public void addDiet(String label) throws AppException {
-        dietManager.addDiet(label);
-    }
-
-    public int getDietIdByLabel(String label) throws AppException {
-        return dietManager.getDietIdByLabel(label);
-    }
-
-    public String getDietLabelById(int id) throws AppException {
-        return dietManager.getDietLabelById(id);
-    }
 }
