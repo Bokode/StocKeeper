@@ -97,7 +97,7 @@ public class AddIngredientPanel extends JPanel {
             }
             if (cancelPanelName.equals("addMaterial")){
                 JOptionPane.showMessageDialog(this, "Vous allez pouvoir maintenant renseigner le matériel nécessaire pour la recette");
-                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "home"));
+                mainWindow.showAddMaterialPanel(new AddMaterialPanel(mainWindow, recipe, "addDiet"));
             } else if (cancelPanelName.equals("updateRecipe")) {
                 UpdateRecipePanel updateRecipePanel = new UpdateRecipePanel(mainWindow, recipe, "recipeList");
                 mainWindow.showUpdateRecipePanel(updateRecipePanel);
