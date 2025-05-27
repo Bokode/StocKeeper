@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DietDAO implements DietDAOInterface {
+
+    /* ─────────── Constantes de la table Diet ─────────── */
+    private static final String COL_ID    = "id";
+    private static final String COL_LABEL = "label";
+    private static final String TABLE     = "diet";
+
+
     public List<Diet> getAllDiets() throws AppException {
         List<Diet> dietList = new ArrayList<>();
         final String sql = "SELECT label FROM Diet";
