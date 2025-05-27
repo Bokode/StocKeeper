@@ -21,16 +21,4 @@ public class DietManager {
     public List<Diet> getAllDiets() throws AppException {
         return dao.getAllDiets();
     }
-
-    public void addDiet(String label) throws AppException {
-        dao.addDiet(label);
-    }
-
-    public int getDietIdByLabel(String label) throws AppException {
-        return dao.getDietIdByLabel(label);
-    }
-
-    public String getDietLabelById(int id) throws AppException {
-        return dao.getDietLabelById(id);
-    }
 }
